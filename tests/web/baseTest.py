@@ -3,7 +3,7 @@ import unittest
 import sys
 sys.path.append("../..") # Adds higher directory to python modules path.
 
-from web import createApplication
+from web.app import createApplication
 
 
 
