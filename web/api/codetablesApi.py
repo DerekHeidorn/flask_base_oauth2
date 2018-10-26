@@ -8,6 +8,7 @@ from flask import Blueprint
 from flask import jsonify
 from flask import abort
 from werkzeug.contrib.cache import SimpleCache
+from web.utils import publicJsonUtil
 
 api = Blueprint('codetables_api', __name__)
 
@@ -30,8 +31,10 @@ def codetableByName(codetableName):
 
         else:
             codetableData = codetablesService.getCodeTable(allowedCodetable)
-            if codetableData:
-                codetableCache.add(codetableName, codetableData)
-                return jsonify(codetableData)
+            data = publicJsonUtil.codetableSerialize(codetableData)
+            print("codetableData=" + str(data))
+            if data:
+                codetableCache.add(codetableName, data)
+                return jsonify(data)
 
     abort(404)

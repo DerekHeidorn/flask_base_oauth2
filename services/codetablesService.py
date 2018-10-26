@@ -1,7 +1,7 @@
 
 from persist import codetableDao
 
-def geCodeTable(codetableName):
+def getCodeTable(codetableName):
 
     codetableData = codetableDao.getCodeTable(codetableName)
 

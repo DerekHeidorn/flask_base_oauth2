@@ -8,6 +8,6 @@ def createPublicUser():
     login = randomUtil.randomLogin(),
     password = randomUtil.randomString(10, 25)
 
-    newUser = userService.addUser(first_name, last_name, login, password)
+    newUser = userService.addUser(login, password, first_name, last_name)
 
     return newUser
