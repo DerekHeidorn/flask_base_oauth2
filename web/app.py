@@ -1,24 +1,23 @@
 
 from flask import Flask
 from flask_oauthlib.provider import OAuth2Provider
+from flask_cors import CORS
 
-
-from services import userService
-from services import codetablesService
 from services import commonService
-
-
+from web.api import userApi, codetablesApi, commonApi, authApi
 
 def createApplication():
     print("Creating Application...")
     app = Flask(__name__)
+    CORS(app)
 
     commonService.loadApplicationCacheFromDB()
 
     # -- API registration --
-    app.register_blueprint(commonService.api)
-    app.register_blueprint(userService.api)
-    app.register_blueprint(codetablesService.api)
+    app.register_blueprint(userApi.api)
+    app.register_blueprint(codetablesApi.api)
+    app.register_blueprint(commonApi.api)
+    app.register_blueprint(authApi.api)
     OAuth2Provider(app)
 
     # Information output
@@ -27,7 +26,5 @@ def createApplication():
 
     for u in app.url_map.iter_rules():
         print("url_map: " + str(u) + " " + str(u.endpoint) + " " + str(u.methods))
-
-
 
     return app

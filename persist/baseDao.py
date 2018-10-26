@@ -1,5 +1,5 @@
-from persist.infrastructure import db_session_maker
+from persist.infrastructure import Session
 
 
 def getSession():
-    return db_session_maker()
+    return Session()

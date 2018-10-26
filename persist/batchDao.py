@@ -6,7 +6,7 @@ from persist.baseDao import getSession
 from models.batch import BatchJob
 
 
-def getConfigById(id, session=None):
+def getBatchJobById(id, session=None):
 
     if(session == None):
         session = getSession()

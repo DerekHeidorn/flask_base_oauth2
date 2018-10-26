@@ -1,9 +1,17 @@
 import json
 
-from sqlalchemy import Column, String, Integer, ForeignKey, Numeric, Date, DateTime
+from sqlalchemy import Column, String, Integer, ForeignKey, Numeric, Date, DateTime, Table
 from sqlalchemy.orm import relationship, base
-
+from sqlalchemy.ext.declarative import declarative_base
 from models.baseModel import BaseModel
+
+
+
+securityGroupAuthAssociation = Table('TB_SCRTY_GRP_AUTH', BaseModel.metadata,
+    Column('SCRGRP_ID', Integer, ForeignKey('TB_SCRTY_GRP.SCRGRP_ID')),
+    Column('SCRAUTH_ID', Integer, ForeignKey('TB_SCRTY_AUTH.SCRAUTH_ID'))
+)
+
 
 
 class SecurityAuthority(BaseModel):
@@ -22,13 +30,13 @@ class SecurityAuthority(BaseModel):
     # "SCRAUTH_DE" character varying(200) NOT NULL, -- Authority Description, to be displayed within the administration screens.
     description = Column("SCRAUTH_DE", String(200))   
 
-    
-
     def __repr__(self):
         return "<SecurityAuthority(id='%i', key='%s')>" % (self.id, self.key)
 
     def serialize(self):
         return json.dumps({"id": self.id, "key": self.key}) 
+
+
 
 class SecurityGroup(BaseModel):
     __tablename__ = 'TB_SCRTY_GRP'
@@ -45,28 +53,12 @@ class SecurityGroup(BaseModel):
     # "SCRGRP_LEVEL" integer NOT NULL DEFAULT 100, -- Security Level of the Security Group
     level = Column("SCRGRP_LEVEL", Integer) 
 
-    authorities = relationship("SecurityAuthority")
+    authorities = relationship("SecurityAuthority", 
+                    secondary=securityGroupAuthAssociation)
 
     def __repr__(self):
         return "<SecurityGroup(id='%i', name='%s')>" % (self.id, self.name)
 
     def serialize(self):
         return json.dumps({"id": self.id, "name": self.name}) 
-
-
-class SecurityUser(BaseModel):
-    __tablename__ = 'TB_USER'  # similar User data model object
-
-    # USER_ID		System-generated ID for a User.
-    id = Column("USER_ID", Integer, primary_key=True)    
-
-    # # USER_LOGIN		Login ID for a User	
-    login = Column("USER_LOGIN", String(100))    
-
-    securityGroups = relationship("SecurityGroup")  
-
-    def __repr__(self):
-        return "<SecurityUser(id='%i', login='%s')>" % (self.id, self.login)
-
-    def serialize(self):
-        return json.dumps({"id": self.id, "login": self.login})               
+              

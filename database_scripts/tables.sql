@@ -22,7 +22,7 @@ COMMENT ON COLUMN public."TB_USER_STA_CD"."USRSTA_DE" IS 'User Status Descriptio
 	"USRTYP_DE" character varying(20) NOT NULL, 
 	 CONSTRAINT "PKTB_USER_TYP_CD" PRIMARY KEY ("USRTYP_CD"));
 	 
-  ALTER TABLE public."TB_USER_STA_CD"
+  ALTER TABLE public."TB_USER_TYP_CD"
   OWNER TO postgres;
   
   -- =====================================================================

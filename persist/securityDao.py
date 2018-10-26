@@ -3,22 +3,20 @@ from sqlalchemy.sql import column
 from sqlalchemy.sql import select
 
 from persist.baseDao import getSession
-from models.security import SecurityUser
+from models.user import User
+
+def getUserSecurityAuthorities(userId, session=None):
+
+    user = session.query(User).filter(User.id == userId).first()
+
+    authorities = []
+
+    for sg in user.securityGroups:
+        for sa in sg.authorities:
+            authorities.append(sa)
+            
+    return authorities
 
 
-def getUserSecurity(userId, serialize=False, session=None):
-
-    if(session == None):
-        session = getSession()
-
-    user = session.query(SecurityUser).filter(SecurityUser.id == userId).first()
-
-    if(user is not None):
-        if serialize:
-            return user.serialize()
-        else:
-            return user
-    else:
-        return None
 
 
