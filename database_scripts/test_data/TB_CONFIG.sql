@@ -10,7 +10,7 @@ INSERT INTO public."TB_CONFIG"(
 
 -- oauth2_secret_key
 INSERT INTO "TB_CONFIG"(
-            "CFGPRM_KEY", "CFGPRM_VAL", "CFGPRM_DE")
-    VALUES (3, "oauth2_secret_key", "LjPVqqG1rjpis1QvmcHCygSulSGPmYUZM4uCCLiA", "Oauth2 Secret Key");
+            "CFGPRM_ID", "CFGPRM_KEY", "CFGPRM_VAL", "CFGPRM_DE")
+    VALUES (3, 'oauth2_secret_key', 'LjPVqqG1rjpis1QvmcHCygSulSGPmYUZM4uCCLiA', 'Oauth2 Secret Key');
 
 	

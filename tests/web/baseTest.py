@@ -27,5 +27,7 @@ class BaseTest(unittest.TestCase):
         
         print("type=" + str(type(response)))
         print("status_code=" + str(response.status_code))
+        print("response.content_type=" + str(response.content_type))
+        
         if(response.data):
             print("Data=" + response.data.decode("utf-8") )

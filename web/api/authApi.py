@@ -15,29 +15,34 @@ def register():
     # get the post data
     post_data = request.get_json()
     # check if user already exists
-    username=post_data.get('username')
+    login=post_data.get('login')
 
-    user = userService.getUserByLogin(username)
+    user = userService.getUserByLogin(login)
     if not user:
         try:
             password=post_data.get('password')
 
             # insert the user
-            newUser = userService.addUser(username, password)
+            newUser = userService.addUser(login, password)
+            print("added new user(1):" +str(newUser))
             # generate the auth token
             authorities = userUtils.getUserAuthorities(newUser)
-            auth_token = authUtil.encodeAuthToken(user, authorities)
+            print("added authorities(2):" + str(authorities))
+            auth_token = authUtil.encodeAuthToken(newUser, authorities)
+            print("added auth_token(3):")
             responseObject = {
                 'status': 'success',
                 'message': 'Successfully registered.',
                 'auth_token': auth_token.decode()
             }
+            print("added make_response(4):")
             return make_response(jsonify(responseObject)), 201
-        except Exception:
+        except Exception as e:
             responseObject = {
                 'status': 'fail',
                 'message': 'Some error occurred. Please try again.'
             }
+            print("Exception: " + str(e), str(e.with_traceback))
             return make_response(jsonify(responseObject)), 401
     else:
         responseObject = {
@@ -56,9 +61,8 @@ def login():
     post_data = request.get_json()
     try:
         # fetch the user data
-        user = User.query.filter_by(
-            email=post_data.get('email')
-        ).first()
+        user = userService.getUserByLogin(post_data.get('login'))
+
         if user and userUtils.isUserValid(
             user.email, post_data.get('password')
         ):
@@ -106,14 +110,12 @@ def status():
     if auth_token:
         resp = User.decode_auth_token(auth_token)
         if not isinstance(resp, str):
-            user = User.query.filter_by(id=resp).first()
+            user = userService.getUserById(id=resp)
             responseObject = {
                 'status': 'success',
                 'data': {
                     'user_id': user.id,
-                    'email': user.email,
-                    'admin': user.admin,
-                    'registered_on': user.registered_on
+                    'login': user.login
                 }
             }
             return make_response(jsonify(responseObject)), 200

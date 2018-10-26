@@ -42,8 +42,10 @@ def getHashedPassword(password, userSalt):
 def getUserAuthorities(user):
     authorities = []
 
-    for sg in user.securityGroups:
-        for sa in sg.authorities:
-            authorities.append(sa)
+    if user is not None and user.securityGroups is not None:
+        for sg in user.securityGroups:
+            if sg is not None:
+                for sa in sg.authorities:
+                    authorities.append(sa)
             
     return authorities    
