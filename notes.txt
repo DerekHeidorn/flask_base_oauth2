@@ -1,0 +1,2 @@
+docker run --name postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres:11
+Stored in Ubuntu Linux in: /var/lib/docker/containers
