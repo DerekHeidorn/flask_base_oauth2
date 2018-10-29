@@ -63,13 +63,13 @@ class AuthTestCase(BaseTest):
 
     def testRegisteredUserLogin(self):
         """ Test for login of registered-user login """
-        print("testing test_registered_user_login...")
+        print("testing testRegisteredUserLogin...")
 
         with self.testClient:
-            user = commonHelper.createPublicUser()
+            userlogin = randomUtil.randomLogin()
 
             # user registration
-            resp_register = self.registerUser(user.login, commonHelper.DEFAULT_PUBLIC_USER_PASSWORD)
+            resp_register = self.registerUser(userlogin, commonHelper.DEFAULT_PUBLIC_USER_PASSWORD)
             data_register = json.loads(resp_register.data.decode())
             self.assertEquals(data_register['status'],'success')
             self.assertEquals(
@@ -79,7 +79,7 @@ class AuthTestCase(BaseTest):
             self.assertEquals(resp_register.content_type, 'application/json')
             self.assertEqual(resp_register.status_code, 201)
             # registered user login
-            response = self.loginUser(user.login, commonHelper.DEFAULT_PUBLIC_USER_PASSWORD)
+            response = self.loginUser(userlogin, commonHelper.DEFAULT_PUBLIC_USER_PASSWORD)
             data = json.loads(response.data.decode())
             self.assertEquals(data['status'], 'success')
             self.assertEquals(data['message'], 'Successfully logged in.')
@@ -143,7 +143,7 @@ class AuthTestCase(BaseTest):
 
     def testValidLogout(self):
         """ Test for logout before token expires """
-        print("testing test_valid_logout...")
+        print("testing testValidLogout...")
 
         with self.testClient:
             userlogin = randomUtil.randomLogin()
@@ -151,7 +151,7 @@ class AuthTestCase(BaseTest):
             # user registration
             resp_register = self.registerUser(userlogin, '123456')
             data_register = json.loads(resp_register.data.decode())
-            #self.assertTrue(data_register['status'] == 'success')
+
             self.assertEquals(data_register['status'], 'success')
             self.assertEquals(
                 data_register['message'], 'Successfully registered.')
@@ -182,7 +182,7 @@ class AuthTestCase(BaseTest):
 
     def testInvalidLogout(self):
         """ Testing logout after the token expires """
-        print("testing test_invalid_logout...")
+        print("testing testInvalidLogout...")
 
         with self.testClient:
             userlogin = randomUtil.randomLogin()
@@ -191,16 +191,16 @@ class AuthTestCase(BaseTest):
             resp_register = self.registerUser(userlogin, '123456')
             data_register = json.loads(resp_register.data.decode())
             self.assertTrue(data_register['status'] == 'success')
-            self.assertTrue(
-                data_register['message'] == 'Successfully registered.')
+            self.assertEqual(
+                data_register['message'], 'Successfully registered.')
             self.assertTrue(data_register['auth_token'])
             self.assertTrue(resp_register.content_type == 'application/json')
             self.assertEqual(resp_register.status_code, 201)
             # user login
             resp_login = self.loginUser(userlogin, '123456')
             data_login = json.loads(resp_login.data.decode())
-            self.assertTrue(data_login['status'] == 'success')
-            self.assertTrue(data_login['message'] == 'Successfully logged in.')
+            self.assertEqual(data_login['status'], 'success')
+            self.assertEqual(data_login['message'],'Successfully logged in.')
             self.assertTrue(data_login['auth_token'])
             self.assertTrue(resp_login.content_type == 'application/json')
             self.assertEqual(resp_login.status_code, 200)

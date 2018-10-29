@@ -62,11 +62,10 @@ def login():
     try:
         # fetch the user data
         user = userService.getUserByLogin(post_data.get('login'))
-
-        if user and userUtils.isUserValid(
-            user.email, post_data.get('password')
-        ):
-            auth_token = user.encode_auth_token(user.id)
+        
+        if user is not None and userUtils.isUserValid(user, post_data.get('password')):
+            authorities = userUtils.getUserAuthorities(user)
+            auth_token = authUtils.encodeAuthToken(user, authorities)
             if auth_token:
                 responseObject = {
                     'status': 'success',
@@ -144,7 +143,7 @@ def logout():
     else:
         auth_token = ''
     if auth_token:
-        resp = User.decode_auth_token(auth_token)
+        resp = authUtils.decodeAuthToken(auth_token)
         if not isinstance(resp, str):
             try:
                 responseObject = {

@@ -8,10 +8,10 @@ DEFAULT_ADMIN_USER_LOGIN = "sys.admin@foo.com.invali"
 
 def createPublicUser():
 
-    first_name = "FirstNm_" + randomUtil.randomString(6, 10),
-    last_name = "LastNm_" + randomUtil.randomString(6, 10),
-    login = randomUtil.randomLogin(),
+    login = randomUtil.randomLogin()
     password = DEFAULT_PUBLIC_USER_PASSWORD
+    first_name = "FirstNm_" + randomUtil.randomString(6, 10)
+    last_name = "LastNm_" + randomUtil.randomString(6, 10)
 
     newUser = userService.addUser(login, password, first_name, last_name)
 

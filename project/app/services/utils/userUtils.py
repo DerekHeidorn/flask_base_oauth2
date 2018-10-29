@@ -19,10 +19,10 @@ def randomString(min_char, max_char):
 
 def isUserValid(user, password):
     if(user is None):
-        return None
+        return False
 
-    tmp_hashed_password = getHashedPassword(password, user.password_salt)
-    if(tmp_hashed_password == user.password_hash):
+    tmpHashedPassword = getHashedPassword(password, user.passwordSalt)
+    if(tmpHashedPassword.strip() == user.passwordHash.strip()):
         return True
     else:
         return False
