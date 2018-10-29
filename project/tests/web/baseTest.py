@@ -2,11 +2,11 @@
 import unittest
 import sys
 
-from project.app import app
+from project.app import main
 
 class BaseTest(unittest.TestCase):
 
-    app = app.createApplication()
+    app = main.createApplication()
 
     def setUp(self):
         print("setting up Test Client...")

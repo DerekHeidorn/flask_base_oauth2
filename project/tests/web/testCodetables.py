@@ -19,7 +19,7 @@ class CodetableTestCases(BaseTest):
         assert "Batch" == codeDict1[0]["description"]
         
 
-    def test_CtUserStatuses_cached_OK(self):
+    def test_CtUserStatusesCached_OK(self):
         print("Running: test_CtUserStatuses_cached_OK")
 
         resp = self.testClient.get('/api/v1.0/codetables/' + "CtUserStatuses",

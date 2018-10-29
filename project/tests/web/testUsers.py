@@ -22,7 +22,7 @@ class UserServiceTestCase(BaseTest):
 
         return responseData["id"]
 
-    def test_user_create(self):
+    def testUserCreate(self):
         print("Running: test_user_create")
         resp = self.testClient.post('/api/v1.0/user',data = dict(
             firstName = "Tester",
@@ -40,7 +40,7 @@ class UserServiceTestCase(BaseTest):
 
         return responseData["id"]
 
-    def test_user_by_id_OK(self):
+    def testUserById_OK(self):
         print("Running: test_user_by_id_OK")
         id = self.createUser()
 
@@ -58,7 +58,7 @@ class UserServiceTestCase(BaseTest):
         assert id == user["id"]
         assert "Tester" == user["firstName"]
 
-    def test_update_user(self):
+    def testUpdateUser(self):
         print("Running: test_update_user")
         id = self.createUser()
         newFirstName = "UpdatedTester"
@@ -84,7 +84,7 @@ class UserServiceTestCase(BaseTest):
         assert newLoginName == user["login"]
 
 
-    def test_user_delete(self):
+    def testUserDelete(self):
         print("Running: test_user_delete")
         id = self.createUser()
 

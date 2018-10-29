@@ -108,7 +108,7 @@ def status():
     else:
         auth_token = ''
     if auth_token:
-        resp = User.decode_auth_token(auth_token)
+        resp = authUtils.decodeAuthToken(auth_token)
         if not isinstance(resp, str):
             user = userService.getUserById(id=resp)
             responseObject = {

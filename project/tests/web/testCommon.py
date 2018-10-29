@@ -6,7 +6,7 @@ from project.tests.web.baseTest import BaseTest
 # @pytest.fixture(scope="class", autouse=True)
 class CommonTestCases(BaseTest):
 
-    def test_version_OK(self):
+    def testVersion_OK(self):
         print("Running: test_version_OK")
 
         resp = self.testClient.get('/api/v1.0/app/version',
