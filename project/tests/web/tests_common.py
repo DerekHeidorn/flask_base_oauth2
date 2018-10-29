@@ -1,7 +1,7 @@
 import pytest
 import unittest
 import json
-from baseTest import BaseTest 
+from project.tests.web.baseTest import BaseTest 
 
 # @pytest.fixture(scope="class", autouse=True)
 class CommonTestCases(BaseTest):

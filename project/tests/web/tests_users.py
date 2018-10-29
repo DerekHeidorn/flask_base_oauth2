@@ -1,9 +1,9 @@
 import pytest
 import unittest
 import json
-from baseTest import BaseTest 
-from tests.utils.randomUtil import randomLogin 
-from tests.utils.randomUtil import randomString
+from project.tests.web.baseTest import BaseTest 
+from project.tests.utils.randomUtil import randomLogin 
+from project.tests.utils.randomUtil import randomString
 
 
 # @pytest.fixture(scope="class", autouse=True)

@@ -2,9 +2,9 @@ import pytest
 import unittest
 import json
 import time
-from baseTest import BaseTest 
 
-from project.models.user import User
+from project.app.models.user import User
+from project.tests.web.baseTest import BaseTest 
 from project.tests.helpers import commonHelper
 from project.tests.utils import randomUtil
 

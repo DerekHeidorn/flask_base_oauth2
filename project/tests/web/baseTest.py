@@ -1,14 +1,8 @@
 
 import unittest
 import sys
-#sys.path.append("../..") # Adds higher directory to python modules path.
 
 from project.app import app
-
-
-
-
-
 
 class BaseTest(unittest.TestCase):
 
