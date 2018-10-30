@@ -4,12 +4,14 @@ from flask_oauthlib.provider import OAuth2Provider
 from flask_cors import CORS
 
 from project.app.services import commonService
+from project.app.web import oauth2
 from project.app.web.api import userApi, codetablesApi, commonApi, authApi
 
 def createApplication():
     print("Creating Application...")
     app = Flask(__name__)
     CORS(app)
+    oauth2.configOauth(app)
 
 
     #app_settings = os.getenv(

@@ -9,9 +9,10 @@ from project.app import main
 # app = createApplication()
 # manager = Manager(app)
 
-app = Flask(__name__)
-
+app = main.createApplication()
 manager = Manager(app)
+
+#manager = Manager()
 # manager.add_command("runserver", Server(host="0.0.0.0", port=9000))
 
 COV = coverage.coverage(
@@ -58,9 +59,9 @@ def runserver():
     # Server(host="127.0.0.1", port=9000)
     # apiApplication.run()
 
-    application = main.createApplication()
+    #application = main.createApplication()
     options = {'use_debugger':True, 'threaded':False, 'use_reloader':True}
-    application.run(debug=False, host="127.0.0.1", port=9000, **options)
+    app.run(debug=False, host="127.0.0.1", port=9000, **options)
 
 #     # ptvsd.enable_attach(secret="my_secret", address=('0.0.0.0', 3000))
 

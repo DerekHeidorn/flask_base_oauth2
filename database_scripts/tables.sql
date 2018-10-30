@@ -290,6 +290,121 @@ CREATE INDEX "XIF1TB_SCRTY_USER"
    COMMENT ON TABLE "TB_BATCH_JOB"  IS 'Batch Job Table';
    
    
+  -- ===================================================================
+  -- client_id = Column(String(48), index=True)
+  -- client_secret = Column(String(120))
+  -- issued_at = Column(
+  --     Integer, nullable=False,
+  --     default=lambda: int(time.time())
+  -- )
+  -- expires_at = Column(Integer, nullable=False, default=0)
+
+  -- redirect_uri = Column(Text, nullable=False, default='')
+  -- token_endpoint_auth_method = Column(
+  --     String(48), default='client_secret_basic')
+  -- grant_type = Column(Text, nullable=False, default='')
+  -- response_type = Column(Text, nullable=False, default='')
+  -- scope = Column(Text, nullable=False, default='')
+
+  -- client_name = Column(String(100))
+  -- client_uri = Column(Text)
+  -- logo_uri = Column(Text)
+  -- contact = Column(Text)
+  -- tos_uri = Column(Text)
+  -- policy_uri = Column(Text)
+  -- jwks_uri = Column(Text)
+  -- jwks_text = Column(Text)
+  -- i18n_metadata = Column(Text)
+
+  -- software_id = Column(String(36))
+  -- software_version = Column(String(48))
+ CREATE TABLE "TB_OAUTH2_CLIENT" 
+   (	"OAUTH2CL_ID" serial NOT NULL, 
+	    "USER_ID" integer NOT NULL,
+      "client_id" character varying(48), 
+      "client_secret" character varying(120),
+      "issued_at" integer NOT NULL, 
+      "expires_at" integer NOT NULL DEFAULT 0,
+      "redirect_uri" text NOT NULL,
+      "token_endpoint_auth_method" character varying(48), 
+      "grant_type" text,
+      "response_type" text,
+      "scope" text,
+      "client_name" character varying(100), 
+      "client_uri" text,
+      "logo_uri" text,
+      "contact" text,
+      "tos_uri" text,
+      "policy_uri" text,
+      "jwks_uri" text,
+      "jwks_text" text,
+      "i18n_metadata" text,
+      "software_id" character varying(36), 
+      "software_version" character varying(48),
+	    CONSTRAINT "XPKTB_OAUTH2_CLIENT" PRIMARY KEY ("OAUTH2CL_ID"),
+      CONSTRAINT "OAUTH2_CLIENT_TO_USER" FOREIGN KEY ("USER_ID")
+            REFERENCES public."TB_USER" ("USER_ID")
+   );
+   CREATE INDEX "IDX1TB_OAUTH2_CLIENT" ON "TB_OAUTH2_CODE" ("client_id");
+
+  -- ===================================================================
+   
+  -- code = Column(String(120), unique=True, nullable=False)
+  -- client_id = Column(String(48))
+  -- redirect_uri = Column(Text, default='')
+  -- response_type = Column(Text, default='')
+  -- scope = Column(Text, default='')
+  -- auth_time = Column(
+  --     Integer, nullable=False,
+  --     default=lambda: int(time.time())
+  -- )
+
+ CREATE TABLE "TB_OAUTH2_CODE" 
+   (	"OAUTH2CD_ID" serial NOT NULL, 
+	    "USER_ID" integer NOT NULL, 
+      "code" character varying(120) NOT NULL, 
+      "client_id" character varying(48), 
+      "redirect_uri" text, 
+      "response_type" text,
+      "scope" text,
+      "auth_time" integer NOT NULL, 
+	    CONSTRAINT "XPKTB_OAUTH2_CODE" PRIMARY KEY ("OAUTH2CD_ID"),
+      CONSTRAINT "OAUTH2_CODE_TO_USER" FOREIGN KEY ("USER_ID")
+            REFERENCES public."TB_USER" ("USER_ID")      
+   );
+  CREATE INDEX "IDX1TB_OAUTH2_CODE" ON "TB_OAUTH2_CODE" ("code");
+
+  -- ===================================================================
+   
+  -- client_id = Column(String(48))
+  -- token_type = Column(String(40))
+  -- access_token = Column(String(255), unique=True, nullable=False)
+  -- refresh_token = Column(String(255), index=True)
+  -- scope = Column(Text, default='')
+  -- revoked = Column(Boolean, default=False)
+  -- issued_at = Column(
+  --     Integer, nullable=False, default=lambda: int(time.time())
+  -- )
+  -- expires_in = Column(Integer, nullable=False, default=0)
+
+ CREATE TABLE "TB_OAUTH2_TOKEN" 
+   (	"OAUTH2TKN_ID" serial NOT NULL, 
+	    "USER_ID" integer NOT NULL,
+      "client_id" character varying(48), 
+      "token_type" character varying(40), 
+      "access_token" character varying(255) NOT NULL, 
+      "refresh_token" character varying(255), 
+      "scope" text,
+      "revoked" boolean,
+      "issued_at" integer NOT NULL, 
+      "expires_in" integer NOT NULL DEFAULT 0, 
+	    CONSTRAINT "XPKTB_OAUTH2_TOKEN" PRIMARY KEY ("OAUTH2TKN_ID"),
+      CONSTRAINT "OAUTH2_TOKEN_TO_USER" FOREIGN KEY ("USER_ID")
+            REFERENCES public."TB_USER" ("USER_ID")
+   );  
+
+    CREATE INDEX "IDX1TB_OAUTH2_TOKEN" ON "TB_OAUTH2_TOKEN" ("access_token");
+    CREATE INDEX "IDX2TB_OAUTH2_TOKEN" ON "TB_OAUTH2_TOKEN" ("refresh_token");
 
 
 

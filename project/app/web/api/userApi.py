@@ -1,5 +1,6 @@
 import hashlib
 import json
+#from oauthlib import 
 
 from flask import Flask
 from flask import jsonify
@@ -18,6 +19,7 @@ from project.app.models.user import User
 from project.app.services import userService, commonService
 from project.app.services.utils import userUtils
 from project.app.web.utils import dtoUtils
+from project.app.web import oauth2
 
 #  authorities = userUtils.getUserAuthorities(user)
 # class UserService(BaseService):
@@ -31,8 +33,8 @@ def getErrorCode(error):
     return 9000
 
 
-@api.route('/api/v1.0/user/<id>', methods=['GET'])
-#@oauth.require_oauth('email')
+@api.route('/api/v1.0/admin/user/<id>', methods=['GET'])
+@oauth2.require_oauth('STAFF_ACCESS')
 def getUserById(id):
     current_user = userService.getUserById(id)
     if current_user:
@@ -44,7 +46,8 @@ def getUserById(id):
         #
         abort(404)
 
-@api.route('/api/v1.0/user/<id>', methods=['DELETE'])
+@api.route('/api/v1.0/admin/user/<id>', methods=['DELETE'])
+@oauth2.require_oauth('STAFF_ACCESS')
 def deleteUser(id):
     try:
         if userService.deleteUser(id):
@@ -59,8 +62,9 @@ def deleteUser(id):
 
 
 
-@api.route('/api/v1.0/user/<id>', methods=['PUT'])
-def updateUser(id):
+@api.route('/api/v1.0/admin/user/<id>', methods=['PUT'])
+@oauth2.require_oauth('STAFF_ACCESS')
+def updatePublicUser(id):
     user_to_be_updated = {
         "firstName":request.form["firstName"],
         "lastName":request.form["lastName"],
@@ -72,8 +76,9 @@ def updateUser(id):
     else:
         return jsonify(dtoUtils.userSerialize(updated_user))
 
-@api.route('/api/v1.0/user', methods=['POST'])
-def addUser():
+@api.route('/api/v1.0/admin/user', methods=['POST'])
+@oauth2.require_oauth('STAFF_ACCESS')
+def addPublicUser():
     firstName = request.form["firstName"]
     lastName = request.form["lastName"]
     login = request.form["login"]

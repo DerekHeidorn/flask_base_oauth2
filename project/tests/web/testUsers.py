@@ -10,21 +10,21 @@ from project.tests.utils.randomUtil import randomString
 class UserServiceTestCase(BaseTest):
 
     def createUser(self):
-        resp = self.testClient.post('/api/v1.0/user',data = dict(
+        resp = self.testClient.post('/api/v1.0/admin/user',data = dict(
             firstName = "Tester",
             lastName = "Auto",
             login = randomLogin(),
             password = randomString(10, 25)
         ))
         self.debugResponse(resp)
-        assert resp.status_code == 201
+        self.assertEquals(201, resp.status_code)
         responseData = json.loads(resp.data)
 
         return responseData["id"]
 
     def testUserCreate(self):
         print("Running: test_user_create")
-        resp = self.testClient.post('/api/v1.0/user',data = dict(
+        resp = self.testClient.post('/api/v1.0/admin/user',data = dict(
             firstName = "Tester",
             lastName = "Auto",
             login = randomLogin(),
@@ -32,7 +32,7 @@ class UserServiceTestCase(BaseTest):
         ))
         self.debugResponse(resp)
 
-        assert resp.status_code == 201
+        self.assertEquals(201, resp.status_code)
         responseData = json.loads(resp.data)
         assert responseData["id"] is not None
         assert responseData["url"] is not None
@@ -46,17 +46,17 @@ class UserServiceTestCase(BaseTest):
 
 
         print("\nRunning: test_user_by_id_OK")
-        resp = self.testClient.get('/api/v1.0/user/' + str(id),
+        resp = self.testClient.get('/api/v1.0/admin/user/' + str(id),
                             headers={"MY_AUTH_TOKEN":"81c4e12b6879000837a3e7206795ee9ca874986cc97984d383c64093f5cc352d"})
         
         self.debugResponse(resp)
-        assert resp.status_code == 200
+        self.assertEquals( 200, resp.status_code)
         user = json.loads(resp.data)
 
         assert user is not None
         
-        assert id == user["id"]
-        assert "Tester" == user["firstName"]
+        self.assertEquals(id, user["id"])
+        self.assertEquals("Tester", user["firstName"])
 
     def testUpdateUser(self):
         print("Running: test_update_user")
@@ -66,7 +66,7 @@ class UserServiceTestCase(BaseTest):
         newLoginName = "updated.auto@tester.com"
 
         print("\nRunning: test_update_user")
-        resp = self.testClient.put('/api/v1.0/user/' + str(id),
+        resp = self.testClient.put('/api/v1.0/admin/user/' + str(id),
                             headers={"MY_AUTH_TOKEN":"81c4e12b6879000837a3e7206795ee9ca874986cc97984d383c64093f5cc352d"},
                             data = dict(
             firstName = newFirstName,
@@ -78,10 +78,10 @@ class UserServiceTestCase(BaseTest):
 
         assert user is not None
         
-        assert id == user["id"]
-        assert newFirstName == user["firstName"]
-        assert newLastName == user["lastName"]
-        assert newLoginName == user["login"]
+        self.assertEquals(id,  user["id"])
+        self.assertEquals( newFirstName , user["firstName"])
+        self.assertEquals( newLastName , user["lastName"])
+        self.assertEquals( newLoginName , user["login"])
 
 
     def testUserDelete(self):

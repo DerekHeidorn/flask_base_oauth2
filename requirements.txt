@@ -1,0 +1,8 @@
+flask
+flask-script
+mysql-python
+sqlalchemy
+PyLD
+pytest
+psycopg2
+Authlib
