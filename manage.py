@@ -8,6 +8,9 @@ from project.app import main
 
 # app = createApplication()
 # manager = Manager(app)
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+os.environ['OAUTH_INSECURE_TRANSPORT'] = '1'
+os.environ['DEBUG'] = '1'
 
 app = main.createApplication()
 manager = Manager(app)
@@ -55,9 +58,22 @@ def cov():
 
 @manager.command
 def runserver():
+
+    
     # apiApplication = createApplication()
     # Server(host="127.0.0.1", port=9000)
     # apiApplication.run()
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+    os.environ['OAUTH_INSECURE_TRANSPORT'] = '1'
+    os.environ['AUTHLIB_INSECURE_TRANSPORT'] = '1'
+    os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
+    os.environ['DEBUG'] = '1'
+    os.environ['FLASK_DEBUG'] = '1'
+
+    
+
+    #for k in sorted(os.environ.keys()):
+    #    print(k + ":" + os.environ[k])
 
     #application = main.createApplication()
     options = {'use_debugger':True, 'threaded':False, 'use_reloader':True}

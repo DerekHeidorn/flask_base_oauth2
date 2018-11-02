@@ -17,6 +17,9 @@ class User(BaseModel):
     # USER_ID		System-generated ID for a User.
     id = Column("USER_ID", Integer, primary_key=True)
 
+    def get_user_id(self):
+        return self.id
+
     # USER_FNAME		First Name of the User	
     firstName = Column("USER_FNAME", String(50))
     

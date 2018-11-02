@@ -22,6 +22,10 @@ def isUserValid(user, password):
         return False
 
     tmpHashedPassword = getHashedPassword(password, user.passwordSalt)
+    print("password=" + str(password).strip())
+    print("user.passwordSalt=" + str(user.passwordSalt).strip())
+    print("tmpHashedPassword=" + str(tmpHashedPassword).strip())
+    print("user.passwordHash=" + str(user.passwordHash).strip())
     if(tmpHashedPassword.strip() == user.passwordHash.strip()):
         return True
     else:

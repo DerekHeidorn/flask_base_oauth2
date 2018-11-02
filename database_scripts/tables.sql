@@ -345,7 +345,7 @@ CREATE INDEX "XIF1TB_SCRTY_USER"
       CONSTRAINT "OAUTH2_CLIENT_TO_USER" FOREIGN KEY ("USER_ID")
             REFERENCES public."TB_USER" ("USER_ID")
    );
-   CREATE INDEX "IDX1TB_OAUTH2_CLIENT" ON "TB_OAUTH2_CODE" ("client_id");
+   CREATE INDEX "IDX1TB_OAUTH2_CLIENT" ON "TB_OAUTH2_CLIENT" ("client_id");
 
   -- ===================================================================
    

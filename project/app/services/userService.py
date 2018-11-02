@@ -43,6 +43,13 @@ def getUserById(id):
 def getUserByLogin(username):
     return userDao.getUserByLogin(username)
 
+def getUserByLoginAndValidate(username, password):
+    user = userDao.getUserByLogin(username)
+    if(user is not None):
+        return {"user": user, "isPasswordValid": userUtils.isUserValid(user, password)}
+    else:
+        return  {"user": None, "isPasswordValid": False}
+
 def addUser(login, password, firstName=None, lastName=None):
 
     userUtils.randomUserPrivateKey(32)
