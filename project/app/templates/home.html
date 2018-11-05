@@ -1,18 +1,43 @@
-{% if user %}
-<style>pre{white-space:wrap}</style>
-<div>Logged in as <strong>{{user}}</strong> (<a href="{{ url_for('.logout') }}">Log Out</a>)</div>
+<html>
 
-{% for client in clients %}
-<pre>
-{{ client.client_info|tojson }}
-{{ client.client_metadata|tojson }}
-</pre>
-<hr>
-{% endfor %}
+<head>
+    <link href="static/timeless-style.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
 
-<br>
-{% else %}
-[<a href="/signup">Sign Up</a>]
-[<a href="/login">Login</a>]
+<div id="wrapper">
+    <div id="header-wrapper">
+        <div id="header">
+            <div style="text-align:right; padding: 10px">
+                {% if user %}
+                Logged in as <strong>{{user.login}}</strong> [<a href="{{ url_for('.logout') }}">Log Out</a>]
+                {% else %}
+                    [<a href="/">Home</a>]
+                    [<a href="/signup">Sign Up</a>]
+                    [<a href="/login">Login</a>]
+                {% endif %}
+            </div>
+            <div id="logo">
+                <h1><a href="#">oauth2 Project</a></h1>
+                <p>Application using JWT and OAuth2</p>
+            </div>
+        </div>
+    </div>
+    <div id="page">
+            <br/>
+            <p>This web Application written using Python. </p> 
 
-{% endif %}
+            <p>It uses these frameworks and databases:</p>
+            <ul>
+                <li>Flask - is a micro web framework written in Python</li>
+                <li>SqlAlchemy - is an open source SQL toolkit and object-relational mapper (ORM) for the Python programming language</li>
+                <li>Postgresql - is an object-relational database management system (ORDBMS) with an emphasis on extensibility and standards compliance</li>
+            </ul>
+            <br/>
+    </div>
+</div>
+<div id="footer">
+    <p>Stylesheet Design by <a href="http://www.freecsstemplates.org/">CSS Templates</a>.</p>
+</div>
+</body>
+</html>

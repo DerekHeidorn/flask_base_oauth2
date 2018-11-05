@@ -79,6 +79,26 @@ class OAuth2Client(ClientMixin):
         print("OAuth2Client->has_client_secret...")
         return bool(self.client_secret)
 
+
+
+def addAuthorizationCode(client, user, request):
+    return oauth2Dao.addAuthorizationCode(client, user, request)
+
+def parseAuthorizationCode(code, client):
+    return oauth2Dao.parseAuthorizationCode(code, client)
+
+def deleteAuthorizationCode(authorizationCode):
+    return oauth2Dao.deleteAuthorizationCode(authorizationCode)
+
+def authenticateUser(authorizationCode):
+    return oauth2Dao.authenticateUser(authorizationCode)
+
+def createAccessToken(token, client, grantUser=None):
+    return oauth2Dao.createAccessToken(token, client, grantUser)
+
+def getOAuth2Clients(userId):
+    return oauth2Dao.getOAuth2Clients(userId)
+
 #                  client_id: CLTID-Zeq1LRso5q-iLU9RKCKnu
 #              client_secret: t4lBxfkGiRHaByXbg9y5YEe084DZlHCYF7azLf1J
 #                  issued_at: 1531271519
@@ -105,41 +125,15 @@ c1.client_uri = 'http://127.0.0.1:9000/'
 
 oAuth2Clients = [c1]
 
-def addAuthorizationCode(client, user, request):
-    return oauth2Dao.addAuthorizationCode(client, user, request)
-
-def parseAuthorizationCode(code, client):
-    return oauth2Dao.parseAuthorizationCode(code, client)
-
-def deleteAuthorizationCode(authorizationCode):
-    return oauth2Dao.deleteAuthorizationCode(authorizationCode)
-
-def authenticateUser(authorizationCode):
-    return oauth2Dao.authenticateUser(authorizationCode)
-
-def createAccessToken(token, client, grantUser=None):
-    return oauth2Dao.createAccessToken(token, client, grantUser)
-
-def getOAuth2Clients(userId):
-    return oauth2Dao.getOAuth2Clients(userId)
-
 def queryClient(clientId):
-    print("queryClient->clientId=" + clientId)
-    print("queryClient->oAuth2Clients=" + str(oAuth2Clients))
-    print("queryClient->oAuth2Clients[0]=" + str(oAuth2Clients[0]))
     for c in oAuth2Clients:
-        print("c.client_id=" + str(c.client_id) + " =? " + str(clientId))
         if c.client_id == clientId:
             return c
     return None
-
 
 def queryToken(token, tokenTypeHint):
     print("oauth2Service->queryToken called...")
     return oauth2Dao.queryToken(token, tokenTypeHint)
 
-# {'token_type': 'Bearer', 'access_token': 'cURRjlMDCvKUS55jcpqVyQtXZQyyw3DQbTAK2wLy6T', 'expires_in': 864000}
-
 def saveToken(clientId, userId, tokenType, scope, jti, issuedAt, expiresIn):
-    print("oauth2Service->saveToken called...")
-    oauth2Dao.saveToken(clientId, userId, tokenType, scope, jti, issuedAt, expiresIn)
+    return oauth2Dao.saveToken(clientId, userId, tokenType, scope, jti, issuedAt, expiresIn)

@@ -86,32 +86,6 @@ def queryToken(token, tokenTypeHint):
     return session.query(OAuth2Token).filter(OAuth2Token.refresh_token==token).first()
 
 def saveToken(clientId, userId, tokenType, scope, jti, issuedAt, expiresIn):
-
-    print("----------------------------------------------------------")
-    # print("saveToken->token=" + str(type(token)) + " " + str(token))
-    # print("saveToken->request=" +  str(type(request)) + " " + str(request))
-    # print("saveToken->self.user=" +  str(type(request.user)) + " " + str(request.user))
-    # print("saveToken->self.client=" +  str(type(request.client)) + " " + str(request.client.client_id))
-    #  client_id = Column(String(48))
-    # token_type = Column(String(40))
-    # access_token = Column(String(255), unique=True, nullable=False)
-    # refresh_token = Column(String(255), index=True)
-    # scope = Column(Text, default='')
-    # revoked = Column(Boolean, default=False)
-    # issued_at = Column(
-    #     Integer, nullable=False, default=lambda: int(time.time())
-    # )
-    # expires_in = Column(Integer, nullable=False, default=0)
-
-    # if request.user:
-    #     user_id = request.user.get_user_id()
-    #     return
-    # else:
-    #     # client_credentials grant_type
-    #     user_id = request.client.user_id
-    #     # or, depending on how you treat client_credentials
-    #     user_id = None
-
     item = OAuth2Token()
     item.client_id=clientId
     item.user_id=userId
@@ -125,3 +99,5 @@ def saveToken(clientId, userId, tokenType, scope, jti, issuedAt, expiresIn):
     session = getSession()
     session.add(item)
     session.commit()
+
+    return item

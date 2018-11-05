@@ -1,24 +1,43 @@
-{% if user %}
-<style>pre{white-space:wrap}</style>
-<div>Logged in as <strong>{{user}}</strong> (<a href="{{ url_for('.logout') }}">Log Out</a>)</div>
+<html>
 
-{% for client in clients %}
-<pre>
-{{ client.client_info|tojson }}
-{{ client.client_metadata|tojson }}
-</pre>
-<hr>
-{% endfor %}
+<head>
+    <link href="static/timeless-style.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
 
-<br><a href="{{ url_for('.create_client') }}">Create Client</a>
-
-{% else %}
-<form action="/oauth/token" method="post">
-  <input type="hidden" name="grant_type" value="password">
-  <input type="hidden" name="client_id" value="CLTID-Zeq1LRso5q-iLU9RKCKnu">
-  
-  <input type="text" name="username" placeholder="username">
-  <input type="password" name="password" placeholder="password">
-  <button type="submit">Login</button>
-</form>
-{% endif %}
+<div id="wrapper">
+    <div id="header-wrapper">
+        <div id="header">
+            <div style="text-align:right; padding: 10px">
+                {% if user %}
+                Logged in as <strong>{{user.login}}</strong> [<a href="{{ url_for('.logout') }}">Log Out</a>]
+                {% else %}
+                    [<a href="/">Home</a>]
+                    [<a href="/signup">Sign Up</a>]
+                    [<a href="/login">Login</a>]
+                {% endif %}
+            </div>
+            <div id="logo">
+                <h1><a href="#">oauth2 Project</a></h1>
+                <p>Application using JWT and OAuth2</p>
+            </div>
+        </div>
+    </div>
+    <div id="page">
+            <br/>
+            <form action="/oauth/authorize" method="post">
+              <input type="hidden" name="grant_type" value="password">
+              <input type="hidden" name="client_id" value="CLTID-Zeq1LRso5q-iLU9RKCKnu">
+              
+              <input type="text" name="username" placeholder="username"><br/>
+              <input type="password" name="password" placeholder="password"><br/>
+              <button type="submit">Login</button>
+            </form>
+            <br/>
+    </div>
+</div>
+<div id="footer">
+    <p>Stylesheet Design by <a href="http://www.freecsstemplates.org/">CSS Templates</a>.</p>
+</div>
+</body>
+</html>

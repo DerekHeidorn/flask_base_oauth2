@@ -1,13 +1,44 @@
-<style>
-  label, label > span { display: block; }
-  label { margin: 15px 0; }
-</style>
+<html>
 
-<a href="/">Home</a>
+<head>
+    <link href="static/timeless-style.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
 
-<form action="/oauth/signUp" method="post">
-  <input type="text" name="username" placeholder="username">
-  <input type="password" name="password" placeholder="password">
-  <button type="submit">Signup</button>
-</form>
+<div id="wrapper">
+    <div id="header-wrapper">
+        <div id="header">
+            <div style="text-align:right; padding: 10px">
+                {% if user %}
+                Logged in as <strong>{{user.login}}</strong> [<a href="{{ url_for('.logout') }}">Log Out</a>]
+                {% else %}
+                    [<a href="/">Home</a>]
+                    [<a href="/signup">Sign Up</a>]
+                    [<a href="/login">Login</a>]
+                {% endif %}
+            </div>
+            <div id="logo">
+                <h1><a href="#">oauth2 Project</a></h1>
+                <p>Application using JWT and OAuth2</p>
+            </div>
+        </div>
+    </div>
+    <div id="page">
+            <br/>
+            <form action="/signup" method="post">
+              <input type="text" name="username" placeholder="username"><br/>
+              <input type="password" name="password" placeholder="password"><br/>
+              <input type="password" name="passwordRepeat" placeholder="passwordRepeat"><br/>
+              <button type="submit">Signup</button>
+            </form>
+            <br/>
+    </div>
+</div>
+<div id="footer">
+    <p>Stylesheet Design by <a href="http://www.freecsstemplates.org/">CSS Templates</a>.</p>
+</div>
+</body>
+</html>
+
+
 
