@@ -38,7 +38,7 @@ def createApplication():
     app.register_blueprint(codetablesApi.api)
     app.register_blueprint(commonApi.api)
     app.register_blueprint(authApi.api)
-    app.register_blueprint(oauth2Workflow.bp)
+    app.register_blueprint(oauth2Workflow.api)
 
     # Information output
     for b in app.blueprints:

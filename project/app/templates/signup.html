@@ -25,11 +25,50 @@
     </div>
     <div id="page">
             <br/>
-            <form action="/signup" method="post">
-              <input type="text" name="username" placeholder="username"><br/>
-              <input type="password" name="password" placeholder="password"><br/>
-              <input type="password" name="passwordRepeat" placeholder="passwordRepeat"><br/>
-              <button type="submit">Signup</button>
+            <form action="{{ url_for('home_api.signupPost') }}" method="post">
+              <input type="hidden" name="grant_type" value="password">
+              <input type="hidden" name="client_id" value="CLTID-Zeq1LRso5q-iLU9RKCKnu">
+              {{ form.csrf_token }}
+              <table>
+                  <tr>
+                      <td>{{ form.username.label }}:</td>
+                      <td>{{ form.username }}<br/></td>
+                  </tr>
+                  <tr>
+                        <td colspan="2">
+                        {% for error in form.username.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                        </td>
+                  </tr>
+                  <tr>
+                    <td>{{ form.password.label }}:</td>
+                    <td>{{ form.password }}<br/></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    {% for error in form.password.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{ form.passwordRepeat.label }}:</td>
+                    <td>{{ form.passwordRepeat }}<br/></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    {% for error in form.passwordRepeat.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align:right;"><button type="submit">Signup</button></td>
+                </tr>
+              </table>
+
             </form>
             <br/>
     </div>
