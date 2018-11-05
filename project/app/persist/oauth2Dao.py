@@ -85,14 +85,13 @@ def queryToken(token, tokenTypeHint):
         return item
     return session.query(OAuth2Token).filter(OAuth2Token.refresh_token==token).first()
 
-def saveToken(token, request):
+def saveToken(clientId, userId, tokenType, scope, jti, issuedAt, expiresIn):
 
     print("----------------------------------------------------------")
-    print("saveToken->token=" + str(type(token)) + " " + str(token))
-    print("saveToken->request=" +  str(type(request)) + " " + str(request))
-    print("saveToken->self.user=" +  str(type(request.user)) + " " + str(request.user))
-    print("saveToken->self.client=" +  str(type(request.client)) + " " + str(request.client.client_id))
-
+    # print("saveToken->token=" + str(type(token)) + " " + str(token))
+    # print("saveToken->request=" +  str(type(request)) + " " + str(request))
+    # print("saveToken->self.user=" +  str(type(request.user)) + " " + str(request.user))
+    # print("saveToken->self.client=" +  str(type(request.client)) + " " + str(request.client.client_id))
     #  client_id = Column(String(48))
     # token_type = Column(String(40))
     # access_token = Column(String(255), unique=True, nullable=False)
@@ -114,14 +113,14 @@ def saveToken(token, request):
     #     user_id = None
 
     item = OAuth2Token()
-    item.client_id=request.client.client_id
-    item.user_id=request.user.get_user_id()
-    item.token_type = token['token_type']
-    item.scope = 'profile'
-    item.access_token = token['access_token']
+    item.client_id=clientId
+    item.user_id=userId
+    item.token_type = tokenType
+    item.scope = scope
+    item.access_token = jti
     item.revoked = False
-    item.issued_at = time.time()
-    item.expires_in = time.time() + token['expires_in']
+    item.issued_at = issuedAt
+    item.expires_in = expiresIn
     
     session = getSession()
     session.add(item)

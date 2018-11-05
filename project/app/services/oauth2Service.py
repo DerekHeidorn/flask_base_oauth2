@@ -140,6 +140,6 @@ def queryToken(token, tokenTypeHint):
 
 # {'token_type': 'Bearer', 'access_token': 'cURRjlMDCvKUS55jcpqVyQtXZQyyw3DQbTAK2wLy6T', 'expires_in': 864000}
 
-def saveToken(token, request):
+def saveToken(clientId, userId, tokenType, scope, jti, issuedAt, expiresIn):
     print("oauth2Service->saveToken called...")
-    oauth2Dao.saveToken(token, request)
+    oauth2Dao.saveToken(clientId, userId, tokenType, scope, jti, issuedAt, expiresIn)
