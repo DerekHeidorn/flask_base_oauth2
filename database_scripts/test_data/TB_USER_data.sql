@@ -2,6 +2,11 @@
 INSERT INTO public."TB_SCRTY_AUTH"(
             "SCRAUTH_ID", "SCRAUTH_NAME", "SCRAUTH_DE", "SCRAUTH_KEY")
     VALUES (1, 'Customer Access', 'General Customer Access', 'CUST_ACCESS');
+
+-- 5;"Customer Profile";"Customer Profile";"CUST_PROFILE"
+INSERT INTO public."TB_SCRTY_AUTH"(
+            "SCRAUTH_ID", "SCRAUTH_NAME", "SCRAUTH_DE", "SCRAUTH_KEY")
+    VALUES (5, 'Customer Profile', 'Customer Profile', 'CUST_PROFILE');
 	
 -- 2;"Staff Access";"General Staff Access";"STAFF_ACCESS"
 INSERT INTO public."TB_SCRTY_AUTH"(
@@ -36,14 +41,15 @@ INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (1, 4);
 
 -- CUSTOMER
 INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (2, 1);
+INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (2, 5);
 
 	
 	
-INSERT INTO "TB_USER" ("USER_FNAME", "USER_LNAME", "USER_LOGIN", "USRTYP_CD", "USRSTA_CD") VALUES ('Tester', 'Auto', 'auto@tester.com', '1', 'A') ;
+INSERT INTO "TB_USER" ("USER_FNAME", "USER_LNAME", "USERNAME", "USRTYP_CD", "USRSTA_CD") VALUES ('Tester', 'Auto', 'auto@tester.com', '1', 'A') ;
 
 -- Sys Admin Staff
 INSERT INTO public."TB_USER"(
-            "USER_ID", "USER_LOGIN", "USER_PASSWD", "USER_PASSWD_SALT", "USER_PASSWD_EXP_TS", 
+            "USER_ID", "USERNAME", "USER_PASSWD", "USER_PASSWD_SALT", "USER_PASSWD_EXP_TS", 
             "USRTYP_CD", "USER_ATTEMPT_CNT", "USER_ATTEMPT_TS", "USER_PRIV_KEY", 
             "USER_ACTV_CODE", "USER_RESET_CODE", "USRSTA_CD", "USER_RESET_PRSN_ID", 
             "USER_FNAME", "USER_LNAME")
@@ -54,7 +60,7 @@ INSERT INTO public."TB_USER"(
 		
 -- Customer		
 INSERT INTO public."TB_USER"(
-            "USER_ID", "USER_LOGIN", "USER_PASSWD", "USER_PASSWD_SALT", "USER_PASSWD_EXP_TS", 
+            "USER_ID", "USERNAME", "USER_PASSWD", "USER_PASSWD_SALT", "USER_PASSWD_EXP_TS", 
             "USRTYP_CD", "USER_ATTEMPT_CNT", "USER_ATTEMPT_TS", "USER_PRIV_KEY", 
             "USER_ACTV_CODE", "USER_RESET_CODE", "USRSTA_CD", "USER_RESET_PRSN_ID", 
             "USER_FNAME", "USER_LNAME")

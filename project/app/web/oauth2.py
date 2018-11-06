@@ -40,9 +40,8 @@ class _PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
         return 200, token, self.TOKEN_RESPONSE_HEADER
 
     def authenticate_user(self, username, password):
-        print("PasswordGrant->authenticate_user called: " + str(username))
 
-        user = userService.getUserByLogin(username)
+        user = userService.getUserByUsername(username)
         if(user is not None):
             isPasswordValid = userUtils.isUserValid(user, password)
             if isPasswordValid:
@@ -53,13 +52,11 @@ class _PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
 
 class _BearerTokenValidator(BearerTokenValidator):
     def authenticate_token(self, tokenString):  
-        print("_BearerTokenValidator->authenticate_token called..." + tokenString)
         # oAuth2Token = OAuth2Token()
         # return oAuth2Token
         payload = authUtils.decodeAuthTokenPayload(tokenString)
-        print("_BearerTokenValidator->payload:" + str(payload))
         dbToken = oauth2Service.queryToken(payload['jti'], 'access_token')
-        print("dbToken:" + str(dbToken))
+
 
         #    'exp': datetime.utcnow() + timedelta(days=1, seconds=0),
         #     'iat': datetime.utcnow(),

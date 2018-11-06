@@ -5,10 +5,10 @@ from random import choice
 
 
 
-def randomLogin():
+def randomUsername():
     rand = randomString(3, 20)
 
-    return "Login." + rand + "@tester.com.invali"
+    return "USERNAME." + rand + "@tester.com.invali"
 
 def randomString(min_char, max_char):
     allchar = string.ascii_letters + string.digits

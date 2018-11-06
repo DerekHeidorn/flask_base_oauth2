@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func, select
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -24,6 +24,7 @@ def addUser(newUser, session=None):
         session = getSession()
 
     session.add(newUser)
+    #session.add(newUser.securityGroups)
     session.commit()
 
     return newUser.id
@@ -54,20 +55,41 @@ def getUser(id, session=None):
     user = session.query(User).filter(User.id == id).first()
     return user 
 
-def getUserByLogin(login, session=None):
+def getUserByUsername(username, session=None):
     """
-    Gets the User based on the login parameter
+    Gets the User based on the username parameter
 
-    :param login: The login of the user which needs to be loaded
+    :param username: The username of the user which needs to be loaded
     :return: The user.
     """
 
     if(session == None):
         session = getSession()
 
-    user = session.query(User).filter(User.login == login).first()
+    user = session.query(User).filter(User.username == username).first()
     return user
 
+def isUsernameUnique(username, excludeUserId=None, session=None):
+    """
+    Gets the User based on the username parameter
+
+    :param username: The username of the user which needs to be loaded
+    :return: The user.
+    """
+    print("**** isUsernameUnique=" + str(isUsernameUnique))
+
+    if(session == None):
+        session = getSession()
+
+    query = session.query(func.count(User.id)).filter(User.username == username)
+    if excludeUserId != None:
+        query.filter(User.id != excludeUserId)
+
+    count = query.scalar()
+    print("**** statement=" + str(query))
+    print("**** count=" + str(count))
+
+    return count == 0
 
 def updateUser(id, userToBeUpdated):
     updated_user = None
@@ -79,7 +101,7 @@ def updateUser(id, userToBeUpdated):
 
     user.firstName = userToBeUpdated["firstName"]
     user.lastName = userToBeUpdated["lastName"]
-    user.login = userToBeUpdated["login"]
+    user.username = userToBeUpdated["username"]
 
     session.commit()
     updated_user = getUser(id)

@@ -9,8 +9,7 @@ class CommonTestCases(BaseTest):
     def testVersion_OK(self):
         print("Running: test_version_OK")
 
-        resp = self.testClient.get('/api/v1.0/app/version',
-                            headers={"MY_AUTH_TOKEN":"81c4e12b6879000837a3e7206795ee9ca874986cc97984d383c64093f5cc352d"})
+        resp = self.testClient.get('/api/v1.0/app/version')
         self.debugResponse(resp)
         assert resp.status_code == 200
         

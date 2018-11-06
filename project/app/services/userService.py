@@ -21,7 +21,7 @@ from project.app.services.utils import userUtils
 from project.app.services import commonService
 
 def isUserValid(username, password):
-    user = userDao.getUserByLogin(username)
+    user = userDao.getUserByUsername(username)
     if(user is not None):
         return userUtils.isUserValid(user, password)
     else:
@@ -40,37 +40,41 @@ def updateUser(id, userToBeUpdated):
 def getUserById(id):
     return userDao.getUser(id)
 
-def getUserByLogin(username):
-    return userDao.getUserByLogin(username)
+def getUserByUsername(username):
+    return userDao.getUserByUsername(username)
 
-def getUserByLoginAndValidate(username, password):
-    user = userDao.getUserByLogin(username)
+def isUsernameUnique(username):
+    return userDao.isUsernameUnique(username)
+
+def getUserByUsernameAndValidate(username, password):
+    user = userDao.getUserByUsername(username)
     if(user is not None):
         return {"user": user, "isPasswordValid": userUtils.isUserValid(user, password)}
     else:
         return  {"user": None, "isPasswordValid": False}
 
-def addUser(login, password, firstName=None, lastName=None):
+def addPublicUser(username, password, firstName=None, lastName=None):
 
     userUtils.randomUserPrivateKey(32)
 
-    newUser = User(firstName=firstName, lastName=lastName, login=login)
+    session = securityDao.getSession()
+    securityGroup = securityDao.getSecurityGroupByName(securityDao.SECURITY_GROUP_CUSTOMER_NAME
+                                                          , session=session)
+
+
+    newUser = User(firstName=firstName, lastName=lastName, username=username)
     newUser.statusCd = 'A'
     newUser.typeCd = '1'
     newUser.failedAttemptCnt = 0
     newUser.privateKey = userUtils.randomUserPrivateKey(32)
     newUser.passwordSalt = userUtils.randomUserPrivateKey(32) 
     newUser.passwordHash = userUtils.getHashedPassword(password, newUser.passwordSalt)
-    userId = userDao.addUser(newUser)
+
+    newUser.securityGroups.append(securityGroup)
+    userId = userDao.addUser(newUser, session=session)
     if userId:
         return userDao.getUser(userId)
     else:
         return None
-
-
-
-
- 
-
 
 

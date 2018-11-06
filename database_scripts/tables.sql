@@ -34,7 +34,7 @@ COMMENT ON COLUMN public."TB_USER_STA_CD"."USRSTA_DE" IS 'User Status Descriptio
 CREATE TABLE public."TB_USER"
 (
   "USER_ID" serial NOT NULL, -- System-generated ID for a User.
-  "USER_LOGIN" character varying(100) NOT NULL, -- Login ID for a User
+  "USERNAME" character varying(100) NOT NULL, -- Username for a User
   "USER_PASSWD" character(256), -- Hashed password used in login authentication
   "USER_PASSWD_SALT" character(32), -- Used in hashing and authentication
   "USER_PASSWD_EXP_TS" timestamp without time zone, -- A timestamp for expiring a password, used for temporary passwords
@@ -58,7 +58,7 @@ ALTER TABLE public."TB_USER"
 COMMENT ON TABLE public."TB_USER"
   IS 'User Table - A User is an individual who logs into the system ';
 COMMENT ON COLUMN public."TB_USER"."USER_ID" IS 'System-generated ID for a User.';
-COMMENT ON COLUMN public."TB_USER"."USER_LOGIN" IS 'Login ID for a User';
+COMMENT ON COLUMN public."TB_USER"."USERNAME" IS 'Username for a User';
 COMMENT ON COLUMN public."TB_USER"."USER_PASSWD" IS 'Hashed password used in login authentication';
 COMMENT ON COLUMN public."TB_USER"."USER_PASSWD_SALT" IS 'Used in hashing and authentication';
 COMMENT ON COLUMN public."TB_USER"."USER_PASSWD_EXP_TS" IS 'A timestamp for expiring a password, used for temporary passwords';
@@ -90,7 +90,7 @@ CREATE INDEX "XIE1TB_USER"
 CREATE INDEX "XIE2TB_USER"
   ON public."TB_USER"
   USING btree
-  ("USER_LOGIN" COLLATE pg_catalog."default");
+  ("USERNAME" COLLATE pg_catalog."default");
 
 -- Index: public."XIE3TB_USER"
 
@@ -99,7 +99,7 @@ CREATE INDEX "XIE2TB_USER"
 CREATE INDEX "XIE3TB_USER"
   ON public."TB_USER"
   USING btree
-  (lower("USER_LOGIN"::text) COLLATE pg_catalog."default");
+  (lower("USERNAME"::text) COLLATE pg_catalog."default");
 
 -- Index: public."XIE4TB_USER"
 
@@ -318,34 +318,34 @@ CREATE INDEX "XIF1TB_SCRTY_USER"
 
   -- software_id = Column(String(36))
   -- software_version = Column(String(48))
- CREATE TABLE "TB_OAUTH2_CLIENT" 
-   (	"OAUTH2CL_ID" serial NOT NULL, 
-	    "USER_ID" integer NOT NULL,
-      "client_id" character varying(48), 
-      "client_secret" character varying(120),
-      "issued_at" integer NOT NULL, 
-      "expires_at" integer NOT NULL DEFAULT 0,
-      "redirect_uri" text NOT NULL,
-      "token_endpoint_auth_method" character varying(48), 
-      "grant_type" text,
-      "response_type" text,
-      "scope" text,
-      "client_name" character varying(100), 
-      "client_uri" text,
-      "logo_uri" text,
-      "contact" text,
-      "tos_uri" text,
-      "policy_uri" text,
-      "jwks_uri" text,
-      "jwks_text" text,
-      "i18n_metadata" text,
-      "software_id" character varying(36), 
-      "software_version" character varying(48),
-	    CONSTRAINT "XPKTB_OAUTH2_CLIENT" PRIMARY KEY ("OAUTH2CL_ID"),
-      CONSTRAINT "OAUTH2_CLIENT_TO_USER" FOREIGN KEY ("USER_ID")
-            REFERENCES public."TB_USER" ("USER_ID")
-   );
-   CREATE INDEX "IDX1TB_OAUTH2_CLIENT" ON "TB_OAUTH2_CLIENT" ("client_id");
+--  CREATE TABLE "TB_OAUTH2_CLIENT" 
+--    (	"OAUTH2CL_ID" serial NOT NULL, 
+-- 	    "USER_ID" integer NOT NULL,
+--       "client_id" character varying(48), 
+--       "client_secret" character varying(120),
+--       "issued_at" integer NOT NULL, 
+--       "expires_at" integer NOT NULL DEFAULT 0,
+--       "redirect_uri" text NOT NULL,
+--       "token_endpoint_auth_method" character varying(48), 
+--       "grant_type" text,
+--       "response_type" text,
+--       "scope" text,
+--       "client_name" character varying(100), 
+--       "client_uri" text,
+--       "logo_uri" text,
+--       "contact" text,
+--       "tos_uri" text,
+--       "policy_uri" text,
+--       "jwks_uri" text,
+--       "jwks_text" text,
+--       "i18n_metadata" text,
+--       "software_id" character varying(36), 
+--       "software_version" character varying(48),
+-- 	    CONSTRAINT "XPKTB_OAUTH2_CLIENT" PRIMARY KEY ("OAUTH2CL_ID"),
+--       CONSTRAINT "OAUTH2_CLIENT_TO_USER" FOREIGN KEY ("USER_ID")
+--             REFERENCES public."TB_USER" ("USER_ID")
+--    );
+--    CREATE INDEX "IDX1TB_OAUTH2_CLIENT" ON "TB_OAUTH2_CLIENT" ("client_id");
 
   -- ===================================================================
    

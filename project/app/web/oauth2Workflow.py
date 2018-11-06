@@ -1,7 +1,6 @@
 import json
 from flask import Blueprint, request, session
-from flask import render_template, redirect, jsonify
-from werkzeug.security import gen_salt
+from flask import render_template, redirect, make_response, jsonify
 from authlib.flask.oauth2 import current_token
 from authlib.specs.rfc6749 import OAuth2Error
 
@@ -21,9 +20,9 @@ api = Blueprint('home_api', __name__)
 def currentUser():
     if 'id' in session:
         userId = session['id']
-        print("id=" + str(userId))
+        # print("id=" + str(userId))
         user = userService.getUserById(userId)
-        print("user=" + str(user))
+        # print("user=" + str(user))
         return user
     return None
 
@@ -54,17 +53,26 @@ def loginPost():
     form = forms.UsernamePasswordForm()
     if form.validate_on_submit():
         debugUtils.debugRequest(request)
-        tokenResponse = authorizationServer.create_token_response()
-        debugUtils.debugResponse(tokenResponse)
+        try:
+            tokenResponse = authorizationServer.create_token_response()
+            debugUtils.debugResponse(tokenResponse)
 
-        jsonString = tokenResponse.data.decode("utf-8")
+            jsonString = tokenResponse.data.decode("utf-8")
 
-        jsonDoc = json.JSONDecoder().decode(jsonString)
-        parameters = ""
-        for k in jsonDoc:
-            parameters += "&" + k + '=' + str(jsonDoc.get(k))
+            jsonDoc = json.JSONDecoder().decode(jsonString)
+            parameters = ""
+            for k in jsonDoc:
+                if k == "error":
+                    form.username.errors.append(jsonDoc['error_description'])
+                    raise Exception(jsonDoc['error_description'])
 
-        return redirect("/?redirect=SuccessLogin" + parameters, code=302)
+                parameters += "&" + k + '=' + str(jsonDoc.get(k))
+
+            return redirect("/?redirect=SuccessLogin" + parameters, code=302)
+        except Exception as e:
+            print("Exception: " + str(e), str(e.with_traceback))
+            return render_template('login.html', form=form)
+
     return render_template('login.html', form=form)
 
 @api.route('/signup', methods=['GET'])
@@ -87,26 +95,28 @@ def signupPost():
     else:
         form = forms.SignupForm()
 
-        username = request.form['username']
-        password = request.form['password']
-        passwordRepeat = request.form['passwordRepeat']
+        if form.validate_on_submit(): 
+            try:
+                user = userService.addPublicUser(form.username.data, form.password.data)
+                session['id'] = user.get_user_id()
 
-        if(password == passwordRepeat): 
-            user = userService.addUser(username, password)
-            session['id'] = user.get_user_id()
+                tokenResponse = authorizationServer.create_token_response()
+                jsonString = tokenResponse.data.decode("utf-8")
 
-            tokenResponse = authorizationServer.create_token_response()
-            jsonString = tokenResponse.data.decode("utf-8")
+                jsonDoc = json.JSONDecoder().decode(jsonString)
+                parameters = ""
+                for k in jsonDoc:
+                    if k == "error":
+                        form.username.errors.append(jsonDoc['error_description'])
+                        raise Exception(jsonDoc['error_description'])                
 
-            jsonDoc = json.JSONDecoder().decode(jsonString)
-            parameters = ""
-            for k in jsonDoc:
-                parameters += "&" + k + '=' + str(jsonDoc.get(k))
+                    parameters += "&" + k + '=' + str(jsonDoc.get(k))
+            except Exception as e:
+                print("Exception: " + str(e), str(e.with_traceback))
+                return render_template('signup.html', form=form)
 
             return redirect("/?redirect=SuccessLogin" + parameters, code=302)
-        return redirect('/signup?error=Password')
-
-
+        return render_template('signup.html', form=form)
 
 
 @api.route('/logout')

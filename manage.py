@@ -83,15 +83,9 @@ def runserver():
 
 
 
-#     # print('ptvsd is started')
-#     # options = {'use_debugger':True, 'threaded':False, 'use_reloader':True}
-#     # manager.run(debug=False, host="0.0.0.0", port=5000, **options)
-#     manager.run()
 
 
-@manager.command
-def hello():
-    print("hello")
+
 
 if __name__ == "__main__":
     manager.run()

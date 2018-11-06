@@ -26,10 +26,10 @@ class User(BaseModel):
     # USER_LNAME		Last Name of the User
     lastName = Column("USER_LNAME", String(80))
 
-    # # USER_LOGIN		Login ID for a User	
-    login = Column("USER_LOGIN", String(100))
+    # # USERNAME		Username for a User	
+    username = Column("USERNAME", String(100))
 
-    # # USER_PASSWD		Hashed password used in login authentication
+    # # USER_PASSWD		Hashed password used in USERNAME authentication
     passwordHash = Column("USER_PASSWD", String(256))	
 
     # # USER_PASSWD_SALT		Used in hashing and authentication	
@@ -66,6 +66,6 @@ class User(BaseModel):
                     secondary=userSecurityAssociation)
 
     def __repr__(self):
-        return "<User(id='%i', login='%s')>" % (self.id, self.login)
+        return "<User(username='%s')>" % (self.username)
 
  
