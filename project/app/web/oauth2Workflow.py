@@ -54,17 +54,28 @@ def loginPost():
     form = forms.UsernamePasswordForm()
     if form.validate_on_submit():
         debugUtils.debugRequest(request)
-        tokenResponse = authorizationServer.create_token_response()
-        debugUtils.debugResponse(tokenResponse)
+        try:
+            tokenResponse = authorizationServer.create_token_response()
+            debugUtils.debugResponse(tokenResponse)
 
-        jsonString = tokenResponse.data.decode("utf-8")
+            jsonString = tokenResponse.data.decode("utf-8")
 
-        jsonDoc = json.JSONDecoder().decode(jsonString)
-        parameters = ""
-        for k in jsonDoc:
-            parameters += "&" + k + '=' + str(jsonDoc.get(k))
+            jsonDoc = json.JSONDecoder().decode(jsonString)
+            parameters = ""
+            foundError = False
+            for k in jsonDoc:
+                if k == "error":
+                    foundError = True
+                    parameters = ""
+                    raise Exception(jsonDoc['error_description'])
 
-        return redirect("/?redirect=SuccessLogin" + parameters, code=302)
+                parameters += "&" + k + '=' + str(jsonDoc.get(k))
+
+            return redirect("/?redirect=SuccessLogin" + parameters, code=302)
+        except Exception as e:
+            print("Exception: " + str(e), str(e.with_traceback))
+            return render_template('login.html', form=form)
+
     return render_template('login.html', form=form)
 
 @api.route('/signup', methods=['GET'])
