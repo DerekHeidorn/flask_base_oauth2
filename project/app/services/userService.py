@@ -21,7 +21,7 @@ from project.app.services.utils import userUtils
 from project.app.services import commonService
 
 def isUserValid(username, password):
-    user = userDao.getUserByLogin(username)
+    user = userDao.getUserByUsername(username)
     if(user is not None):
         return userUtils.isUserValid(user, password)
     else:
@@ -40,21 +40,21 @@ def updateUser(id, userToBeUpdated):
 def getUserById(id):
     return userDao.getUser(id)
 
-def getUserByLogin(username):
-    return userDao.getUserByLogin(username)
+def getUserByUsername(username):
+    return userDao.getUserByUsername(username)
 
-def getUserByLoginAndValidate(username, password):
-    user = userDao.getUserByLogin(username)
+def getUserByUsernameAndValidate(username, password):
+    user = userDao.getUserByUsername(username)
     if(user is not None):
         return {"user": user, "isPasswordValid": userUtils.isUserValid(user, password)}
     else:
         return  {"user": None, "isPasswordValid": False}
 
-def addUser(login, password, firstName=None, lastName=None):
+def addUser(username, password, firstName=None, lastName=None):
 
     userUtils.randomUserPrivateKey(32)
 
-    newUser = User(firstName=firstName, lastName=lastName, login=login)
+    newUser = User(firstName=firstName, lastName=lastName, username=username)
     newUser.statusCd = 'A'
     newUser.typeCd = '1'
     newUser.failedAttemptCnt = 0

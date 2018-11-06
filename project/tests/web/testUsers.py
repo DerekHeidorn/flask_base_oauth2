@@ -2,7 +2,7 @@ import pytest
 import unittest
 import json
 from project.tests.web.baseTest import BaseTest 
-from project.tests.utils.randomUtil import randomLogin 
+from project.tests.utils.randomUtil import randomUsername 
 from project.tests.utils.randomUtil import randomString
 
 
@@ -12,7 +12,7 @@ class UserServiceTestCase(BaseTest):
         resp = self.testClient.post('/api/v1.0/admin/user',data = dict(
             firstName = "Tester",
             lastName = "Auto",
-            login = randomLogin(),
+            username = randomUsername(),
             password = randomString(10, 25)
         ))
         self.debugResponse(resp)
@@ -26,7 +26,7 @@ class UserServiceTestCase(BaseTest):
         resp = self.testClient.post('/api/v1.0/admin/user',data = dict(
             firstName = "Tester",
             lastName = "Auto",
-            login = randomLogin(),
+            username = randomUsername(),
             password = randomString(10, 25)
         ))
         self.debugResponse(resp)
@@ -61,7 +61,7 @@ class UserServiceTestCase(BaseTest):
         id = self.createUser()
         newFirstName = "UpdatedTester"
         newLastName = "UpdatedAuto"
-        newLoginName = "updated.auto@tester.com"
+        newUsername = "updated.auto@tester.com"
 
         print("\nRunning: test_update_user")
         resp = self.testClient.put('/api/v1.0/admin/user/' + str(id),
@@ -69,7 +69,7 @@ class UserServiceTestCase(BaseTest):
                             data = dict(
             firstName = newFirstName,
             lastName = newLastName,
-            login = newLoginName
+            username = newUsername
         ))
         self.debugResponse(resp)
         user = json.loads(resp.data)
@@ -79,7 +79,7 @@ class UserServiceTestCase(BaseTest):
         self.assertEquals(id,  user["id"])
         self.assertEquals( newFirstName , user["firstName"])
         self.assertEquals( newLastName , user["lastName"])
-        self.assertEquals( newLoginName , user["login"])
+        self.assertEquals( newUsername , user["username"])
 
 
     def testUserDelete(self):

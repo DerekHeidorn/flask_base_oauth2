@@ -16,7 +16,7 @@ def validAuthority():
     print("current_token=" + str(current_token))
     #user = current_token.user
     user = userService.getUserById(current_token.user_id)
-    return jsonify(valid=True, username=user.login)
+    return jsonify(valid=True, username=user.username)
 
 @api.route('/api/v1.0/test/invalid', methods=['GET'])
 @require_oauth('NO_ACCESS_TEST')
@@ -24,22 +24,22 @@ def invalidAuthority():
     print("current_token=" + str(current_token))
     #user = current_token.user
     user = userService.getUserById(current_token.user_id)
-    return jsonify(invalid=True, username=user.login)
+    return jsonify(invalid=True, username=user.username)
 
 @api.route('/api/v1.0/auth/register', methods=['POST'])
 def register():
     # get the post data
     post_data = request.get_json()
     # check if user already exists
-    login=post_data.get('login')
+    username=post_data.get('username')
 
-    user = userService.getUserByLogin(login)
+    user = userService.getUserByUsername(username)
     if not user:
         try:
             password=post_data.get('password')
 
             # insert the user
-            newUser = userService.addUser(login, password)
+            newUser = userService.addUser(username, password)
             print("added new user(1):" +str(newUser))
             # generate the auth token
             authorities = userUtils.getUserAuthorities(newUser)
@@ -77,7 +77,7 @@ def login():
     post_data = request.get_json()
     try:
         # fetch the user data
-        user = userService.getUserByLogin(post_data.get('login'))
+        user = userService.getUserByUsername(post_data.get('username'))
         
         if user is not None and userUtils.isUserValid(user, post_data.get('password')):
             authorities = userUtils.getUserAuthorities(user)
@@ -130,7 +130,7 @@ def status():
                 'status': 'success',
                 'data': {
                     'user_id': user.id,
-                    'login': user.login
+                    'username': user.username
                 }
             }
             return make_response(jsonify(responseObject)), 200

@@ -1,7 +1,7 @@
 import json
 
 def userSerialize(user):
-    return {"id": user.id, "firstName": user.firstName, "lastName": user.lastName, "login": user.login}
+    return {"id": user.id, "firstName": user.firstName, "lastName": user.lastName, "username": user.username}
 
 def codetableSerialize(codetableData):
     data = []

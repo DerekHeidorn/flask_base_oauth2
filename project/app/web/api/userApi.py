@@ -68,7 +68,7 @@ def updatePublicUser(id):
     user_to_be_updated = {
         "firstName":request.form["firstName"],
         "lastName":request.form["lastName"],
-        "login":request.form["login"]
+        "username":request.form["username"]
     }
     updated_user = userService.updateUser(id, user_to_be_updated)
     if not updated_user:
@@ -81,10 +81,10 @@ def updatePublicUser(id):
 def addPublicUser():
     firstName = request.form["firstName"]
     lastName = request.form["lastName"]
-    login = request.form["login"]
+    username = request.form["username"]
     password = request.form["password"]
 
-    newUser = userService.addUser(login, password, firstName, lastName)
+    newUser = userService.addUser(username, password, firstName, lastName)
 
     return jsonify({
         "id": newUser.id,

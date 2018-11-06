@@ -42,7 +42,7 @@ class _PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
     def authenticate_user(self, username, password):
         print("PasswordGrant->authenticate_user called: " + str(username))
 
-        user = userService.getUserByLogin(username)
+        user = userService.getUserByUsername(username)
         if(user is not None):
             isPasswordValid = userUtils.isUserValid(user, password)
             if isPasswordValid:

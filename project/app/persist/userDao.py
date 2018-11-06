@@ -54,18 +54,18 @@ def getUser(id, session=None):
     user = session.query(User).filter(User.id == id).first()
     return user 
 
-def getUserByLogin(login, session=None):
+def getUserByUsername(username, session=None):
     """
-    Gets the User based on the login parameter
+    Gets the User based on the username parameter
 
-    :param login: The login of the user which needs to be loaded
+    :param username: The username of the user which needs to be loaded
     :return: The user.
     """
 
     if(session == None):
         session = getSession()
 
-    user = session.query(User).filter(User.login == login).first()
+    user = session.query(User).filter(User.username == username).first()
     return user
 
 
@@ -79,7 +79,7 @@ def updateUser(id, userToBeUpdated):
 
     user.firstName = userToBeUpdated["firstName"]
     user.lastName = userToBeUpdated["lastName"]
-    user.login = userToBeUpdated["login"]
+    user.username = userToBeUpdated["username"]
 
     session.commit()
     updated_user = getUser(id)

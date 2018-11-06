@@ -34,7 +34,7 @@ COMMENT ON COLUMN public."TB_USER_STA_CD"."USRSTA_DE" IS 'User Status Descriptio
 CREATE TABLE public."TB_USER"
 (
   "USER_ID" serial NOT NULL, -- System-generated ID for a User.
-  "USER_LOGIN" character varying(100) NOT NULL, -- Login ID for a User
+  "USERNAME" character varying(100) NOT NULL, -- Username for a User
   "USER_PASSWD" character(256), -- Hashed password used in login authentication
   "USER_PASSWD_SALT" character(32), -- Used in hashing and authentication
   "USER_PASSWD_EXP_TS" timestamp without time zone, -- A timestamp for expiring a password, used for temporary passwords
@@ -58,7 +58,7 @@ ALTER TABLE public."TB_USER"
 COMMENT ON TABLE public."TB_USER"
   IS 'User Table - A User is an individual who logs into the system ';
 COMMENT ON COLUMN public."TB_USER"."USER_ID" IS 'System-generated ID for a User.';
-COMMENT ON COLUMN public."TB_USER"."USER_LOGIN" IS 'Login ID for a User';
+COMMENT ON COLUMN public."TB_USER"."USERNAME" IS 'Username for a User';
 COMMENT ON COLUMN public."TB_USER"."USER_PASSWD" IS 'Hashed password used in login authentication';
 COMMENT ON COLUMN public."TB_USER"."USER_PASSWD_SALT" IS 'Used in hashing and authentication';
 COMMENT ON COLUMN public."TB_USER"."USER_PASSWD_EXP_TS" IS 'A timestamp for expiring a password, used for temporary passwords';
@@ -90,7 +90,7 @@ CREATE INDEX "XIE1TB_USER"
 CREATE INDEX "XIE2TB_USER"
   ON public."TB_USER"
   USING btree
-  ("USER_LOGIN" COLLATE pg_catalog."default");
+  ("USERNAME" COLLATE pg_catalog."default");
 
 -- Index: public."XIE3TB_USER"
 
@@ -99,7 +99,7 @@ CREATE INDEX "XIE2TB_USER"
 CREATE INDEX "XIE3TB_USER"
   ON public."TB_USER"
   USING btree
-  (lower("USER_LOGIN"::text) COLLATE pg_catalog."default");
+  (lower("USERNAME"::text) COLLATE pg_catalog."default");
 
 -- Index: public."XIE4TB_USER"
 

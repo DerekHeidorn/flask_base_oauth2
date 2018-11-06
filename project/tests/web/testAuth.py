@@ -10,11 +10,11 @@ from project.tests.utils import randomUtil
 
 class AuthTestCase(BaseTest):
 
-    def registerUser(self, login, password):
+    def registerUser(self, username, password):
         response = self.testClient.post(
             '/api/v1.0/auth/register',
             data=json.dumps(dict(
-                login=login,
+                username=username,
                 password=password
             )),
             content_type='application/json',
@@ -22,11 +22,11 @@ class AuthTestCase(BaseTest):
         self.debugResponse(response)
         return response
 
-    def loginUser(self, login, password):
+    def loginUser(self, username, password):
         response = self.testClient.post(
             '/api/v1.0/auth/login',
             data=json.dumps(dict(
-                login=login,
+                username=username,
                 password=password
             )),
             content_type='application/json',
@@ -39,7 +39,7 @@ class AuthTestCase(BaseTest):
         print("testing test_registration...")
 
         with self.testClient:
-            response = self.registerUser(randomUtil.randomLogin(), '123456')
+            response = self.registerUser(randomUtil.randomUsername(), '123456')
             data = json.loads(response.data.decode())
             self.assertEquals(data['status'],'success')
             self.assertEquals(data['message'], 'Successfully registered.')
@@ -53,7 +53,7 @@ class AuthTestCase(BaseTest):
         user = commonHelper.createPublicUser()
 
         with self.testClient:
-            response = self.registerUser(user.login, '123456')
+            response = self.registerUser(user.username, '123456')
             data = json.loads(response.data.decode())
             self.assertEquals(data['status'], 'fail')
             self.assertEquals(
@@ -66,10 +66,10 @@ class AuthTestCase(BaseTest):
         print("testing testRegisteredUserLogin...")
 
         with self.testClient:
-            userlogin = randomUtil.randomLogin()
+            username = randomUtil.randomUsername()
 
             # user registration
-            resp_register = self.registerUser(userlogin, commonHelper.DEFAULT_PUBLIC_USER_PASSWORD)
+            resp_register = self.registerUser(username, commonHelper.DEFAULT_PUBLIC_USER_PASSWORD)
             data_register = json.loads(resp_register.data.decode())
             self.assertEquals(data_register['status'],'success')
             self.assertEquals(
@@ -79,7 +79,7 @@ class AuthTestCase(BaseTest):
             self.assertEquals(resp_register.content_type, 'application/json')
             self.assertEqual(resp_register.status_code, 201)
             # registered user login
-            response = self.loginUser(userlogin, commonHelper.DEFAULT_PUBLIC_USER_PASSWORD)
+            response = self.loginUser(username, commonHelper.DEFAULT_PUBLIC_USER_PASSWORD)
             data = json.loads(response.data.decode())
             self.assertEquals(data['status'], 'success')
             self.assertEquals(data['message'], 'Successfully logged in.')
@@ -104,8 +104,8 @@ class AuthTestCase(BaseTest):
         print("testing test_user_status...")
 
         with self.testClient:
-            userlogin = randomUtil.randomLogin()
-            resp_register = self.registerUser(userlogin, '123456')
+            username = randomUtil.randomUsername()
+            resp_register = self.registerUser(username, '123456')
             response = self.testClient.get(
                 '/api/v1.0/auth/status',
                 headers=dict(
@@ -117,7 +117,7 @@ class AuthTestCase(BaseTest):
             data = json.loads(response.data.decode())
             self.assertEquals(data['status'], 'success')
             self.assertTrue(data['data'] is not None)
-            self.assertEquals(data['data']['login'], userlogin)
+            self.assertEquals(data['data']['username'], username)
             #self.assertTrue(data['data']['admin'] is 'true' or 'false')
             self.assertEqual(response.status_code, 200)
 
@@ -126,8 +126,8 @@ class AuthTestCase(BaseTest):
         print("testing test_user_status_malformed_bearer_token...")
 
         with self.testClient:
-            userlogin = randomUtil.randomLogin()
-            resp_register = self.registerUser(userlogin, '123456')
+            username = randomUtil.randomUsername()
+            resp_register = self.registerUser(username, '123456')
             response = self.testClient.get(
                 '/api/v1.0/auth/status',
                 headers=dict(
@@ -146,10 +146,10 @@ class AuthTestCase(BaseTest):
         print("testing testValidLogout...")
 
         with self.testClient:
-            userlogin = randomUtil.randomLogin()
+            username = randomUtil.randomUsername()
 
             # user registration
-            resp_register = self.registerUser(userlogin, '123456')
+            resp_register = self.registerUser(username, '123456')
             data_register = json.loads(resp_register.data.decode())
 
             self.assertEquals(data_register['status'], 'success')
@@ -159,7 +159,7 @@ class AuthTestCase(BaseTest):
             self.assertEquals(resp_register.content_type, 'application/json')
             self.assertEqual(resp_register.status_code, 201)
             # user login
-            resp_login = self.loginUser(userlogin, '123456')
+            resp_login = self.loginUser(username, '123456')
             data_login = json.loads(resp_login.data.decode())
             self.assertEquals(data_login['status'], 'success')
             self.assertEquals(data_login['message'], 'Successfully logged in.')
@@ -185,10 +185,10 @@ class AuthTestCase(BaseTest):
         print("testing testInvalidLogout...")
 
         with self.testClient:
-            userlogin = randomUtil.randomLogin()
+            username = randomUtil.randomUsername()
 
             # user registration
-            resp_register = self.registerUser(userlogin, '123456')
+            resp_register = self.registerUser(username, '123456')
             data_register = json.loads(resp_register.data.decode())
             self.assertTrue(data_register['status'] == 'success')
             self.assertEqual(
@@ -197,7 +197,7 @@ class AuthTestCase(BaseTest):
             self.assertTrue(resp_register.content_type == 'application/json')
             self.assertEqual(resp_register.status_code, 201)
             # user login
-            resp_login = self.loginUser(userlogin, '123456')
+            resp_login = self.loginUser(username, '123456')
             data_login = json.loads(resp_login.data.decode())
             self.assertEqual(data_login['status'], 'success')
             self.assertEqual(data_login['message'],'Successfully logged in.')
