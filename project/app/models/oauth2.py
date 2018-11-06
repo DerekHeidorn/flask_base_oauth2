@@ -1,14 +1,13 @@
 import time
-from sqlalchemy import Column, String, Integer, ForeignKey, Numeric, Date, DateTime, Table
-from sqlalchemy.orm import relationship, base
+from sqlalchemy import Column, Integer, ForeignKey
 
 from authlib.flask.oauth2.sqla import (
     OAuth2ClientMixin,
     OAuth2AuthorizationCodeMixin,
     OAuth2TokenMixin,
 )
-
 from project.app.models.baseModel import BaseModel
+
 
 class OAuth2Client(BaseModel, OAuth2ClientMixin):
     __tablename__ = 'TB_OAUTH2_CLIENT'  #oauth2_client'
@@ -26,6 +25,7 @@ class OAuth2Client(BaseModel, OAuth2ClientMixin):
 
     def check_grant_type(self, grant_type):
         return grant_type in self.allowed_grants.split()
+
 
 class OAuth2AuthorizationCode(BaseModel, OAuth2AuthorizationCodeMixin):
     __tablename__ = 'TB_OAUTH2_CODE' # 'oauth2_code'

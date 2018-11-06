@@ -4,6 +4,7 @@ from random import choice
 from random import SystemRandom
 from project.app.services.utils.securityUtils import constants
 
+
 def randomUserPrivateKey(maxSize):
     allchar = string.ascii_letters + string.digits
     rand = "".join(SystemRandom().choice(allchar) for x in range(maxSize))
@@ -11,11 +12,13 @@ def randomUserPrivateKey(maxSize):
 
     return rand
 
+
 def randomString(min_char, max_char):
     allchar = string.ascii_letters + string.digits
     rand = "".join(choice(allchar) for x in range(randint(min_char, max_char)))
     
     return rand
+
 
 def isUserValid(user, password):
     if(user is None):
@@ -39,6 +42,7 @@ def getHashedPassword(password, userSalt):
     hexdigest = binascii.hexlify(dk).decode('utf-8')
 
     return hexdigest 
+
 
 def getUserAuthorities(user):
     authorities = []

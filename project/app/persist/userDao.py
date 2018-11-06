@@ -1,14 +1,7 @@
-from sqlalchemy import create_engine, func, select
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-
-import datetime
-
-
+from sqlalchemy import func
 
 from project.app.models.user import User
 from project.app.persist.baseDao import getSession
-
 
 
 def addUser(newUser, session=None):
@@ -24,10 +17,10 @@ def addUser(newUser, session=None):
         session = getSession()
 
     session.add(newUser)
-    #session.add(newUser.securityGroups)
     session.commit()
 
     return newUser.id
+
 
 def getUsers(session=None):
     """
@@ -42,6 +35,7 @@ def getUsers(session=None):
 
     return all_users
 
+
 def getUser(id, session=None):
     """
     Gets the User based on the id parameter
@@ -54,6 +48,7 @@ def getUser(id, session=None):
 
     user = session.query(User).filter(User.id == id).first()
     return user 
+
 
 def getUserByUsername(username, session=None):
     """
@@ -68,6 +63,7 @@ def getUserByUsername(username, session=None):
 
     user = session.query(User).filter(User.username == username).first()
     return user
+
 
 def isUsernameUnique(username, excludeUserId=None, session=None):
     """
@@ -90,6 +86,7 @@ def isUsernameUnique(username, excludeUserId=None, session=None):
     print("**** count=" + str(count))
 
     return count == 0
+
 
 def updateUser(id, userToBeUpdated):
     updated_user = None

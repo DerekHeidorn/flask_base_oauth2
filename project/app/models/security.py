@@ -1,8 +1,7 @@
-import json
 
-from sqlalchemy import Column, String, Integer, ForeignKey, Numeric, Date, DateTime, Table
-from sqlalchemy.orm import relationship, base
-from sqlalchemy.ext.declarative import declarative_base
+
+from sqlalchemy import Column, String, Integer, ForeignKey, Table
+from sqlalchemy.orm import relationship
 from project.app.models.baseModel import BaseModel
 
 
@@ -33,11 +32,6 @@ class SecurityAuthority(BaseModel):
     def __repr__(self):
         return "<SecurityAuthority(id='%i', key='%s')>" % (self.id, self.key)
 
-    def serialize(self):
-        return json.dumps({"id": self.id, "key": self.key}) 
-
-
-
 class SecurityGroup(BaseModel):
     __tablename__ = 'TB_SCRTY_GRP'
 
@@ -59,6 +53,4 @@ class SecurityGroup(BaseModel):
     def __repr__(self):
         return "<SecurityGroup(id='%i', name='%s')>" % (self.id, self.name)
 
-    def serialize(self):
-        return json.dumps({"id": self.id, "name": self.name}) 
               

@@ -1,16 +1,10 @@
 import json
 from flask import Blueprint, request, session
-from flask import render_template, redirect, make_response, jsonify
-from authlib.flask.oauth2 import current_token
-from authlib.specs.rfc6749 import OAuth2Error
-
-from project.app.models.user import User
-from project.app.models.oauth2 import OAuth2Client
-from project.app.services import userService, oauth2Service
-from project.app.services.utils import userUtils
+from flask import render_template, redirect
+from project.app.services import userService
 from project.app.web.forms import forms
 from project.app.web.utils import debugUtils
-from project.app.web.oauth2 import authorizationServer, require_oauth, scopes
+from project.app.web.oauth2 import authorizationServer
 
 api = Blueprint('home_api', __name__)
 
@@ -32,6 +26,7 @@ def home():
     user = currentUser()
     return render_template('home.html', user=user)
 
+
 @api.route('/login', methods=['GET'])
 def login():
 
@@ -41,7 +36,8 @@ def login():
     else:
         form = forms.UsernamePasswordForm()
         return render_template('login.html', form=form)
-  
+
+
 # POST /token HTTP/1.1
 # Host: server.example.com
 # Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
@@ -74,6 +70,7 @@ def loginPost():
             return render_template('login.html', form=form)
 
     return render_template('login.html', form=form)
+
 
 @api.route('/signup', methods=['GET'])
 def signup():

@@ -1,12 +1,11 @@
-from sqlalchemy.sql import text
-from sqlalchemy.sql import column
-from sqlalchemy.sql import select
+
 
 from project.app.persist.baseDao import getSession
 from project.app.models.user import User
 from project.app.models.security import SecurityGroup
 
 SECURITY_GROUP_CUSTOMER_NAME = "CUSTOMER"
+
 
 def getUserSecurityAuthorities(userId, session=None):
 
@@ -21,6 +20,7 @@ def getUserSecurityAuthorities(userId, session=None):
             authorities.append(sa)
             
     return authorities
+
 
 def getSecurityGroupByName(securityGroupName, session=None):
     if(session == None):

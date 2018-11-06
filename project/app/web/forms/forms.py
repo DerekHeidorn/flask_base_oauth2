@@ -4,9 +4,11 @@ from wtforms.validators import DataRequired, Email, ValidationError, Length
 
 from project.app.services import userService
 
+
 class UsernamePasswordForm(FlaskForm):
     username = StringField('Email', validators=[DataRequired(), Email(), Length(max=100)])
     password = PasswordField('Password', validators=[DataRequired(), Length(max=256)])
+
 
 class SignupForm(FlaskForm):
     username = StringField('Email', validators=[DataRequired(), Email(), Length(max=100)])

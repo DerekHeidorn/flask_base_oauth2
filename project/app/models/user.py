@@ -1,4 +1,3 @@
-import json
 
 from sqlalchemy import Column, String, Integer, ForeignKey, Numeric, Date, DateTime, Table
 from sqlalchemy.orm import relationship, base

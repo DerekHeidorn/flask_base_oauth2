@@ -1,7 +1,5 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-import logging
 from project.app.persist.dbConfig import config
 
 initializingDBString = config["DB_CONNECTION_URI"]

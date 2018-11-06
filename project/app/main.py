@@ -4,13 +4,11 @@ from flask_cors import CORS
 
 from project.app.services import commonService
 from project.app.web import oauth2
-from project.app.web.api import codetablesApi, commonApi, testApi, authApi
+from project.app.web.api import commonApi
 from project.app.web import oauth2Workflow
-from authlib.specs.rfc7518.jwk_algorithms import JWK_ALGORITHMS
+
 
 def createApplication():
-
-    
 
     print("Creating Application...")
     app = Flask(__name__)
@@ -24,7 +22,6 @@ def createApplication():
     CORS(app)
     oauth2.init(app)
 
-
     #app_settings = os.getenv(
     #    'APP_SETTINGS',
     #    'project.server.config.DevelopmentConfig'
@@ -34,10 +31,7 @@ def createApplication():
     commonService.loadApplicationCacheFromDB()
 
     # -- API registration --
-    app.register_blueprint(codetablesApi.api)
     app.register_blueprint(commonApi.api)
-    app.register_blueprint(testApi.api)
-    app.register_blueprint(authApi.api)
     app.register_blueprint(oauth2Workflow.api)
 
     # Information output

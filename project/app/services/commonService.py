@@ -1,10 +1,9 @@
-from flask import jsonify
+
 
 from project.app.persist.configDao import getConfigAll
 from werkzeug.contrib.cache import SimpleCache
 
 applicationConfigCache = SimpleCache()
-
 
 
 def getConfigByKey(key):

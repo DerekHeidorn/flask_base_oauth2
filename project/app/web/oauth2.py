@@ -2,21 +2,8 @@ import time
 
 from flask import session
 from authlib.flask.oauth2 import AuthorizationServer, ResourceProtector
-from authlib.flask.oauth2.sqla import (
-    create_query_client_func,
-    create_save_token_func,
-    create_revocation_endpoint,
-    create_bearer_token_validator,
-)
 from authlib.specs.rfc6749 import grants
 from authlib.specs.rfc6750 import BearerTokenValidator
-from authlib.specs.rfc7009 import RevocationEndpoint
-from authlib.specs.rfc7519 import jwk
-from authlib.specs.rfc7523 import JWTBearerGrant
-from authlib.specs.rfc7662 import IntrospectionEndpoint
-from werkzeug.security import gen_salt
-from project.app.models.user import User
-from project.app.models.oauth2 import OAuth2Client, OAuth2AuthorizationCode, OAuth2Token
 from project.app.services import oauth2Service, userService
 from project.app.services.utils import userUtils
 from project.app.web.utils import authUtils, dtoUtils
@@ -83,6 +70,7 @@ class _BearerTokenValidator(BearerTokenValidator):
     def token_revoked(self, token):
         print("token_revoked:" + str(token))
         return token.revoked
+
 
 OAUTH2_TOKEN_EXPIRES_IN = {
     'authorization_code': 864000,
@@ -157,6 +145,7 @@ scopes = {
 # protect resource
 require_oauth = ResourceProtector()
 require_oauth.register_token_validator(_BearerTokenValidator())
+
 
 def init(app):
     app.config['OAUTH2_ACCESS_TOKEN_GENERATOR'] = generateJwtToken

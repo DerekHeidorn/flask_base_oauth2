@@ -1,8 +1,6 @@
 
 from project.app.persist import oauth2Dao
-
-from authlib.specs.rfc6749 import ClientMixin, OAuth2Request
-
+from authlib.specs.rfc6749 import ClientMixin
 
 
 class OAuth2Client(ClientMixin):
@@ -36,7 +34,8 @@ class OAuth2Client(ClientMixin):
     def __init__(self, client_id):
         self.client_id = client_id
 
-    # Check client_secret matching with the client. For instance, in the client table, the column is called client_secret:
+    # Check client_secret matching with the client. For instance, in the client table,
+    # the column is called client_secret:
     def check_client_secret(self, client_secret):
         return self.client_secret == client_secret
 
@@ -75,17 +74,22 @@ class OAuth2Client(ClientMixin):
 def addAuthorizationCode(client, user, request):
     return oauth2Dao.addAuthorizationCode(client, user, request)
 
+
 def parseAuthorizationCode(code, client):
     return oauth2Dao.parseAuthorizationCode(code, client)
+
 
 def deleteAuthorizationCode(authorizationCode):
     return oauth2Dao.deleteAuthorizationCode(authorizationCode)
 
+
 def authenticateUser(authorizationCode):
     return oauth2Dao.authenticateUser(authorizationCode)
 
+
 def createAccessToken(token, client, grantUser=None):
     return oauth2Dao.createAccessToken(token, client, grantUser)
+
 
 def getOAuth2Clients(userId):
     return oauth2Dao.getOAuth2Clients(userId)
@@ -116,15 +120,18 @@ c1.client_uri = 'http://127.0.0.1:9000/'
 
 oAuth2Clients = [c1]
 
+
 def queryClient(clientId):
     for c in oAuth2Clients:
         if c.client_id == clientId:
             return c
     return None
 
+
 def queryToken(token, tokenTypeHint):
     print("oauth2Service->queryToken called...")
     return oauth2Dao.queryToken(token, tokenTypeHint)
+
 
 def saveToken(clientId, userId, tokenType, scope, jti, issuedAt, expiresIn):
     return oauth2Dao.saveToken(clientId, userId, tokenType, scope, jti, issuedAt, expiresIn)

@@ -1,11 +1,8 @@
 import jwt
-import json
 import uuid
 from datetime import datetime, timedelta
 from project.app.services import commonService
-from project.app.services.utils import userUtils
 from project.app.web.utils import dtoUtils
-
 
 
 def encodeAuthToken(user, authorities):
@@ -40,6 +37,7 @@ def encodeAuthToken(user, authorities):
         print("Exception(2):" + str(e), str(e.with_traceback))
         return e
 
+
 def decodeAuthToken(authToken):
     """
     Decodes the auth token
@@ -64,6 +62,7 @@ def decodeAuthToken(authToken):
         return 'Signature expired. Please log in again.'
     except jwt.InvalidTokenError:
         return 'Invalid token. Please log in again.'
+
 
 def decodeAuthTokenPayload(jwtToken):
     """

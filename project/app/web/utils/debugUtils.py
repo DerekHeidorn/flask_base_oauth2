@@ -1,3 +1,5 @@
+
+
 def debugRequest(request):
     print("type=" + str(type(request)))
     for key, value in request.headers:
@@ -5,6 +7,7 @@ def debugRequest(request):
 
     for fieldname, value in request.form.items():
         print(str(fieldname) + ":" + str(value))
+
 
 def debugResponse(response):
     
