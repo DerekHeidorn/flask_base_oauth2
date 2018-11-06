@@ -6,22 +6,22 @@ INSERT INTO public."TB_SCRTY_AUTH"(
 -- 5;"Customer Profile";"Customer Profile";"CUST_PROFILE"
 INSERT INTO public."TB_SCRTY_AUTH"(
             "SCRAUTH_ID", "SCRAUTH_NAME", "SCRAUTH_DE", "SCRAUTH_KEY")
-    VALUES (5, 'Customer Profile', 'Customer Profile', 'CUST_PROFILE');
+    VALUES (2, 'Customer Profile', 'Customer Profile', 'CUST_PROFILE');
 	
 -- 2;"Staff Access";"General Staff Access";"STAFF_ACCESS"
 INSERT INTO public."TB_SCRTY_AUTH"(
             "SCRAUTH_ID", "SCRAUTH_NAME", "SCRAUTH_DE", "SCRAUTH_KEY")
-    VALUES (2, 'Staff Access', 'General Staff Access', 'STAFF_ACCESS');
+    VALUES (301, 'Staff Access', 'General Staff Access', 'STAFF_ACCESS');
 	
 -- 3;"Batch Operations";"General Batch Operation Permissions";"BATCH"	
 INSERT INTO public."TB_SCRTY_AUTH"(
             "SCRAUTH_ID", "SCRAUTH_NAME", "SCRAUTH_DE", "SCRAUTH_KEY")
-    VALUES (3, 'Batch Operations', 'General Batch Operation Permissions', 'BATCH');
+    VALUES (302, 'Batch Operations', 'General Batch Operation Permissions', 'BATCH');
 	
 -- 4;"System Operations";"General System Permissions";"SYSTEM"
 INSERT INTO public."TB_SCRTY_AUTH"(
             "SCRAUTH_ID", "SCRAUTH_NAME", "SCRAUTH_DE", "SCRAUTH_KEY")
-    VALUES (4, 'System Operations', 'General System Permissions', 'SYSTEM');	
+    VALUES (303, 'System Operations', 'General System Permissions', 'SYSTEM');	
 	
 -- 1;"SYS_ADMIN";"System Administrator";1
 INSERT INTO public."TB_SCRTY_GRP"(
@@ -34,14 +34,13 @@ INSERT INTO public."TB_SCRTY_GRP"(
     VALUES (2, 'CUSTOMER', 'Customer', 100);
 	
 -- SYS_ADMIN
-INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (1, 1);
-INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (1, 2);
-INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (1, 3);
-INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (1, 4);
+INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (1, 301);
+INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (1, 302);
+INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (1, 303);
 
 -- CUSTOMER
 INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (2, 1);
-INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (2, 5);
+INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (2, 2);
 
 	
 	
