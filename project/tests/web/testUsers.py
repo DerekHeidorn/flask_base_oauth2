@@ -1,101 +1,109 @@
-import pytest
+
 import unittest
-import json
+from urllib import parse
 from project.tests.web.baseTest import BaseTest 
-from project.tests.utils.randomUtil import randomUsername 
-from project.tests.utils.randomUtil import randomString
+from project.tests.utils import randomUtil
+
+from project.app.services import userService
 
 
 class UserServiceTestCase(BaseTest):
 
-    def createUser(self):
-        passwordGen = randomString(10, 25)
-        resp = self.testClient.post('/api/v1.0/customer/signup',data = dict(
-            username = randomUsername(),
-            password = passwordGen,
-            passwordRepeat = passwordGen
-        ))
-        self.debugResponse(resp)
-        self.assertEquals(201, resp.status_code)
-        responseData = json.loads(resp.data)
-
-        return responseData["id"]
-
     def testSignup(self):
         print("Running: testSignup")
-        passwordGen = randomString(10, 25)
-        resp = self.testClient.post('/api/v1.0/customer/signup',
-        content_type = 'application/json',
+        usernameGen = randomUtil.randomUsername()
+        passwordGen = randomUtil.randomString(10, 25)
+        resp = self.testClient.post('/signup',
         data = dict(
-            username = randomUsername(),
+            username = usernameGen,
             password = passwordGen,
             passwordRepeat = passwordGen,
             grant_type = "password",
-            client_id = "CLTID-Zeq1LRso5q-iLU9RKCKnu",
-            csrf_token = "ImViMmIzNTAyMzliMjg1ZDc3YmExZTg3NTMyOGNhMjg2OTgwYTc3NTIi.DsN71w.qXREVWkiPt0uc6fdZ8jd7_iP-2c"
+            client_id = "CLTID-Zeq1LRso5q-iLU9RKCKnu"
         ))
         self.debugResponse(resp)
 
-        self.assertEquals(201, resp.status_code)
-        responseData = json.loads(resp.data)
-        assert responseData["id"] is not None
-        assert responseData["url"] is not None
+        # should be redirected to new page
+        self.assertEquals(302, resp.status_code)
+        self.assertEquals("text/html; charset=utf-8", resp.content_type)
 
-        return responseData["id"]
+        print("resp.location=" + resp.location)
+        paramDict = dict(parse.parse_qsl(parse.urlsplit(resp.location).query))
+        self.assertEquals('Bearer', paramDict.get('token_type'))
+        self.assertTrue(len(paramDict.get('access_token')) > 0)
 
-    def xtestUserById_OK(self):
-        print("Running: test_user_by_id_OK")
-        id = self.createUser()
+        # check the database for the new user
+        user = userService.getUserByUsername(usernameGen)
+        self.assertEquals(user.username, usernameGen)
+
+    def testLogin(self):
+        print("Running: testSignup")
+        usernameGen = randomUtil.randomUsername()
+        passwordGen = randomUtil.randomString(10, 25)
 
 
-        print("\nRunning: test_user_by_id_OK")
-        resp = self.testClient.get('/api/v1.0/admin/user/' + str(id),
-                            headers={"MY_AUTH_TOKEN":"81c4e12b6879000837a3e7206795ee9ca874986cc97984d383c64093f5cc352d"})
-        
-        self.debugResponse(resp)
-        self.assertEquals( 200, resp.status_code)
-        user = json.loads(resp.data)
-
-        assert user is not None
-        
-        self.assertEquals(id, user["id"])
-        self.assertEquals("Tester", user["firstName"])
-
-    def xtestUpdateUser(self):
-        print("Running: test_update_user")
-        id = self.createUser()
-        newFirstName = "UpdatedTester"
-        newLastName = "UpdatedAuto"
-        newUsername = "updated.auto@tester.com"
-
-        print("\nRunning: test_update_user")
-        resp = self.testClient.put('/api/v1.0/admin/user/' + str(id),
-                            headers={"MY_AUTH_TOKEN":"81c4e12b6879000837a3e7206795ee9ca874986cc97984d383c64093f5cc352d"},
-                            data = dict(
-            firstName = newFirstName,
-            lastName = newLastName,
-            username = newUsername
+        # -----------------------------------------------
+        #  Signup
+        # -----------------------------------------------
+        resp = self.testClient.post('/signup',
+        data = dict(
+            username = usernameGen,
+            password = passwordGen,
+            passwordRepeat = passwordGen,
+            grant_type = "password",
+            client_id = "CLTID-Zeq1LRso5q-iLU9RKCKnu"
         ))
         self.debugResponse(resp)
-        user = json.loads(resp.data)
 
-        assert user is not None
-        
-        self.assertEquals(id,  user["id"])
-        self.assertEquals( newFirstName , user["firstName"])
-        self.assertEquals( newLastName , user["lastName"])
-        self.assertEquals( newUsername , user["username"])
+        # should be redirected to new page
+        self.assertEquals(302, resp.status_code)
+        self.assertEquals("text/html; charset=utf-8", resp.content_type)
 
+        print("resp.location=" + resp.location)
+        paramDict = dict(parse.parse_qsl(parse.urlsplit(resp.location).query))
+        self.assertEquals('Bearer', paramDict.get('token_type'))
+        self.assertTrue(len(paramDict.get('access_token')) > 0)
 
-    def xtestUserDelete(self):
-        print("Running: test_user_delete")
-        id = self.createUser()
+        # check the database for the new user
+        user = userService.getUserByUsername(usernameGen)
+        self.assertEquals(user.username, usernameGen)
 
-        print("\nRunning: test_api_candidate_by_id_OK")
-        resp = self.testClient.delete('/api/v1.0/user/' + str(id),
-                            headers={"MY_AUTH_TOKEN":"81c4e12b6879000837a3e7206795ee9ca874986cc97984d383c64093f5cc352d"})
-        
-        print("resp.data=" + str(resp.data))
+        # -----------------------------------------------
+        #  Login
+        # -----------------------------------------------
+        resp = self.testClient.post('/login',
+        data = dict(
+            username = usernameGen,
+            password = passwordGen,
+            grant_type="password",
+            client_id="CLTID-Zeq1LRso5q-iLU9RKCKnu"
+        ))
+        self.debugResponse(resp)
+
+        # should be redirected to new page
+        self.assertEquals(302, resp.status_code)
+        self.assertEquals("text/html; charset=utf-8", resp.content_type)
+
+        print("resp.location=" + resp.location)
+        paramDict = dict(parse.parse_qsl(parse.urlsplit(resp.location).query))
+        self.assertEquals('Bearer', paramDict.get('token_type'))
+        self.assertTrue(len(paramDict.get('access_token')) > 0)
+
+        # -----------------------------------------------
+        #  Logout
+        # -----------------------------------------------
+        resp = self.testClient.get('/login',
+        data = dict(
+            username = usernameGen,
+            password = passwordGen,
+            grant_type="password",
+            client_id="CLTID-Zeq1LRso5q-iLU9RKCKnu"
+        ))
+        self.debugResponse(resp)
+
+        # should be redirected to new page
+        self.assertEquals(302, resp.status_code)
+        self.assertEquals("text/html; charset=utf-8", resp.content_type)
 
 
 if __name__ == '__main__':

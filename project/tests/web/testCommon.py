@@ -1,9 +1,9 @@
-import pytest
+
 import unittest
 import json
 from project.tests.web.baseTest import BaseTest 
 
-# @pytest.fixture(scope="class", autouse=True)
+
 class CommonTestCases(BaseTest):
 
     def testVersion_OK(self):
@@ -15,7 +15,6 @@ class CommonTestCases(BaseTest):
         
         codeDict1 = json.loads(resp.data)
         assert "1.0" == codeDict1["application.version"].strip()
-
 
 
 if __name__ == '__main__':
