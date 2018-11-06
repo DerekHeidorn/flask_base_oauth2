@@ -4,6 +4,6 @@ sqlalchemy==1.2.13
 PyLD==1.0.3
 pytest==3.10.0
 psycopg2==2.7.5
-Authlib==0.1
+Authlib==0.10
 wtforms==2.2.1
 werkzeug==0.14.1
