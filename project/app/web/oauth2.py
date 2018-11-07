@@ -14,24 +14,28 @@ class _PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
         'none', 'client_secret_basic', 'client_secret_post'
     ]
 
-    def create_token_response(self):
-        client = self.request.client
-        token = self.generate_token(
-            client, self.GRANT_TYPE,
-            user=self.request.user,
-            scope=self.request.scope,
-        )
-        self.server.save_token(token, self.request)
-        self.execute_hook('process_token', token=token)
-        session['id'] = str(self.request.user.get_user_id())
-        return 200, token, self.TOKEN_RESPONSE_HEADER
+    # def create_token_response(self):
+    #     print("_PasswordGrant->create_token_response")
+    #     client = self.request.client
+    #     print("_PasswordGrant->create_token_response:client" + str(client))
+    #     print("_PasswordGrant->create_token_response:user" + str(self.request.user))
+    #     print("_PasswordGrant->create_token_response:scope" + str(self.request.scope))
+    #     token = self.generate_token(
+    #         client, self.GRANT_TYPE,
+    #         user=self.request.user,
+    #         scope=self.request.scope,
+    #     )
+    #     self.server.save_token(token, self.request)
+    #     self.execute_hook('process_token', token=token)
+    #     session['id'] = str(self.request.user.get_user_id())
+    #     return 200, token, self.TOKEN_RESPONSE_HEADER
 
     def authenticate_user(self, username, password):
-
+        print("_PasswordGrant->authenticate_user")
         user = userService.getUserByUsername(username)
-        if(user is not None):
-            isPasswordValid = userUtils.isUserValid(user, password)
-            if isPasswordValid:
+        if user is not None :
+            is_password_valid = userUtils.isUserValid(user, password)
+            if is_password_valid:
                 return user
 
         return None
@@ -83,16 +87,18 @@ def queryClient(clientId):
     print("queryClient->clientId:" + str(clientId))
     result = oauth2Service.queryClient(clientId)
     print("queryClient->result:" + str(result))
+
     return result
 
 def saveToken(token, request):
     # print("saveToken->token:" + str(token))
-    # print("saveToken->token('access_token'):" + str(token.get('access_token')))
+    print("saveToken->token('access_token'):" + str(token.get('access_token')))
     # print("saveToken->request:" + str(request))
     decodedToken = authUtils.decodeAuthTokenPayload(token.get('access_token'))
     # print("decodedToken:type=" + str(type(decodedToken)))
-    # print("decodedToken=" + str(decodedToken))
-    # print("jti=" + str(decodedToken['jti']))
+    print("decodedToken=" + str(decodedToken))
+    print("jti=" + str(decodedToken['jti']))
+    print("request.client.client_id=" + str(request.client.client_id))
 
     authorities = userUtils.getUserAuthorities(request.user)
     authorityList = dtoUtils.authoritySerialize(authorities)

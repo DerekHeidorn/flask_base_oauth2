@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField
+from wtforms import StringField, PasswordField, HiddenField
 from wtforms.validators import DataRequired, Email, ValidationError, Length
 
 from project.app.services import userService
@@ -11,6 +11,8 @@ class UsernamePasswordForm(FlaskForm):
 
 
 class SignupForm(FlaskForm):
+    client_id = HiddenField()
+    grant_type = HiddenField()
     username = StringField('Email', validators=[DataRequired(), Email(), Length(max=100)])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=10, max=256)])
     passwordRepeat = PasswordField('Repeat Password', validators=[DataRequired()])
@@ -27,8 +29,6 @@ class SignupForm(FlaskForm):
             raise ValidationError('username is not unique')
 
     def validate_passwordRepeat(self, field):
-        print("validate_passwordRepeat->field.data=" + str(field.data))
-        print("validate_passwordRepeat->self.password=" + str(self.password.data))
 
         if self.password.data != field.data:
             raise ValidationError('Passwords need to match')

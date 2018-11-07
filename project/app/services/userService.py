@@ -1,5 +1,5 @@
 from project.app.models.user import User
-from project.app.persist import userDao, securityDao
+from project.app.persist import userDao, securityDao, oauth2Dao
 from project.app.services.utils import userUtils
 
 
@@ -43,7 +43,7 @@ def getUserByUsernameAndValidate(username, password):
         return  {"user": None, "isPasswordValid": False}
 
 
-def addPublicUser(username, password, firstName=None, lastName=None):
+def addPublicUser(clientId, username, password, firstName=None, lastName=None):
 
     userUtils.randomUserPrivateKey(32)
 
@@ -51,6 +51,7 @@ def addPublicUser(username, password, firstName=None, lastName=None):
     securityGroup = securityDao.getSecurityGroupByName(securityDao.SECURITY_GROUP_CUSTOMER_NAME
                                                           , session=session)
 
+    oauth2Client = oauth2Dao.queryClient(clientId, session=session)
 
     newUser = User(firstName=firstName, lastName=lastName, username=username)
     newUser.statusCd = 'A'
@@ -61,6 +62,7 @@ def addPublicUser(username, password, firstName=None, lastName=None):
     newUser.passwordHash = userUtils.getHashedPassword(password, newUser.passwordSalt)
 
     newUser.securityGroups.append(securityGroup)
+    newUser.oauth2Clients.append(oauth2Client)
     userId = userDao.addUser(newUser, session=session)
     if userId:
         return userDao.getUser(userId)

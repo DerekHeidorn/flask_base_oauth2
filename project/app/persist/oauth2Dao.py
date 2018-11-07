@@ -63,17 +63,19 @@ def createAccessToken(token, client, grantUser=None):
     session.commit()
 
 
-def getOAuth2Clients(userId):
+def _getOAuth2Clients(userId):
     print("getOAuth2Clients->userId=" + userId)
     session = getSession()
     oauth2Clients = session.query(OAuth2Client).filter(OAuth2Client.user_id==userId).all()
     return oauth2Clients
 
 
-def _old_queryClient(clientId):
+def queryClient(clientId, session=None):
     print("queryClient->clientId=" + clientId)
-    session = getSession()
+    if session == None:
+        session = getSession()
     oauth2Client = session.query(OAuth2Client).filter(OAuth2Client.client_id==clientId).first()
+    print("queryClient->oauth2Client=" + str(oauth2Client))
     return oauth2Client
 
 

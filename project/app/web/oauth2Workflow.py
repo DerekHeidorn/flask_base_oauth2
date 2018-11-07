@@ -59,14 +59,18 @@ def loginPost():
             parameters = ""
             for k in jsonDoc:
                 if k == "error":
-                    form.username.errors.append(jsonDoc['error_description'])
+                    print("jsonDoc:" + str(jsonDoc))
+                    error_msg = jsonDoc[k]
+                    if 'error_description' in jsonDoc:
+                        error_msg = jsonDoc['error_description']
+                    form.username.errors.append(error_msg)
                     raise Exception(jsonDoc['error_description'])
 
                 parameters += "&" + k + '=' + str(jsonDoc.get(k))
 
             return redirect("/?redirect=SuccessLogin" + parameters, code=302)
         except Exception as e:
-            print("Exception: " + str(e), str(e.with_traceback))
+            print("Exception: " + str(e))
             return render_template('login.html', form=form)
 
     return render_template('login.html', form=form)
@@ -94,9 +98,9 @@ def signupPost():
 
         if form.validate_on_submit(): 
             try:
-                user = userService.addPublicUser(form.username.data, form.password.data)
-                session['id'] = user.get_user_id()
+                user = userService.addPublicUser(form.client_id.data, form.username.data, form.password.data)
 
+                print("authorizationServer.create_token_response(): " + str(user))
                 tokenResponse = authorizationServer.create_token_response()
                 jsonString = tokenResponse.data.decode("utf-8")
 
@@ -104,14 +108,19 @@ def signupPost():
                 parameters = ""
                 for k in jsonDoc:
                     if k == "error":
-                        form.username.errors.append(jsonDoc['error_description'])
-                        raise Exception(jsonDoc['error_description'])                
+                        print("jsonDoc:" + str(jsonDoc))
+                        error_msg = jsonDoc[k]
+                        if 'error_description' in jsonDoc:
+                            error_msg = jsonDoc['error_description']
+                        form.username.errors.append(error_msg)
+                        raise Exception(error_msg)
 
                     parameters += "&" + k + '=' + str(jsonDoc.get(k))
             except Exception as e:
-                print("Exception: " + str(e), str(e.with_traceback))
+                print("Exception: " + str(e))
                 return render_template('signup.html', form=form)
 
+            session['id'] = user.get_user_id()
             return redirect("/?redirect=SuccessLogin" + parameters, code=302)
         return render_template('signup.html', form=form)
 
