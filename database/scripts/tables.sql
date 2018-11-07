@@ -187,13 +187,13 @@ CREATE INDEX "XIF9TB_USER"
 -- =================================================
 
 
--- Table: public."TB_SCRTY_USER"
+-- Table: public."TB_USER_SCRTY"
 
-CREATE TABLE public."TB_SCRTY_USER"
+CREATE TABLE public."TB_USER_SCRTY"
 (
   "USER_ID" integer NOT NULL, -- System-generated ID for a User.
   "SCRGRP_ID" integer NOT NULL, -- Security Group Surrogate Key
-  CONSTRAINT "XPKTB_SCRTY_USER" PRIMARY KEY ("USER_ID", "SCRGRP_ID"),
+  CONSTRAINT "XPKTB_USER_SCRTY" PRIMARY KEY ("USER_ID", "SCRGRP_ID"),
   CONSTRAINT "SCRTY_GRP_TO_SCRTY_USER" FOREIGN KEY ("SCRGRP_ID")
       REFERENCES public."TB_SCRTY_GRP" ("SCRGRP_ID") MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
@@ -204,20 +204,16 @@ CREATE TABLE public."TB_SCRTY_USER"
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."TB_SCRTY_USER"
+ALTER TABLE public."TB_USER_SCRTY"
   OWNER TO postgres;
-COMMENT ON TABLE public."TB_SCRTY_USER"
+COMMENT ON TABLE public."TB_USER_SCRTY"
   IS 'Table to associate Users with Security groups';
-COMMENT ON COLUMN public."TB_SCRTY_USER"."USER_ID" IS 'System-generated ID for a User.';
-COMMENT ON COLUMN public."TB_SCRTY_USER"."SCRGRP_ID" IS 'Security Group Surrogate Key';
+COMMENT ON COLUMN public."TB_USER_SCRTY"."USER_ID" IS 'System-generated ID for a User.';
+COMMENT ON COLUMN public."TB_USER_SCRTY"."SCRGRP_ID" IS 'Security Group Surrogate Key';
 
 
--- Index: public."XIF1TB_SCRTY_USER"
-
--- DROP INDEX public."XIF1TB_SCRTY_USER";
-
-CREATE INDEX "XIF1TB_SCRTY_USER"
-  ON public."TB_SCRTY_USER"
+CREATE INDEX "XIF1TB_USER_SCRTY"
+  ON public."TB_USER_SCRTY"
   USING btree
   ("USER_ID");
 
@@ -318,34 +314,48 @@ CREATE INDEX "XIF1TB_SCRTY_USER"
 
   -- software_id = Column(String(36))
   -- software_version = Column(String(48))
---  CREATE TABLE "TB_OAUTH2_CLIENT" 
---    (	"OAUTH2CL_ID" serial NOT NULL, 
--- 	    "USER_ID" integer NOT NULL,
---       "client_id" character varying(48), 
---       "client_secret" character varying(120),
---       "issued_at" integer NOT NULL, 
---       "expires_at" integer NOT NULL DEFAULT 0,
---       "redirect_uri" text NOT NULL,
---       "token_endpoint_auth_method" character varying(48), 
---       "grant_type" text,
---       "response_type" text,
---       "scope" text,
---       "client_name" character varying(100), 
---       "client_uri" text,
---       "logo_uri" text,
---       "contact" text,
---       "tos_uri" text,
---       "policy_uri" text,
---       "jwks_uri" text,
---       "jwks_text" text,
---       "i18n_metadata" text,
---       "software_id" character varying(36), 
---       "software_version" character varying(48),
--- 	    CONSTRAINT "XPKTB_OAUTH2_CLIENT" PRIMARY KEY ("OAUTH2CL_ID"),
---       CONSTRAINT "OAUTH2_CLIENT_TO_USER" FOREIGN KEY ("USER_ID")
---             REFERENCES public."TB_USER" ("USER_ID")
---    );
---    CREATE INDEX "IDX1TB_OAUTH2_CLIENT" ON "TB_OAUTH2_CLIENT" ("client_id");
+  CREATE TABLE "TB_OAUTH2_CLIENT"
+    (	"OAUTH2CL_ID" serial NOT NULL,
+       "client_id" character varying(48),
+       "client_secret" character varying(120),
+       "issued_at" integer NOT NULL,
+       "expires_at" integer NOT NULL DEFAULT 0,
+       "redirect_uri" text NOT NULL,
+       "token_endpoint_auth_method" character varying(48),
+       "grant_type" text,
+       "response_type" text,
+       "scope" text,
+       "client_name" character varying(100),
+       "client_uri" text,
+       "logo_uri" text,
+       "contact" text,
+       "tos_uri" text,
+       "policy_uri" text,
+       "jwks_uri" text,
+       "jwks_text" text,
+       "i18n_metadata" text,
+       "software_id" character varying(36),
+       "software_version" character varying(48),
+ 	    CONSTRAINT "XPKTB_OAUTH2_CLIENT" PRIMARY KEY ("OAUTH2CL_ID")
+    );
+    CREATE INDEX "IDX1TB_OAUTH2_CLIENT" ON "TB_OAUTH2_CLIENT" ("client_id");
+
+CREATE TABLE public."TB_USER_OAUTH2_CLIENT"
+(
+  "OAUTH2CL_ID" integer NOT NULL,
+  CONSTRAINT "XPKTB_USER_OAUTH2_CLIENT" PRIMARY KEY ("OAUTH2CL_ID"),
+  CONSTRAINT "USER_TO_OAUTH2_CLIENT" FOREIGN KEY ("OAUTH2CL_ID")
+      REFERENCES public."TB_OAUTH2_CLIENT" ("OAUTH2CL_ID") MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public."TB_USER_OAUTH2_CLIENT"
+  OWNER TO postgres;
+COMMENT ON TABLE public."TB_USER_OAUTH2_CLIENT"
+  IS 'Table to associate Users with Oauth Clients';
+COMMENT ON COLUMN public."TB_USER_OAUTH2_CLIENT"."OAUTH2CL_ID" IS 'Oauth Client Id';
 
   -- ===================================================================
    
@@ -360,19 +370,38 @@ CREATE INDEX "XIF1TB_SCRTY_USER"
   -- )
 
  CREATE TABLE "TB_OAUTH2_CODE" 
-   (	"OAUTH2CD_ID" serial NOT NULL, 
-	    "USER_ID" integer NOT NULL, 
+   (	"OAUTH2CD_ID" serial NOT NULL,
       "code" character varying(120) NOT NULL, 
       "client_id" character varying(48), 
       "redirect_uri" text, 
       "response_type" text,
       "scope" text,
       "auth_time" integer NOT NULL, 
-	    CONSTRAINT "XPKTB_OAUTH2_CODE" PRIMARY KEY ("OAUTH2CD_ID"),
-      CONSTRAINT "OAUTH2_CODE_TO_USER" FOREIGN KEY ("USER_ID")
-            REFERENCES public."TB_USER" ("USER_ID")      
+	    CONSTRAINT "XPKTB_OAUTH2_CODE" PRIMARY KEY ("OAUTH2CD_ID")
    );
   CREATE INDEX "IDX1TB_OAUTH2_CODE" ON "TB_OAUTH2_CODE" ("code");
+
+CREATE TABLE public."TB_USER_OAUTH2_CODE"
+(
+  "USER_ID" integer NOT NULL,
+  "OAUTH2CD_ID" integer NOT NULL,
+  CONSTRAINT "XPKTB_USER_OAUTH2_CODE" PRIMARY KEY ("USER_ID", "OAUTH2CD_ID"),
+  CONSTRAINT "USER_TO_OAUTH2_CODE" FOREIGN KEY ("OAUTH2CD_ID")
+      REFERENCES public."TB_OAUTH2_CODE" ("OAUTH2CD_ID") MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT "OAUTH2_CODE_TO_SCRTY_USER" FOREIGN KEY ("USER_ID")
+      REFERENCES public."TB_USER" ("USER_ID") MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public."TB_USER_OAUTH2_CODE"
+  OWNER TO postgres;
+COMMENT ON TABLE public."TB_USER_OAUTH2_CODE"
+  IS 'Table to associate Users with Oauth Tokens';
+COMMENT ON COLUMN public."TB_USER_OAUTH2_CODE"."USER_ID" IS 'System-generated ID for a User.';
+COMMENT ON COLUMN public."TB_USER_OAUTH2_CODE"."OAUTH2CD_ID" IS 'Oauth Code Id';
 
   -- ===================================================================
    
@@ -388,8 +417,7 @@ CREATE INDEX "XIF1TB_SCRTY_USER"
   -- expires_in = Column(Integer, nullable=False, default=0)
 
  CREATE TABLE "TB_OAUTH2_TOKEN" 
-   (	"OAUTH2TKN_ID" serial NOT NULL, 
-	    "USER_ID" integer NOT NULL,
+   (	"OAUTH2TKN_ID" serial NOT NULL,
       "client_id" character varying(48), 
       "token_type" character varying(40), 
       "access_token" character varying(255) NOT NULL, 
@@ -398,16 +426,34 @@ CREATE INDEX "XIF1TB_SCRTY_USER"
       "revoked" boolean,
       "issued_at" integer NOT NULL, 
       "expires_in" integer NOT NULL DEFAULT 0, 
-	    CONSTRAINT "XPKTB_OAUTH2_TOKEN" PRIMARY KEY ("OAUTH2TKN_ID"),
-      CONSTRAINT "OAUTH2_TOKEN_TO_USER" FOREIGN KEY ("USER_ID")
-            REFERENCES public."TB_USER" ("USER_ID")
+	    CONSTRAINT "XPKTB_OAUTH2_TOKEN" PRIMARY KEY ("OAUTH2TKN_ID")
    );  
 
     CREATE INDEX "IDX1TB_OAUTH2_TOKEN" ON "TB_OAUTH2_TOKEN" ("access_token");
     CREATE INDEX "IDX2TB_OAUTH2_TOKEN" ON "TB_OAUTH2_TOKEN" ("refresh_token");
 
 
-
+CREATE TABLE public."TB_USER_OAUTH2_TOKEN"
+(
+  "USER_ID" integer NOT NULL, -- System-generated ID for a User.
+  "OAUTH2TKN_ID" integer NOT NULL, -- Security Group Surrogate Key
+  CONSTRAINT "XPKTB_USER_OAUTH2_TOKEN" PRIMARY KEY ("USER_ID", "OAUTH2TKN_ID"),
+  CONSTRAINT "USER_TO_OAUTH2_TOKEN" FOREIGN KEY ("OAUTH2TKN_ID")
+      REFERENCES public."TB_OAUTH2_TOKEN" ("OAUTH2TKN_ID") MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT "OAUTH2_TOKEN_TO_USER" FOREIGN KEY ("USER_ID")
+      REFERENCES public."TB_USER" ("USER_ID") MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public."TB_USER_OAUTH2_TOKEN"
+  OWNER TO postgres;
+COMMENT ON TABLE public."TB_USER_OAUTH2_TOKEN"
+  IS 'Table to associate Users with Oauth Tokens';
+COMMENT ON COLUMN public."TB_USER_OAUTH2_TOKEN"."USER_ID" IS 'System-generated ID for a User.';
+COMMENT ON COLUMN public."TB_USER_OAUTH2_TOKEN"."OAUTH2TKN_ID" IS 'Oauth Token Id';
 
 
 

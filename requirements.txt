@@ -7,3 +7,4 @@ psycopg2==2.7.5
 Authlib==0.10
 wtforms==2.2.1
 werkzeug==0.14.1
+coverage==4.5.1

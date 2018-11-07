@@ -42,10 +42,6 @@ INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (1, 303
 INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (2, 1);
 INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (2, 2);
 
-	
-	
-INSERT INTO "TB_USER" ("USER_FNAME", "USER_LNAME", "USERNAME", "USRTYP_CD", "USRSTA_CD") VALUES ('Tester', 'Auto', 'auto@tester.com', '1', 'A') ;
-
 -- Sys Admin Staff
 INSERT INTO public."TB_USER"(
             "USER_ID", "USERNAME", "USER_PASSWD", "USER_PASSWD_SALT", "USER_PASSWD_EXP_TS", 
@@ -69,11 +65,11 @@ INSERT INTO public."TB_USER"(
             'Joe', 'Customer');			
 
 
-INSERT INTO public."TB_SCRTY_USER"(
+INSERT INTO public."TB_USER_SCRTY"(
             "USER_ID", "SCRGRP_ID")
     VALUES (1, 1);
 	
-INSERT INTO public."TB_SCRTY_USER"(
+INSERT INTO public."TB_USER_SCRTY"(
             "USER_ID", "SCRGRP_ID")
     VALUES (2, 2);	
 
