@@ -5,50 +5,49 @@ from random import SystemRandom
 from project.app.services.utils.securityUtils import constants
 
 
-def randomUserPrivateKey(maxSize):
-    allchar = string.ascii_letters + string.digits
-    rand = "".join(SystemRandom().choice(allchar) for x in range(maxSize))
- 
+def random_user_private_key(max_size):
+    all_char = string.ascii_letters + string.digits
+    rand = "".join(SystemRandom().choice(all_char) for x in range(max_size))
 
     return rand
 
 
-def randomString(min_char, max_char):
-    allchar = string.ascii_letters + string.digits
-    rand = "".join(choice(allchar) for x in range(randint(min_char, max_char)))
+def random_string(min_char, max_char):
+    all_char = string.ascii_letters + string.digits
+    rand = "".join(choice(all_char) for x in range(randint(min_char, max_char)))
     
     return rand
 
 
-def isUserValid(user, password):
-    if(user is None):
+def is_user_valid(user, password):
+    if user is None:
         return False
 
-    tmpHashedPassword = getHashedPassword(password, user.passwordSalt)
+    tmp = get_hashed_password(password, user.password_salt)
 
-    if(tmpHashedPassword.strip() == user.passwordHash.strip()):
+    if(tmp.strip() == user.password_hash.strip()):
         return True
     else:
         return False
 
 
-def getHashedPassword(password, userSalt):
-    applicationSalt = constants["APP_PASSWORD_SALT"]
+def get_hashed_password(password, user_salt):
+    application_salt = constants["APP_PASSWORD_SALT"]
     iterations = constants["APP_PASSWORD_HASH_ITERATIONS"]
     dk = hashlib.pbkdf2_hmac("sha512", 
-                                        bytearray(password.encode('utf-8') + applicationSalt.encode('utf-8')), 
-                                        bytearray(userSalt.encode('utf-8')), 
-                                        iterations)
-    hexdigest = binascii.hexlify(dk).decode('utf-8')
+                             bytearray(password.encode('utf-8') + application_salt.encode('utf-8')),
+                             bytearray(user_salt.encode('utf-8')),
+                             iterations)
+    hex_digest = binascii.hexlify(dk).decode('utf-8')
 
-    return hexdigest 
+    return hex_digest
 
 
-def getUserAuthorities(user):
+def get_user_authorities(user):
     authorities = []
 
-    if user is not None and user.securityGroups is not None:
-        for sg in user.securityGroups:
+    if user is not None and user.security_groups is not None:
+        for sg in user.security_groups:
             if sg is not None:
                 for sa in sg.authorities:
                     authorities.append(sa)

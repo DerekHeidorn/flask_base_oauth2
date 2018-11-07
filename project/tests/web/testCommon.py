@@ -10,12 +10,12 @@ class CommonTestCases(BaseTest):
         print("Running: test_version_OK")
 
         resp = self.testClient.get('/api/v1.0/app/version')
-        self.debugResponse(resp)
+        self.debug_response(resp)
         assert resp.status_code == 200
         
-        codeDict1 = json.loads(resp.data)
-        print("codeDict1=" + str(codeDict1))
-        assert "0.1" == codeDict1["application.version"].strip()
+        code_dict = json.loads(resp.data)
+        print("codeDict1=" + str(code_dict))
+        assert "0.1" == code_dict["application.version"].strip()
 
 
 if __name__ == '__main__':

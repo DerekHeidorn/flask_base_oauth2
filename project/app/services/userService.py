@@ -1,72 +1,66 @@
 from project.app.models.user import User
-from project.app.persist import userDao, securityDao, oauth2Dao
+from project.app.persist import baseDao, userDao, securityDao, oauth2Dao
 from project.app.services.utils import userUtils
 
 
-def isUserValid(username, password):
-    user = userDao.getUserByUsername(username)
-    if(user is not None):
-        return userUtils.isUserValid(user, password)
+def is_user_valid(username, password):
+    user = userDao.get_user_by_username(username)
+    if user is not None:
+        return userUtils.is_user_valid(user, password)
     else:
         return False
 
 
-def buildMessage(key, message):
-    return {key:message}
+def delete_user(user_id):
+    return userDao.delete_user(user_id)
 
 
-def deleteUser(id):
-    return userDao.deleteUser(id)
+def update_user(user_id, user_to_be_updated):
+    return userDao.update_user(user_id, user_to_be_updated)
 
 
-def updateUser(id, userToBeUpdated):
-    return userDao.updateUser(id, userToBeUpdated)    
+def get_user_by_id(user_id):
+    return userDao.get_user(user_id)
 
 
-def getUserById(id):
-    return userDao.getUser(id)
+def get_user_by_username(username):
+    return userDao.get_user_by_username(username)
 
 
-def getUserByUsername(username):
-    return userDao.getUserByUsername(username)
+def is_username_unique(username):
+    return userDao.is_username_unique(username)
 
 
-def isUsernameUnique(username):
-    return userDao.isUsernameUnique(username)
-
-
-def getUserByUsernameAndValidate(username, password):
-    user = userDao.getUserByUsername(username)
-    if(user is not None):
-        return {"user": user, "isPasswordValid": userUtils.isUserValid(user, password)}
+def get_user_by_username_and_validate(username, password):
+    user = userDao.get_user_by_username(username)
+    if user is not None:
+        return {"user": user, "is_password_valid": userUtils.is_user_valid(user, password)}
     else:
-        return  {"user": None, "isPasswordValid": False}
+        return {"user": None, "is_password_valid": False}
 
 
-def addPublicUser(clientId, username, password, firstName=None, lastName=None):
+def add_public_user(client_id, username, password, first_name=None, last_name=None):
 
-    userUtils.randomUserPrivateKey(32)
+    userUtils.random_user_private_key(32)
 
-    session = securityDao.getSession()
-    securityGroup = securityDao.getSecurityGroupByName(securityDao.SECURITY_GROUP_CUSTOMER_NAME
-                                                          , session=session)
+    session = baseDao.get_session()
+    security_group = securityDao.get_security_grou_by_name(securityDao.SECURITY_GROUP_CUSTOMER_NAME
+                                                           , session=session)
 
-    oauth2Client = oauth2Dao.queryClient(clientId, session=session)
+    oauth2_client = oauth2Dao.query_client(client_id, session=session)
 
-    newUser = User(firstName=firstName, lastName=lastName, username=username)
-    newUser.statusCd = 'A'
-    newUser.typeCd = '1'
-    newUser.failedAttemptCnt = 0
-    newUser.privateKey = userUtils.randomUserPrivateKey(32)
-    newUser.passwordSalt = userUtils.randomUserPrivateKey(32) 
-    newUser.passwordHash = userUtils.getHashedPassword(password, newUser.passwordSalt)
+    new_user = User(first_name=first_name, last_name=last_name, username=username)
+    new_user.statusCd = 'A'
+    new_user.typeCd = '1'
+    new_user.failedAttemptCnt = 0
+    new_user.privateKey = userUtils.random_user_private_key(32)
+    new_user.passwordSalt = userUtils.random_user_private_key(32)
+    new_user.passwordHash = userUtils.get_hashed_password(password, new_user.password_salt)
 
-    newUser.securityGroups.append(securityGroup)
-    newUser.oauth2Clients.append(oauth2Client)
-    userId = userDao.addUser(newUser, session=session)
-    if userId:
-        return userDao.getUser(userId)
+    new_user.security_groups.append(security_group)
+    new_user.oauth2_clients.append(oauth2_client)
+    user_id = userDao.add_user(new_user, session=session)
+    if user_id:
+        return userDao.get_user(user_id)
     else:
         return None
-
-

@@ -1,16 +1,14 @@
-import unittest
-from urllib import parse
-from project.tests.persist.baseTest import BaseTest 
-from project.tests.utils import randomUtil
+
+from project.tests.persist.baseTest import BaseTest
 from project.tests.helpers import commonHelper
 from project.app.persist import userDao
 
 
 class UserDaoTestCase(BaseTest):
 
-    def testGetUserByUsername(self):
+    def test_get_user_by_username(self):
         print("running testGetUserByUsername...")
-        createdUser = commonHelper.createPublicUser()
+        created_user = commonHelper.create_public_user()
 
-        user = userDao.getUserByUsername(createdUser.username)
-        self.assertEquals(createdUser.username, user.username)
+        user = userDao.get_user_by_username(created_user.username)
+        self.assertEquals(created_user.username, user.username)

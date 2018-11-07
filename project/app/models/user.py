@@ -19,7 +19,6 @@ userOauth2ClientAssociation = Table('TB_USER_OAUTH2_CLIENT', BaseModel.metadata,
 class User(BaseModel):
     __tablename__ = 'TB_USER'
 
-	
     # USER_ID		System-generated ID for a User.
     id = Column("USER_ID", Integer, primary_key=True)
 
@@ -27,55 +26,52 @@ class User(BaseModel):
         return self.id
 
     # USER_FNAME		First Name of the User	
-    firstName = Column("USER_FNAME", String(50))
+    first_name = Column("USER_FNAME", String(50))
     
     # USER_LNAME		Last Name of the User
-    lastName = Column("USER_LNAME", String(80))
+    last_name = Column("USER_LNAME", String(80))
 
     # # USERNAME		Username for a User	
     username = Column("USERNAME", String(100))
 
     # # USER_PASSWD		Hashed password used in USERNAME authentication
-    passwordHash = Column("USER_PASSWD", String(256))	
+    password_hash = Column("USER_PASSWD", String(256))
 
     # # USER_PASSWD_SALT		Used in hashing and authentication	
-    passwordSalt = Column("USER_PASSWD_SALT", String(32))
+    password_salt = Column("USER_PASSWD_SALT", String(32))
     
     # # USER_PASSWD_EXP_TS		A timestamp for expiring a password, used for temporary passwords
-    passwordExpireTs = Column("USER_PASSWD_EXP_TS", DateTime)
+    password_expire_ts = Column("USER_PASSWD_EXP_TS", DateTime)
     
     # # USRTYP_CD		Code value for user type (staff, camper)	
-    typeCd = Column("USRTYP_CD", String(2))
+    type_cd = Column("USRTYP_CD", String(2))
     
     # # USER_ATTEMPT_CNT		Number of attempts since the last sucessful login.	
-    failedAttemptCnt = Column("USER_ATTEMPT_CNT", Integer)
+    failed_attempt_count = Column("USER_ATTEMPT_CNT", Integer)
     
     # # USER_ATTEMPT_TS		When the last login attempt was made.	
-    attemptsTs = Column("USER_ATTEMPT_TS", DateTime)
+    last_attempts_ts = Column("USER_ATTEMPT_TS", DateTime)
     
     # # USER_PRIV_KEY		Used for encrypting the data specific to the user.	
-    privateKey = Column("USER_PRIV_KEY", String(32))
+    private_key = Column("USER_PRIV_KEY", String(32))
     
     # # USER_ACTV_CODE		A code that is used to Reactivate an account that got deactivated.	
-    userActvCode = Column("USER_ACTV_CODE", String(32))
+    user_activation_code = Column("USER_ACTV_CODE", String(32))
     
     # # USER_RESET_CODE		Encrypted code passed to the user at the point of a password reset.	
-    resetCode = Column("USER_RESET_CODE", String(32))
+    reset_code = Column("USER_RESET_CODE", String(32))
     
     # # USRSTA_CD		User Status Code	
-    statusCd = Column("USRSTA_CD", String(1))
+    status_cd = Column("USRSTA_CD", String(1))
     
     # # USER_RESET_PRSN_ID		ID of the individual (Staff User) who performed the reset	
-    resetByUser = Column("USER_RESET_PRSN_ID", Integer, nullable=True)
+    reset_by_user = Column("USER_RESET_PRSN_ID", Integer, nullable=True)
 
-    securityGroups = relationship("SecurityGroup", 
+    security_groups = relationship("SecurityGroup",
                     secondary=userSecurityAssociation)
 
-    oauth2Clients = relationship("OAuth2Client",
+    oauth2_clients = relationship("OAuth2Client",
                                  secondary=userOauth2ClientAssociation)
-
 
     def __repr__(self):
         return "<User(username='%s')>" % (self.username)
-
- 

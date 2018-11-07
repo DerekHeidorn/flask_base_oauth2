@@ -15,20 +15,19 @@ class SignupForm(FlaskForm):
     grant_type = HiddenField()
     username = StringField('Email', validators=[DataRequired(), Email(), Length(max=100)])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=10, max=256)])
-    passwordRepeat = PasswordField('Repeat Password', validators=[DataRequired()])
+    password_repeat = PasswordField('Repeat Password', validators=[DataRequired()])
 
     """
     Validates the form by calling `validate` on each field, passing any
     extra `Form.validate_<fieldname>` validators to the field validator.
     """
     def validate_username(self, field):
-        print("validate_username->field.data=" + str(field.data))
-        isUsernameUnique = userService.isUsernameUnique(field.data)
+        is_username_unique = userService.is_username_unique(field.data)
 
-        if not isUsernameUnique:
+        if not is_username_unique:
             raise ValidationError('username is not unique')
 
-    def validate_passwordRepeat(self, field):
+    def validate_password_repeat(self, field):
 
         if self.password.data != field.data:
             raise ValidationError('Passwords need to match')

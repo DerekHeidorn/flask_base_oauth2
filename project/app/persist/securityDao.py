@@ -1,36 +1,31 @@
 
 
-from project.app.persist.baseDao import getSession
+from project.app.persist import baseDao
 from project.app.models.user import User
 from project.app.models.security import SecurityGroup
 
 SECURITY_GROUP_CUSTOMER_NAME = "CUSTOMER"
 
 
-def getUserSecurityAuthorities(userId, session=None):
+def get_user_security_authorities(user_id, session=None):
 
-    if(session == None):
-        session = getSession()
-    user = session.query(User).filter(User.id == userId).first()
+    if session is None:
+        session = baseDao.get_session()
+    user = session.query(User).filter(User.id == user_id).first()
 
     authorities = []
 
-    for sg in user.securityGroups:
+    for sg in user.security_groups:
         for sa in sg.authorities:
             authorities.append(sa)
             
     return authorities
 
 
-def getSecurityGroupByName(securityGroupName, session=None):
-    if(session == None):
-        session = getSession()
+def get_security_grou_by_name(security_group_name, session=None):
+    if session is None:
+        session = baseDao.get_session()
 
-    securityGroup = session.query(SecurityGroup).filter(SecurityGroup.name == securityGroupName).first() 
-    print("securityGroup=" + str(securityGroup))
-    return securityGroup
+    security_group = session.query(SecurityGroup).filter(SecurityGroup.name == security_group_name).first()
 
-
-
-
-
+    return security_group

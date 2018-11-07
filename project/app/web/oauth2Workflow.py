@@ -8,29 +8,26 @@ from project.app.web.oauth2 import authorizationServer
 
 api = Blueprint('home_api', __name__)
 
-# curl -v -u user:password localhost:9000
 
-#  User Id is stored in the Flask Session
-def currentUser():
+def current_user_in_session():
+    #  User Id is stored in the Flask Session
     if 'id' in session:
-        userId = session['id']
-        # print("id=" + str(userId))
-        user = userService.getUserById(userId)
-        # print("user=" + str(user))
+        user_id = session['id']
+        user = userService.get_user_by_id(user_id)
         return user
     return None
 
 
 @api.route('/', methods=['GET'])
 def home():
-    user = currentUser()
+    user = current_user_in_session()
     return render_template('home.html', user=user)
 
 
 @api.route('/login', methods=['GET'])
 def login():
 
-    user = currentUser()
+    user = current_user_in_session()
     if user:
         return redirect('/')
     else:
@@ -38,35 +35,35 @@ def login():
         return render_template('login.html', form=form)
 
 
-# POST /token HTTP/1.1
-# Host: server.example.com
-# Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
-# Content-Type: application/x-www-form-urlencoded
-# grant_type=password&username=johndoe&password=A3ddj3w
 @api.route('/login', methods=['POST'])
-def loginPost():
+def login_post():
 
+    # POST /token HTTP/1.1
+    # Host: server.example.com
+    # Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+    # Content-Type: application/x-www-form-urlencoded
+    # grant_type=password&username=johndoe&password=A3ddj3w
     form = forms.UsernamePasswordForm()
     if form.validate_on_submit():
-        debugUtils.debugRequest(request)
+        debugUtils.debug_request(request)
         try:
-            tokenResponse = authorizationServer.create_token_response()
-            debugUtils.debugResponse(tokenResponse)
+            token_response = authorizationServer.create_token_response()
+            debugUtils.debug_response(token_response)
 
-            jsonString = tokenResponse.data.decode("utf-8")
+            json_string = token_response.data.decode("utf-8")
 
-            jsonDoc = json.JSONDecoder().decode(jsonString)
+            json_doc = json.JSONDecoder().decode(json_string)
             parameters = ""
-            for k in jsonDoc:
+            for k in json_doc:
                 if k == "error":
-                    print("jsonDoc:" + str(jsonDoc))
-                    error_msg = jsonDoc[k]
-                    if 'error_description' in jsonDoc:
-                        error_msg = jsonDoc['error_description']
+                    print("jsonDoc:" + str(json_doc))
+                    error_msg = json_doc[k]
+                    if 'error_description' in json_doc:
+                        error_msg = json_doc['error_description']
                     form.username.errors.append(error_msg)
-                    raise Exception(jsonDoc['error_description'])
+                    raise Exception(json_doc['error_description'])
 
-                parameters += "&" + k + '=' + str(jsonDoc.get(k))
+                parameters += "&" + k + '=' + str(json_doc.get(k))
 
             return redirect("/?redirect=SuccessLogin" + parameters, code=302)
         except Exception as e:
@@ -79,7 +76,7 @@ def loginPost():
 @api.route('/signup', methods=['GET'])
 def signup():
 
-    user = currentUser()
+    user = current_user_in_session()
     if user:
         return redirect('/')
     else:
@@ -88,9 +85,9 @@ def signup():
 
 
 @api.route('/signup', methods=['POST'])
-def signupPost():
+def signup_post():
 
-    user = currentUser()
+    user = current_user_in_session()
     if user:
         return redirect('/')
     else:
@@ -98,24 +95,23 @@ def signupPost():
 
         if form.validate_on_submit(): 
             try:
-                user = userService.addPublicUser(form.client_id.data, form.username.data, form.password.data)
+                user = userService.add_public_user(form.client_id.data, form.username.data, form.password.data)
 
-                print("authorizationServer.create_token_response(): " + str(user))
-                tokenResponse = authorizationServer.create_token_response()
-                jsonString = tokenResponse.data.decode("utf-8")
+                token_response = authorizationServer.create_token_response()
+                json_string = token_response.data.decode("utf-8")
 
-                jsonDoc = json.JSONDecoder().decode(jsonString)
+                json_doc = json.JSONDecoder().decode(json_string)
                 parameters = ""
-                for k in jsonDoc:
+                for k in json_doc:
                     if k == "error":
-                        print("jsonDoc:" + str(jsonDoc))
-                        error_msg = jsonDoc[k]
-                        if 'error_description' in jsonDoc:
-                            error_msg = jsonDoc['error_description']
+                        print("jsonDoc:" + str(json_doc))
+                        error_msg = json_doc[k]
+                        if 'error_description' in json_doc:
+                            error_msg = json_doc['error_description']
                         form.username.errors.append(error_msg)
                         raise Exception(error_msg)
 
-                    parameters += "&" + k + '=' + str(jsonDoc.get(k))
+                    parameters += "&" + k + '=' + str(json_doc.get(k))
             except Exception as e:
                 print("Exception: " + str(e))
                 return render_template('signup.html', form=form)
@@ -129,11 +125,3 @@ def signupPost():
 def logout():
     del session['id']
     return redirect('/')
-
-
-
-
-
-
-
-

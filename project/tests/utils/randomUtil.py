@@ -3,15 +3,13 @@ from random import randint
 from random import choice
 
 
-
-
-def randomUsername():
-    rand = randomString(3, 20)
+def random_username():
+    rand = random_string(3, 20)
 
     return "USERNAME." + rand + "@tester.com.invali"
 
-def randomString(min_char, max_char):
-    allchar = string.ascii_letters + string.digits
-    rand = "".join(choice(allchar) for x in range(randint(min_char, max_char)))
-    return rand
 
+def random_string(min_char, max_char):
+    all_char = string.ascii_letters + string.digits
+    rand = "".join(choice(all_char) for x in range(randint(min_char, max_char)))
+    return rand

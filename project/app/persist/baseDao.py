@@ -1,5 +1,5 @@
 from project.app.persist.infrastructure import Session
 
 
-def getSession():
+def get_session():
     return Session()

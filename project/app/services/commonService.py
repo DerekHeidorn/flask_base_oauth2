@@ -1,21 +1,20 @@
 
 
-from project.app.persist.configDao import getConfigAll
+from project.app.persist import configDao
 from werkzeug.contrib.cache import SimpleCache
 
-applicationConfigCache = SimpleCache()
+application_config_cache = SimpleCache()
 
 
-def getConfigByKey(key):
-    value = applicationConfigCache.get(key)
+def get_config_by_key(key):
+    value = application_config_cache.get(key)
     return value
 
 
-def loadApplicationCacheFromDB():
+def load_application_cache_from_db():
 
     # -- Application Config from Database --
-    configItems = getConfigAll()
-    for c in configItems:
-        applicationConfigCache.add(c.key, c.value)
+    config_items = configDao.get_config_all()
+    for c in config_items:
+        application_config_cache.add(c.key, c.value)
         print("app config: " + c.key + "=" + c.value)
-

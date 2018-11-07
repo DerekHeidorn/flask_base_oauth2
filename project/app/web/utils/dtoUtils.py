@@ -1,17 +1,17 @@
 
 
-def userSerialize(user):
-    return {"id": user.id, "firstName": user.firstName, "lastName": user.lastName, "username": user.username}
+def user_serialize(user):
+    return {"id": user.id, "first_name": user.first_name, "last_name": user.last_name, "username": user.username}
 
 
-def codetableSerialize(codetableData):
+def codetable_serialize(codetable_data):
     data = []
-    for codetableItem in codetableData:
-        data.append({"code": codetableItem.code.strip(), "description": codetableItem.description.strip()})
+    for item in codetable_data:
+        data.append({"code": item.code.strip(), "description": item.description.strip()})
     return data
 
 
-def authoritySerialize(authorities):
+def authority_serialize(authorities):
     data = []
     for a in authorities:
         data.append(a.key)

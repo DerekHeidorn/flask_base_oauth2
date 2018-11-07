@@ -8,7 +8,7 @@ from project.app.web.api import commonApi
 from project.app.web import oauth2Workflow
 
 
-def createApplication():
+def create_application():
 
     print("Creating Application...")
     app = Flask(__name__)
@@ -28,7 +28,7 @@ def createApplication():
     #)
     #app.config.from_object(app_settings)
     
-    commonService.loadApplicationCacheFromDB()
+    commonService.load_application_cache_from_db()
 
     # -- API registration --
     app.register_blueprint(commonApi.api)

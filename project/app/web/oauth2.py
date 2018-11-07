@@ -1,6 +1,6 @@
 import time
 
-from flask import session
+
 from authlib.flask.oauth2 import AuthorizationServer, ResourceProtector
 from authlib.specs.rfc6749 import grants
 from authlib.specs.rfc6750 import BearerTokenValidator
@@ -14,27 +14,10 @@ class _PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
         'none', 'client_secret_basic', 'client_secret_post'
     ]
 
-    # def create_token_response(self):
-    #     print("_PasswordGrant->create_token_response")
-    #     client = self.request.client
-    #     print("_PasswordGrant->create_token_response:client" + str(client))
-    #     print("_PasswordGrant->create_token_response:user" + str(self.request.user))
-    #     print("_PasswordGrant->create_token_response:scope" + str(self.request.scope))
-    #     token = self.generate_token(
-    #         client, self.GRANT_TYPE,
-    #         user=self.request.user,
-    #         scope=self.request.scope,
-    #     )
-    #     self.server.save_token(token, self.request)
-    #     self.execute_hook('process_token', token=token)
-    #     session['id'] = str(self.request.user.get_user_id())
-    #     return 200, token, self.TOKEN_RESPONSE_HEADER
-
     def authenticate_user(self, username, password):
-        print("_PasswordGrant->authenticate_user")
-        user = userService.getUserByUsername(username)
+        user = userService.get_user_by_username(username)
         if user is not None :
-            is_password_valid = userUtils.isUserValid(user, password)
+            is_password_valid = userUtils.is_user_valid(user, password)
             if is_password_valid:
                 return user
 
@@ -42,30 +25,13 @@ class _PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
 
 
 class _BearerTokenValidator(BearerTokenValidator):
-    def authenticate_token(self, tokenString):  
+    def authenticate_token(self, token_string):
         # oAuth2Token = OAuth2Token()
         # return oAuth2Token
-        payload = authUtils.decodeAuthTokenPayload(tokenString)
-        dbToken = oauth2Service.queryToken(payload['jti'], 'access_token')
+        payload = authUtils.decode_auth_token_payload(token_string)
+        db_token = oauth2Service.query_token(payload['jti'], 'access_token')
 
-
-        #    'exp': datetime.utcnow() + timedelta(days=1, seconds=0),
-        #     'iat': datetime.utcnow(),
-        #     'sub': user.id,
-        #     'jti': str(jtiUuid),
-        #     'auth': authorityList
-
-        # item = OAuth2Token()
-        # item.client_id=clientId
-        # item.user_id=userId
-        # item.token_type = tokenType
-        # item.scope = scope
-        # item.access_token = jti
-        # item.revoked = False
-        # item.issued_at = issuedAt
-        # item.expires_in = expiresIn
-
-        return dbToken
+        return db_token
 
     def request_invalid(self, request):
         print("request_invalid->request:" + str(request))
@@ -83,60 +49,53 @@ OAUTH2_TOKEN_EXPIRES_IN = {
     'client_credentials': 864000
 }
 
-def queryClient(clientId):
-    print("queryClient->clientId:" + str(clientId))
-    result = oauth2Service.queryClient(clientId)
-    print("queryClient->result:" + str(result))
+
+def query_client(client_id):
+    result = oauth2Service.query_client(client_id)
 
     return result
 
-def saveToken(token, request):
-    # print("saveToken->token:" + str(token))
-    print("saveToken->token('access_token'):" + str(token.get('access_token')))
-    # print("saveToken->request:" + str(request))
-    decodedToken = authUtils.decodeAuthTokenPayload(token.get('access_token'))
-    # print("decodedToken:type=" + str(type(decodedToken)))
-    print("decodedToken=" + str(decodedToken))
-    print("jti=" + str(decodedToken['jti']))
-    print("request.client.client_id=" + str(request.client.client_id))
 
-    authorities = userUtils.getUserAuthorities(request.user)
-    authorityList = dtoUtils.authoritySerialize(authorities)
-    scopeList = ' '.join(authorityList)
+def save_token(token, request):
 
-    clientId = request.client.client_id
-    userId = request.user.get_user_id()
-    tokenType = token['token_type']
-    scope = scopeList
-    jti = decodedToken['jti']
-    issuedAt = time.time()
-    expiresIn = time.time() + token['expires_in']
+    decoded_token = authUtils.decode_auth_token_payload(token.get('access_token'))
 
-    # clientId, userId, tokenType, scope, jti, issuedAt, expiresIn
-    oauth2Service.saveToken(clientId, userId, tokenType, scope, jti, issuedAt, expiresIn)
+    authorities = userUtils.get_user_authorities(request.user)
+    authority_list = dtoUtils.authority_serialize(authorities)
+    scope_list = ' '.join(authority_list)
+
+    client_id = request.client.client_id
+    user_id = request.user.get_user_id()
+    token_type = token['token_type']
+    scope = scope_list
+    jti = decoded_token['jti']
+    issued_at = time.time()
+    expires_in = time.time() + token['expires_in']
+
+    oauth2Service.save_token(client_id, user_id, token_type, scope, jti, issued_at, expires_in)
 
 
-def generateJwtToken(client, grant_type, user, scope):
+def generate_jwt_token(client, grant_type, user, scope):
     # print("client:" + str(client))
     # print("grant_type:" + str(grant_type))
     # print("user:" + str(user))
     # print("scope:" + str(scope))
 
-    authorities = userUtils.getUserAuthorities(user)
-    token = authUtils.encodeAuthToken(user, authorities)
+    authorities = userUtils.get_user_authorities(user)
+    token = authUtils.encode_auth_token(user, authorities)
     # print("token:" + str(token ))
 
     return token.decode("utf-8")
-    
-
 
 # ------------------------------------------------------------------------------
 # Set up the Oauth Server
 # ------------------------------------------------------------------------------
+
+
 print("Creating AuthorizationServer...")
 authorizationServer = AuthorizationServer(
-    query_client=queryClient,
-    save_token=saveToken
+    query_client=query_client,
+    save_token=save_token
 )
 
 # supported grants
@@ -154,7 +113,7 @@ require_oauth.register_token_validator(_BearerTokenValidator())
 
 
 def init(app):
-    app.config['OAUTH2_ACCESS_TOKEN_GENERATOR'] = generateJwtToken
+    app.config['OAUTH2_ACCESS_TOKEN_GENERATOR'] = generate_jwt_token
 
     print("initializing up AuthorizationServer...")
     authorizationServer.init_jwt_config(app)

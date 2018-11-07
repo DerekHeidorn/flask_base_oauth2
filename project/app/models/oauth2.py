@@ -30,6 +30,6 @@ class OAuth2Token(BaseModel, OAuth2TokenMixin):
 
     user_id = Column("USER_ID", Integer, ForeignKey('TB_USER.USER_ID', ondelete='CASCADE'))
 
-    def isRefreshTokenExpired(self):
+    def is_refresh_token_expired(self):
         expires_at = self.issued_at + self.expires_in * 2
         return expires_at < time.time()
