@@ -14,7 +14,8 @@ class CommonTestCases(BaseTest):
         assert resp.status_code == 200
         
         codeDict1 = json.loads(resp.data)
-        assert "1.0" == codeDict1["application.version"].strip()
+        print("codeDict1=" + str(codeDict1))
+        assert "0.1" == codeDict1["application.version"].strip()
 
 
 if __name__ == '__main__':
