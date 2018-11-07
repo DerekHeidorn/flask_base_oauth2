@@ -29,13 +29,16 @@ class OAuth2AuthorizationCode(BaseModel, OAuth2AuthorizationCodeMixin):
     __tablename__ = 'TB_OAUTH2_CODE' # 'oauth2_code'
 
     id = Column("OAUTH2CD_ID", Integer, primary_key=True)
-    #user = relationship('User')
+
+    user_id = Column("USER_ID", Integer, ForeignKey('user.id', ondelete='CASCADE'))
 
 
 class OAuth2Token(BaseModel, OAuth2TokenMixin):
     __tablename__ = 'TB_OAUTH2_TOKEN' # 'oauth2_token'
 
     id = Column("OAUTH2TKN_ID", Integer, primary_key=True)
+
+    user_id = Column("USER_ID", Integer, ForeignKey('user.id', ondelete='CASCADE'))
 
     def isRefreshTokenExpired(self):
         expires_at = self.issued_at + self.expires_in * 2

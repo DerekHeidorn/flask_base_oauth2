@@ -9,16 +9,6 @@ userSecurityAssociation = Table('TB_USER_SCRTY', BaseModel.metadata,
     Column('SCRGRP_ID', Integer, ForeignKey('TB_SCRTY_GRP.SCRGRP_ID'))
 )
 
-userOauth2TokenAssociation = Table('TB_USER_OAUTH2_TOKEN', BaseModel.metadata,
-    Column('USER_ID', Integer, ForeignKey('TB_USER.USER_ID')),
-    Column('OAUTH2TKN_ID', Integer, ForeignKey('TB_OAUTH2_TOKEN.OAUTH2TKN_ID'))
-)
-
-userOauth2CodeAssociation = Table('TB_USER_OAUTH2_CODE', BaseModel.metadata,
-    Column('USER_ID', Integer, ForeignKey('TB_USER.USER_ID')),
-    Column('OAUTH2CD_ID', Integer, ForeignKey('TB_OAUTH2_CODE.OAUTH2CD_ID'))
-)
-
 userOauth2ClientAssociation = Table('TB_USER_OAUTH2_CLIENT', BaseModel.metadata,
     Column('USER_ID', Integer, ForeignKey('TB_USER.USER_ID')),
     Column('OAUTH2CL_ID', Integer, ForeignKey('TB_OAUTH2_CLIENT.OAUTH2CL_ID'))
@@ -84,11 +74,6 @@ class User(BaseModel):
     oauth2Clients = relationship("OAuth2Client",
                                  secondary=userOauth2ClientAssociation)
 
-    oauth2Codes = relationship("OAuth2AuthorizationCode",
-                               secondary=userOauth2CodeAssociation)
-
-    oauth2Tokens = relationship("OAuth2Token",
-                                secondary=userOauth2TokenAssociation)
 
     def __repr__(self):
         return "<User(username='%s')>" % (self.username)

@@ -71,5 +71,15 @@ INSERT INTO public."TB_USER_SCRTY"(
 	
 INSERT INTO public."TB_USER_SCRTY"(
             "USER_ID", "SCRGRP_ID")
-    VALUES (2, 2);	
+    VALUES (2, 2);
+
+
+INSERT INTO public."TB_USER_OAUTH2_CLIENT"(
+            "USER_ID", "OAUTH2CL_ID")
+    VALUES (1, 1);
+
+INSERT INTO public."TB_USER_OAUTH2_CLIENT"(
+            "USER_ID", "OAUTH2CL_ID")
+    VALUES (2, 1);
+
 
