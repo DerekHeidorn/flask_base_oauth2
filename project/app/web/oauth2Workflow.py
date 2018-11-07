@@ -1,4 +1,5 @@
 import json
+import sys
 from flask import Blueprint, request, session
 from flask import render_template, redirect
 from project.app.services import userService
@@ -97,10 +98,13 @@ def signup_post():
             try:
                 user = userService.add_public_user(form.client_id.data, form.username.data, form.password.data)
 
+                print("user: " + str(user))
                 token_response = authorizationServer.create_token_response()
+                print("token_response: " + str(token_response))
                 json_string = token_response.data.decode("utf-8")
-
+                print("json_string: " + str(json_string))
                 json_doc = json.JSONDecoder().decode(json_string)
+                print("json_doc: " + str(json_doc))
                 parameters = ""
                 for k in json_doc:
                     if k == "error":
@@ -109,11 +113,14 @@ def signup_post():
                         if 'error_description' in json_doc:
                             error_msg = json_doc['error_description']
                         form.username.errors.append(error_msg)
+                        print("error_msg:" + str(error_msg))
                         raise Exception(error_msg)
 
                     parameters += "&" + k + '=' + str(json_doc.get(k))
             except Exception as e:
-                print("Exception: " + str(e))
+                tb = sys.exc_info()[2]
+                print("Signup Exception: " + str(e), e.with_traceback(tb))
+                form.username.errors.append(e)
                 return render_template('signup.html', form=form)
 
             session['id'] = user.get_user_id()

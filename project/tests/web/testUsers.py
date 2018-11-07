@@ -7,9 +7,9 @@ from project.tests.utils import randomUtil
 from project.app.services import userService
 
 
-class UserServiceTestCase(BaseTest):
+class UserWebTestCase(BaseTest):
 
-    def testSignup(self):
+    def test_signup(self):
         print("Running: testSignup")
         username = randomUtil.random_username()
         password = randomUtil.random_string(10, 25)
@@ -36,7 +36,7 @@ class UserServiceTestCase(BaseTest):
         user = userService.get_user_by_username(username)
         self.assertEquals(user.username, username)
 
-    def testLogin(self):
+    def test_login(self):
         print("Running: testSignup")
         username_gen = randomUtil.random_username()
         password_gen = randomUtil.random_string(10, 25)
