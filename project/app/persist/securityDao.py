@@ -22,7 +22,7 @@ def get_user_security_authorities(user_id, session=None):
     return authorities
 
 
-def get_security_grou_by_name(security_group_name, session=None):
+def get_security_group_by_name(security_group_name, session=None):
     if session is None:
         session = baseDao.get_session()
 

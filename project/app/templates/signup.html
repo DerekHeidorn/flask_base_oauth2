@@ -25,9 +25,9 @@
     </div>
     <div id="page">
             <br/>
-            <form action="{{ url_for('home_api.signupPost') }}" method="post">
-              <input type="hidden" name="grant_type" value="password">
-              <input type="hidden" name="client_id" value="CLTID-Zeq1LRso5q-iLU9RKCKnu">
+            <form action="{{ url_for('home_api.signup_post') }}" method="post">
+              <input type="hidden" name="grant_type" value="password"/>
+              <input type="hidden" name="client_id" value="CLTID-Zeq1LRso5q-iLU9RKCKnu"/>
               {{ form.csrf_token }}
               <table>
                   <tr>
@@ -53,12 +53,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>{{ form.passwordRepeat.label }}:</td>
-                    <td>{{ form.passwordRepeat }}<br/></td>
+                    <td>{{ form.password_repeat.label }}:</td>
+                    <td>{{ form.password_repeat }}<br/></td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                    {% for error in form.passwordRepeat.errors %}
+                    {% for error in form.password_repeat.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                     </td>

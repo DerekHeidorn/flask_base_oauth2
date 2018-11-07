@@ -16,7 +16,7 @@ class UserServiceTestCase(BaseTest):
         resp = self.testClient.post('/signup',
                                     data=dict(username=username,
                                               password=password,
-                                              passwordRepeat=password,
+                                              password_repeat=password,
                                               grant_type="password",
                                               client_id="CLTID-Zeq1LRso5q-iLU9RKCKnu"
                                               )
@@ -48,7 +48,7 @@ class UserServiceTestCase(BaseTest):
                                     data=dict(
                                               username=username_gen,
                                               password=password_gen,
-                                              passwordRepeat=password_gen,
+                                              password_repeat=password_gen,
                                               grant_type="password",
                                               client_id="CLTID-Zeq1LRso5q-iLU9RKCKnu"
                                               )

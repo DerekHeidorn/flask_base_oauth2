@@ -44,18 +44,18 @@ def add_public_user(client_id, username, password, first_name=None, last_name=No
     userUtils.random_user_private_key(32)
 
     session = baseDao.get_session()
-    security_group = securityDao.get_security_grou_by_name(securityDao.SECURITY_GROUP_CUSTOMER_NAME
-                                                           , session=session)
+    security_group = securityDao.get_security_group_by_name(securityDao.SECURITY_GROUP_CUSTOMER_NAME,
+                                                            session=session)
 
     oauth2_client = oauth2Dao.query_client(client_id, session=session)
 
     new_user = User(first_name=first_name, last_name=last_name, username=username)
-    new_user.statusCd = 'A'
-    new_user.typeCd = '1'
-    new_user.failedAttemptCnt = 0
-    new_user.privateKey = userUtils.random_user_private_key(32)
-    new_user.passwordSalt = userUtils.random_user_private_key(32)
-    new_user.passwordHash = userUtils.get_hashed_password(password, new_user.password_salt)
+    new_user.status_cd = 'A'
+    new_user.type_cd = '1'
+    new_user.failed_attempt_count = 0
+    new_user.private_key = userUtils.random_user_private_key(32)
+    new_user.password_salt = userUtils.random_user_private_key(32)
+    new_user.password_hash = userUtils.get_hashed_password(password, new_user.password_salt)
 
     new_user.security_groups.append(security_group)
     new_user.oauth2_clients.append(oauth2_client)

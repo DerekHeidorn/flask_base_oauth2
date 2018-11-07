@@ -25,7 +25,7 @@
     </div>
     <div id="page">
             <br/>
-            <form action="{{ url_for('home_api.loginPost') }}" method="post">
+            <form action="{{ url_for('home_api.login_post') }}" method="post">
               <input type="hidden" name="grant_type" value="password">
               <input type="hidden" name="client_id" value="CLTID-Zeq1LRso5q-iLU9RKCKnu">
               {{ form.csrf_token }}
