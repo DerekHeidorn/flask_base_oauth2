@@ -1,5 +1,4 @@
 import jwt
-from jwt.exceptions import JWTDecodeError, JWTEncodeError
 import uuid
 from datetime import datetime, timedelta
 from project.app.services import commonService
@@ -29,18 +28,16 @@ def encode_auth_token(user, authorities):
             'jti': str(jtiUuid),
             'auth': authority_list
         }
-
-        jwt_encode = jwt.JWT().encode(
-                                      payload,
-                                      commonService.application_config_cache.get('oauth2_secret_key'),
-                                      alg='HS512'
-                                      )
+        jwt_encode = jwt.encode(
+            payload,
+            commonService.application_config_cache.get('oauth2_secret_key'),
+            algorithm='HS512')
 
         return jwt_encode
         
-    except JWTDecodeError as e:
+    except Exception as e:
         print("Exception(2):" + str(e), str(e.with_traceback))
-        raise Exception(e)
+        return e
 
 
 def decode_auth_token(auth_token):
@@ -57,12 +54,14 @@ def decode_auth_token(auth_token):
         #            algorithms=None,  # type: List[str]
         #            options=None,  # type: Dict
         #            **kwargs):        
-        payload = jwt.JWT().decode(auth_token,
-                                   key=commonService.application_config_cache.get('oauth2_secret_key')
-                                   )
+        payload = jwt.decode(auth_token
+                             , key=commonService.application_config_cache.get('oauth2_secret_key')
+                             , algorithms=['HS512'])
         print("user:" + str(payload['sub']))
         return payload['sub']
-    except JWTDecodeError:
+    except jwt.ExpiredSignatureError:
+        return 'Signature expired. Please log in again.'
+    except jwt.InvalidTokenError:
         return 'Invalid token. Please log in again.'
 
 
@@ -80,8 +79,11 @@ def decode_auth_token_payload(jwt_token):
         #            algorithms=None,  # type: List[str]
         #            options=None,  # type: Dict
         #            **kwargs):
-        payload = jwt.JWT().decode(jwt_token,
-                                   key=commonService.applicationConfigCache.get('oauth2_secret_key'))
+        payload = jwt.decode(jwt_token,
+                             key=commonService.application_config_cache.get('oauth2_secret_key'),
+                             algorithms=['HS512'])
         return payload
-    except JWTDecodeError:
+    except jwt.ExpiredSignatureError:
+        return 'Signature expired. Please log in again.'
+    except jwt.InvalidTokenError:
         return 'Invalid token. Please log in again.'
