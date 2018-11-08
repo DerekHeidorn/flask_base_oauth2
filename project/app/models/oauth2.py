@@ -14,6 +14,10 @@ class OAuth2Client(BaseModel, OAuth2ClientMixin):
 
     id = Column("OAUTH2CL_ID", Integer, primary_key=True)
 
+    def __repr__(self):
+        items = ("%s = %r" % (k, v) for k, v in self.__dict__.items())
+        return "<%s: {%s}>" % (self.__class__.__name__, ', '.join(items))
+
 
 class OAuth2AuthorizationCode(BaseModel, OAuth2AuthorizationCodeMixin):
     __tablename__ = 'TB_OAUTH2_CODE'  # 'oauth2_code'
@@ -21,6 +25,10 @@ class OAuth2AuthorizationCode(BaseModel, OAuth2AuthorizationCodeMixin):
     id = Column("OAUTH2CD_ID", Integer, primary_key=True)
 
     user_id = Column("USER_ID", Integer, ForeignKey('TB_USER.USER_ID', ondelete='CASCADE'))
+
+    def __repr__(self):
+        items = ("%s = %r" % (k, v) for k, v in self.__dict__.items())
+        return "<%s: {%s}>" % (self.__class__.__name__, ', '.join(items))
 
 
 class OAuth2Token(BaseModel, OAuth2TokenMixin):
@@ -33,3 +41,7 @@ class OAuth2Token(BaseModel, OAuth2TokenMixin):
     def is_refresh_token_expired(self):
         expires_at = self.issued_at + self.expires_in * 2
         return expires_at < time.time()
+
+    def __repr__(self):
+        items = ("%s = %r" % (k, v) for k, v in self.__dict__.items())
+        return "<%s: {%s}>" % (self.__class__.__name__, ', '.join(items))

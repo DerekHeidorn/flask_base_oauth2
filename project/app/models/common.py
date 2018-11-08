@@ -13,4 +13,8 @@ class Config(BaseModel):
     key = Column("CFGPRM_KEY", String(100)) 
 
     # "CFGPRM_VAL" character varying(100) NOT NULL, -- Parameter value for a configurable system parameter
-    value = Column("CFGPRM_VAL", String(60)) 
+    value = Column("CFGPRM_VAL", String(60))
+
+    def __repr__(self):
+        items = ("%s = %r" % (k, v) for k, v in self.__dict__.items())
+        return "<%s: {%s}>" % (self.__class__.__name__, ', '.join(items))

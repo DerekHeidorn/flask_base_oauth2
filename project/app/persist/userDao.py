@@ -63,7 +63,7 @@ def get_user_by_username(username, session=None):
     if session is None:
         session = baseDao.get_session()
 
-    user = session.query(User).filter(User.username == username).first()
+    user = session.query(User).filter(func.lower(User.username) == func.lower(username)).first()
     return user
 
 
@@ -80,7 +80,7 @@ def is_username_unique(username, exclude_user_id=None, session=None):
     if session is None:
         session = baseDao.get_session()
 
-    query = session.query(func.count(User.id)).filter(User.username == username)
+    query = session.query(func.count(User.id)).filter(func.lower(User.username) == func.lower(username))
     if exclude_user_id is not None:
         query.filter(User.id != exclude_user_id)
 
@@ -97,8 +97,8 @@ def update_user(user_id, user_to_be_updated):
     if user is None:
         return updated_user
 
-    user.firstName = user_to_be_updated["firstName"]
-    user.lastName = user_to_be_updated["lastName"]
+    user.first_name = user_to_be_updated["first_name"]
+    user.last_name = user_to_be_updated["last_name"]
     user.username = user_to_be_updated["username"]
 
     session.commit()

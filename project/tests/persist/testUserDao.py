@@ -7,7 +7,7 @@ from project.app.persist import userDao
 class UserDaoTestCase(BaseTest):
 
     def test_get_user_by_username(self):
-        print("running testGetUserByUsername...")
+        print("running test_get_user_by_username...")
         created_user = commonHelper.create_public_user()
 
         user = userDao.get_user_by_username(created_user.username)
