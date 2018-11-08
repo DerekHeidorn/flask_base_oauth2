@@ -1,4 +1,6 @@
-import string, hashlib, binascii
+import string
+import hashlib
+import binascii
 from random import randint
 from random import choice
 from random import SystemRandom
@@ -25,7 +27,7 @@ def is_user_valid(user, password):
 
     tmp = get_hashed_password(password, user.password_salt)
 
-    if(tmp.strip() == user.password_hash.strip()):
+    if tmp.strip() == user.password_hash.strip():
         return True
     else:
         return False
@@ -52,4 +54,4 @@ def get_user_authorities(user):
                 for sa in sg.authorities:
                     authorities.append(sa)
             
-    return authorities    
+    return authorities

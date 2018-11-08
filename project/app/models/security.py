@@ -1,14 +1,14 @@
 
-
 from sqlalchemy import Column, String, Integer, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from project.app.models.baseModel import BaseModel
 
 
-securityGroupAuthAssociation = Table('TB_SCRTY_GRP_AUTH', BaseModel.metadata,
-    Column('SCRGRP_ID', Integer, ForeignKey('TB_SCRTY_GRP.SCRGRP_ID')),
-    Column('SCRAUTH_ID', Integer, ForeignKey('TB_SCRTY_AUTH.SCRAUTH_ID'))
-)
+securityGroupAuthAssociation = Table('TB_SCRTY_GRP_AUTH',
+                                     BaseModel.metadata,
+                                     Column('SCRGRP_ID', Integer, ForeignKey('TB_SCRTY_GRP.SCRGRP_ID')),
+                                     Column('SCRAUTH_ID', Integer, ForeignKey('TB_SCRTY_AUTH.SCRAUTH_ID'))
+                                     )
 
 
 class SecurityAuthority(BaseModel):
@@ -48,7 +48,7 @@ class SecurityGroup(BaseModel):
     level = Column("SCRGRP_LEVEL", Integer) 
 
     authorities = relationship("SecurityAuthority", 
-                    secondary=securityGroupAuthAssociation)
+                               secondary=securityGroupAuthAssociation)
 
     def __repr__(self):
         return "<SecurityGroup(id='%i', name='%s')>" % (self.id, self.name)

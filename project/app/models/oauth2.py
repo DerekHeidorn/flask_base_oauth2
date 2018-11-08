@@ -10,13 +10,13 @@ from project.app.models.baseModel import BaseModel
 
 
 class OAuth2Client(BaseModel, OAuth2ClientMixin):
-    __tablename__ = 'TB_OAUTH2_CLIENT'  #oauth2_client'
+    __tablename__ = 'TB_OAUTH2_CLIENT'  # oauth2_client'
 
     id = Column("OAUTH2CL_ID", Integer, primary_key=True)
 
 
 class OAuth2AuthorizationCode(BaseModel, OAuth2AuthorizationCodeMixin):
-    __tablename__ = 'TB_OAUTH2_CODE' # 'oauth2_code'
+    __tablename__ = 'TB_OAUTH2_CODE'  # 'oauth2_code'
 
     id = Column("OAUTH2CD_ID", Integer, primary_key=True)
 
@@ -24,7 +24,7 @@ class OAuth2AuthorizationCode(BaseModel, OAuth2AuthorizationCodeMixin):
 
 
 class OAuth2Token(BaseModel, OAuth2TokenMixin):
-    __tablename__ = 'TB_OAUTH2_TOKEN' # 'oauth2_token'
+    __tablename__ = 'TB_OAUTH2_TOKEN'  # 'oauth2_token'
 
     id = Column("OAUTH2TKN_ID", Integer, primary_key=True)
 

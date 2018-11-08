@@ -22,11 +22,11 @@ def create_application():
     CORS(app)
     oauth2.init(app)
 
-    #app_settings = os.getenv(
+    # app_settings = os.getenv(
     #    'APP_SETTINGS',
     #    'project.server.config.DevelopmentConfig'
-    #)
-    #app.config.from_object(app_settings)
+    # )
+    # app.config.from_object(app_settings)
     
     commonService.load_application_cache_from_db()
 

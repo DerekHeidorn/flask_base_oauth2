@@ -4,16 +4,17 @@ from sqlalchemy.orm import relationship
 
 from project.app.models.baseModel import BaseModel
 
-userSecurityAssociation = Table('TB_USER_SCRTY', BaseModel.metadata,
-    Column('USER_ID', Integer, ForeignKey('TB_USER.USER_ID')),
-    Column('SCRGRP_ID', Integer, ForeignKey('TB_SCRTY_GRP.SCRGRP_ID'))
-)
+userSecurityAssociation = Table('TB_USER_SCRTY',
+                                BaseModel.metadata,
+                                Column('USER_ID', Integer, ForeignKey('TB_USER.USER_ID')),
+                                Column('SCRGRP_ID', Integer, ForeignKey('TB_SCRTY_GRP.SCRGRP_ID'))
+                                )
 
-userOauth2ClientAssociation = Table('TB_USER_OAUTH2_CLIENT', BaseModel.metadata,
-    Column('USER_ID', Integer, ForeignKey('TB_USER.USER_ID')),
-    Column('OAUTH2CL_ID', Integer, ForeignKey('TB_OAUTH2_CLIENT.OAUTH2CL_ID'))
-)
-
+userOauth2ClientAssociation = Table('TB_USER_OAUTH2_CLIENT',
+                                    BaseModel.metadata,
+                                    Column('USER_ID', Integer, ForeignKey('TB_USER.USER_ID')),
+                                    Column('OAUTH2CL_ID', Integer, ForeignKey('TB_OAUTH2_CLIENT.OAUTH2CL_ID'))
+                                    )
 
 
 class User(BaseModel):
@@ -68,10 +69,10 @@ class User(BaseModel):
     reset_by_user = Column("USER_RESET_PRSN_ID", Integer, nullable=True)
 
     security_groups = relationship("SecurityGroup",
-                    secondary=userSecurityAssociation)
+                                   secondary=userSecurityAssociation)
 
     oauth2_clients = relationship("OAuth2Client",
-                                 secondary=userOauth2ClientAssociation)
+                                  secondary=userOauth2ClientAssociation)
 
     def __repr__(self):
-        return "<User(username='%s')>" % (self.username)
+        return "<User(username='%s')>" % self.username

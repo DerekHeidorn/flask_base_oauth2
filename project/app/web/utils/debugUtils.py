@@ -16,4 +16,4 @@ def debug_response(response):
     print("response.content_type=" + str(response.content_type))
     
     if response.data:
-        print("Data=" + response.data.decode("utf-8") )
+        print("Data=" + response.data.decode("utf-8"))

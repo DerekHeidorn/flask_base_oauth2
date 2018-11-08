@@ -19,13 +19,13 @@ def encode_auth_token(user, authorities):
         authority_list = dtoUtils.authority_serialize(authorities)
        
         # make a random UUID
-        jtiUuid = uuid.uuid4()
+        jti_uuid = uuid.uuid4()
 
         payload = {
             'exp': datetime.utcnow() + timedelta(days=1, seconds=0),
             'iat': datetime.utcnow(),
             'sub': user.id,
-            'jti': str(jtiUuid),
+            'jti': str(jti_uuid),
             'auth': authority_list
         }
         jwt_encode = jwt.encode(
@@ -54,9 +54,9 @@ def decode_auth_token(auth_token):
         #            algorithms=None,  # type: List[str]
         #            options=None,  # type: Dict
         #            **kwargs):        
-        payload = jwt.decode(auth_token
-                             , key=commonService.application_config_cache.get('oauth2_secret_key')
-                             , algorithms=['HS512'])
+        payload = jwt.decode(auth_token,
+                             key=commonService.application_config_cache.get('oauth2_secret_key'),
+                             algorithms=['HS512'])
         print("user:" + str(payload['sub']))
         return payload['sub']
     except jwt.ExpiredSignatureError:

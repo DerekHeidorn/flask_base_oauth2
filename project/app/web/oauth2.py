@@ -16,7 +16,7 @@ class _PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
 
     def authenticate_user(self, username, password):
         user = userService.get_user_by_username(username)
-        if user is not None :
+        if user is not None:
             is_password_valid = userUtils.is_user_valid(user, password)
             if is_password_valid:
                 return user

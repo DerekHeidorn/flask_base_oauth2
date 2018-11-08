@@ -8,8 +8,8 @@ def get_config_by_key(key, session=None):
     if session is None:
         session = baseDao.get_session()
 
-    configItem = session.query(Config).filter(Config.key == key).first()
-    return configItem
+    config_item = session.query(Config).filter(Config.key == key).first()
+    return config_item
 
 
 def get_config_all(session=None):
