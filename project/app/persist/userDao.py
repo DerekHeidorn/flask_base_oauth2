@@ -51,6 +51,21 @@ def get_user(user_id, session=None):
     return user 
 
 
+def get_user_by_uuid(user_uuid, session=None):
+    """
+    Gets the User based on the username parameter
+
+    :param user_uuid: The uuid of the user which needs to be loaded
+    :param session: existing db session
+    :return: The user.
+    """
+
+    if session is None:
+        session = baseDao.get_session()
+
+    user = session.query(User).filter(func.lower(User.uuid) == func.lower(user_uuid)).first()
+    return user
+
 def get_user_by_username(username, session=None):
     """
     Gets the User based on the username parameter

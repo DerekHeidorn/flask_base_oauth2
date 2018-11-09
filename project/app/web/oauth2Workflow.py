@@ -1,8 +1,7 @@
 import json
-import sys
 from flask import Blueprint, request, session
 from flask import render_template, redirect
-from project.app.services import userService
+from project.app.services import userService, oauth2Service
 from project.app.web.forms import forms
 from project.app.web.utils import debugUtils
 from project.app.web.oauth2 import authorizationServer
@@ -48,25 +47,29 @@ def login_post():
     if form.validate_on_submit():
         debugUtils.debug_request(request)
         try:
-            token_response = authorizationServer.create_token_response()
-            debugUtils.debug_response(token_response)
+            oauth2_client = oauth2Service.query_client(form.client_id.data)
+            if oauth2_client is not None:
 
-            json_string = token_response.data.decode("utf-8")
+                token_response = authorizationServer.create_token_response()
+                debugUtils.debug_response(token_response)
 
-            json_doc = json.JSONDecoder().decode(json_string)
-            parameters = ""
-            for k in json_doc:
-                if k == "error":
-                    print("jsonDoc:" + str(json_doc))
-                    error_msg = json_doc[k]
-                    if 'error_description' in json_doc:
-                        error_msg = json_doc['error_description']
-                    form.username.errors.append(error_msg)
-                    raise Exception(json_doc['error_description'])
+                json_string = token_response.data.decode("utf-8")
 
-                parameters += "&" + k + '=' + str(json_doc.get(k))
+                json_doc = json.JSONDecoder().decode(json_string)
+                parameters = ""
+                for k in json_doc:
+                    if k == "error":
+                        print("jsonDoc:" + str(json_doc))
+                        error_msg = json_doc[k]
+                        if 'error_description' in json_doc:
+                            error_msg = json_doc['error_description']
+                        form.username.errors.append(error_msg)
+                        raise Exception(error_msg)
 
-            return redirect("/?redirect=SuccessLogin" + parameters, code=302)
+                    parameters += "&" + k + '=' + str(json_doc.get(k))
+
+                redirect_url = oauth2_client.redirect_uri
+                return redirect(redirect_url + "?auth_response=1" + parameters, code=302)
         except Exception as e:
             print("Exception: " + str(e))
             return render_template('login.html', form=form)
@@ -96,39 +99,37 @@ def signup_post():
 
         if form.validate_on_submit(): 
             try:
-                user = userService.add_public_user(form.client_id.data, form.username.data, form.password.data)
+                oauth2_client = oauth2Service.query_client(form.client_id.data)
+                if oauth2_client is not None:
+                    user = userService.add_public_user(form.client_id.data, form.username.data, form.password.data)
 
-                print("user: " + str(user))
-                token_response = authorizationServer.create_token_response()
-                print("token_response: " + str(token_response))
-                json_string = token_response.data.decode("utf-8")
-                print("json_string: " + str(json_string))
-                json_doc = json.JSONDecoder().decode(json_string)
-                print("json_doc: " + str(json_doc))
-                parameters = ""
-                for k in json_doc:
-                    if k == "error":
-                        print("jsonDoc:" + str(json_doc))
-                        error_msg = json_doc[k]
-                        if 'error_description' in json_doc:
-                            error_msg = json_doc['error_description']
-                        form.username.errors.append(error_msg)
-                        print("error_msg:" + str(error_msg))
-                        raise Exception(error_msg)
+                    token_response = authorizationServer.create_token_response()
+                    json_string = token_response.data.decode("utf-8")
+                    json_doc = json.JSONDecoder().decode(json_string)
+                    parameters = ""
+                    for k in json_doc:
+                        if k == "error":
+                            error_msg = json_doc[k]
+                            if 'error_description' in json_doc:
+                                error_msg = json_doc['error_description']
+                            form.username.errors.append(error_msg)
+                            raise Exception(error_msg)
 
-                    parameters += "&" + k + '=' + str(json_doc.get(k))
+                        parameters += "&" + k + '=' + str(json_doc.get(k))
+
+                    session['id'] = user.get_user_id()
+                    redirect_url = oauth2_client.redirect_uri
+                    return redirect(redirect_url + "?redirect=SuccessLogin" + parameters, code=302)
             except Exception as e:
-                tb = sys.exc_info()[2]
-                print("Signup Exception: " + str(e), e.with_traceback(tb))
                 form.username.errors.append(e)
                 return render_template('signup.html', form=form)
 
-            session['id'] = user.get_user_id()
-            return redirect("/?redirect=SuccessLogin" + parameters, code=302)
+
         return render_template('signup.html', form=form)
 
 
 @api.route('/logout')
 def logout():
-    del session['id']
+    if session is not None:
+        session['id'] = None
     return redirect('/')

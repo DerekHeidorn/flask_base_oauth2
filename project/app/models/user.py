@@ -26,6 +26,8 @@ class User(BaseModel):
     def get_user_id(self):
         return self.id
 
+    uuid = Column("USER_UUID", Integer, unique=True)
+
     # USER_FNAME		First Name of the User	
     first_name = Column("USER_FNAME", String(50))
     
@@ -75,4 +77,4 @@ class User(BaseModel):
                                   secondary=userOauth2ClientAssociation)
 
     def __repr__(self):
-        return "<User(username='%s')>" % self.username
+        return "<User(uuid='%s', username='%s')>" % (self.uuid, self.username)

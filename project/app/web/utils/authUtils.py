@@ -1,3 +1,4 @@
+import traceback
 import jwt
 import uuid
 from datetime import datetime, timedelta
@@ -24,10 +25,12 @@ def encode_auth_token(user, authorities):
         payload = {
             'exp': datetime.utcnow() + timedelta(days=1, seconds=0),
             'iat': datetime.utcnow(),
-            'sub': user.id,
+            'sub': str(user.uuid),
             'jti': str(jti_uuid),
             'auth': authority_list
         }
+        print(str(payload))
+        print(str(commonService.application_config_cache.get('oauth2_secret_key')))
         jwt_encode = jwt.encode(
             payload,
             commonService.application_config_cache.get('oauth2_secret_key'),
@@ -37,6 +40,7 @@ def encode_auth_token(user, authorities):
         
     except Exception as e:
         print("Exception(2):" + str(e), str(e.with_traceback))
+        traceback.print_exc()
         return e
 
 

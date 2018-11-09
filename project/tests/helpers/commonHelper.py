@@ -1,7 +1,7 @@
 from project.app.services import userService
 from project.tests.utils import randomUtil
 
-DEFAULT_PUBLIC_USER_PASSWORD = "fooBar@123"
+DEFAULT_PUBLIC_USER_PASSWORD = "foobar@123"
 DEFAULT_PUBLIC_USERNAME = "Joe.Customer@foo.com.invali"
 DEFAULT_ADMIN_USERNAME = "sys.admin@foo.com.invali"
 DEFAULT_PUBLIC_CLIENT_ID = "CLTID-Zeq1LRso5q-iLU9RKCKnu"

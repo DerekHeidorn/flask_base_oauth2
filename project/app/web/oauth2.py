@@ -84,6 +84,7 @@ def generate_jwt_token(client, grant_type, user, scope):
     authorities = userUtils.get_user_authorities(user)
     token = authUtils.encode_auth_token(user, authorities)
     # print("token:" + str(token ))
+    print("token.decode('utf-8'):" + str(token))
 
     return token.decode("utf-8")
 

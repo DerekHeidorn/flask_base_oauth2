@@ -4,7 +4,7 @@ from flask_cors import CORS
 
 from project.app.services import commonService
 from project.app.web import oauth2
-from project.app.web.api import commonApi
+from project.app.web.api import commonApi, userApi, codetablesApi
 from project.app.web import oauth2Workflow
 
 
@@ -32,6 +32,8 @@ def create_application():
 
     # -- API registration --
     app.register_blueprint(commonApi.api)
+    app.register_blueprint(codetablesApi.api)
+    app.register_blueprint(userApi.api)
     app.register_blueprint(oauth2Workflow.api)
 
     # Information output

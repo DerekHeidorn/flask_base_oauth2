@@ -1,3 +1,4 @@
+import uuid
 from project.app.models.user import User
 from project.app.persist import baseDao, userDao, securityDao, oauth2Dao
 from project.app.services.utils import userUtils
@@ -19,12 +20,20 @@ def update_user(user_id, user_to_be_updated):
     return userDao.update_user(user_id, user_to_be_updated)
 
 
+def get_users():
+    return userDao.get_users()
+
+
 def get_user_by_id(user_id):
     return userDao.get_user(user_id)
 
 
 def get_user_by_username(username):
     return userDao.get_user_by_username(username)
+
+
+def get_user_by_uuid(user_uuid):
+    return userDao.get_user_by_uuid(user_uuid)
 
 
 def is_username_unique(username):
@@ -50,6 +59,7 @@ def add_public_user(client_id, username, password, first_name=None, last_name=No
     oauth2_client = oauth2Dao.query_client(client_id, session=session)
 
     new_user = User(first_name=first_name, last_name=last_name, username=username)
+    new_user.uuid = uuid.uuid4()
     new_user.status_cd = 'A'
     new_user.type_cd = '1'
     new_user.failed_attempt_count = 0

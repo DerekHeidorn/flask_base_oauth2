@@ -6,6 +6,8 @@ from project.app.services import userService
 
 
 class UsernamePasswordForm(FlaskForm):
+    client_id = HiddenField()
+    grant_type = HiddenField()
     username = StringField('Email', validators=[DataRequired(), Email(), Length(max=100)])
     password = PasswordField('Password', validators=[DataRequired(), Length(max=256)])
 

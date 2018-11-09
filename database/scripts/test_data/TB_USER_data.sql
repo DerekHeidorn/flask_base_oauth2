@@ -44,22 +44,22 @@ INSERT INTO public."TB_SCRTY_GRP_AUTH"("SCRGRP_ID", "SCRAUTH_ID") VALUES (2, 2);
 
 -- Sys Admin Staff
 INSERT INTO public."TB_USER"(
-            "USER_ID", "USERNAME", "USER_PASSWD", "USER_PASSWD_SALT", "USER_PASSWD_EXP_TS", 
+            "USER_ID", "USER_UUID", "USERNAME", "USER_PASSWD", "USER_PASSWD_SALT", "USER_PASSWD_EXP_TS",
             "USRTYP_CD", "USER_ATTEMPT_CNT", "USER_ATTEMPT_TS", "USER_PRIV_KEY", 
             "USER_ACTV_CODE", "USER_RESET_CODE", "USRSTA_CD", "USER_RESET_PRSN_ID", 
             "USER_FNAME", "USER_LNAME")
-    VALUES (1, 'sys.admin@foo.com.invali', '8dcaecb4b70a28b989925e3e005555954a85e87c5f8086f1cb3648549f06163240c8ab576a65d88fde2005f68795e044b387ae8531d71aa9e1e3e4b18b5d6ddb', 'Q8Z6wiigjd9HgeCZamMdyiHBtvAvZLtu', null, 
+    VALUES (1, 'c957fece-e465-11e8-9f32-f2801f1b9fd1', 'sys.admin@foo.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS', null,
             '2', 0, null, 'XQYpe3fGFp0mJ0CxNGBpZCbA1GCWRegM', 
             null, null, 'A', null, 
             'Sys', 'Admin');
 		
 -- Customer		
 INSERT INTO public."TB_USER"(
-            "USER_ID", "USERNAME", "USER_PASSWD", "USER_PASSWD_SALT", "USER_PASSWD_EXP_TS", 
+            "USER_ID", "USER_UUID", "USERNAME", "USER_PASSWD", "USER_PASSWD_SALT", "USER_PASSWD_EXP_TS",
             "USRTYP_CD", "USER_ATTEMPT_CNT", "USER_ATTEMPT_TS", "USER_PRIV_KEY", 
             "USER_ACTV_CODE", "USER_RESET_CODE", "USRSTA_CD", "USER_RESET_PRSN_ID", 
             "USER_FNAME", "USER_LNAME")
-    VALUES (2, 'Joe.Customer@foo.com.invali', '8dcaecb4b70a28b989925e3e005555954a85e87c5f8086f1cb3648549f06163240c8ab576a65d88fde2005f68795e044b387ae8531d71aa9e1e3e4b18b5d6ddb', 'Q8Z6wiigjd9HgeCZamMdyiHBtvAvZLtu', null, 
+    VALUES (2, 'c95802ac-e465-11e8-9f32-f2801f1b9fd1', 'Joe.Customer@foo.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS', null,
             '3', 0, null, 'XQYpe3fFFp0mJFCxNGBpZCbA1GCWRegM', 
             null, null, 'A', null, 
             'Joe', 'Customer');			
