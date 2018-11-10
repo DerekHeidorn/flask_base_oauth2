@@ -4,7 +4,7 @@ import time
 from authlib.flask.oauth2 import AuthorizationServer, ResourceProtector
 from authlib.specs.rfc6749 import grants
 from authlib.specs.rfc6750 import BearerTokenValidator
-from project.app.services import oauth2Service, userService
+from project.app.services import oauth2Service, userService, commonService
 from project.app.services.utils import userUtils
 from project.app.web.utils import authUtils, dtoUtils
 
@@ -28,7 +28,9 @@ class _BearerTokenValidator(BearerTokenValidator):
     def authenticate_token(self, token_string):
         # oAuth2Token = OAuth2Token()
         # return oAuth2Token
-        payload = authUtils.decode_auth_token_payload(token_string)
+
+        oauth2_secret_key = commonService.get_config_by_key('oauth2_secret_key')
+        payload = authUtils.decode_auth_token_payload(token_string, oauth2_secret_key)
         db_token = oauth2Service.query_token(payload['jti'], 'access_token')
 
         return db_token
@@ -58,7 +60,8 @@ def query_client(client_id):
 
 def save_token(token, request):
 
-    decoded_token = authUtils.decode_auth_token_payload(token.get('access_token'))
+    oauth2_secret_key = commonService.get_config_by_key('oauth2_secret_key')
+    decoded_token = authUtils.decode_auth_token_payload(token.get('access_token'), oauth2_secret_key)
 
     authorities = userUtils.get_user_authorities(request.user)
     authority_list = dtoUtils.authority_serialize(authorities)
@@ -82,7 +85,9 @@ def generate_jwt_token(client, grant_type, user, scope):
     # print("scope:" + str(scope))
 
     authorities = userUtils.get_user_authorities(user)
-    token = authUtils.encode_auth_token(user, authorities)
+    oauth2_secret_key = commonService.get_config_by_key('oauth2_secret_key')
+    print("(*)oauth2_secret_key:" + str(oauth2_secret_key))
+    token = authUtils.encode_auth_token(user, authorities, oauth2_secret_key)
     # print("token:" + str(token ))
     print("token.decode('utf-8'):" + str(token))
 

@@ -2,15 +2,15 @@ import traceback
 import jwt
 import uuid
 from datetime import datetime, timedelta
-from project.app.services import commonService
 from project.app.web.utils import dtoUtils
 
 
-def encode_auth_token(user, authorities):
+def encode_auth_token(user, authorities, oauth2_secret_key):
     """
     Generates the Auth Token
     :param user:  User
     :param authorities:  User authorities
+    :param oauth2_secret_key:
     :return: string
     """
     try:
@@ -30,10 +30,9 @@ def encode_auth_token(user, authorities):
             'auth': authority_list
         }
         print(str(payload))
-        print(str(commonService.application_config_cache.get('oauth2_secret_key')))
         jwt_encode = jwt.encode(
             payload,
-            commonService.application_config_cache.get('oauth2_secret_key'),
+            oauth2_secret_key,
             algorithm='HS512')
 
         return jwt_encode
@@ -44,10 +43,11 @@ def encode_auth_token(user, authorities):
         return e
 
 
-def decode_auth_token(auth_token):
+def decode_auth_token(auth_token, oauth2_secret_key):
     """
     Decodes the auth token
     :param auth_token:
+    :param oauth2_secret_key:
     :return: integer|string
     """
     try:
@@ -59,7 +59,7 @@ def decode_auth_token(auth_token):
         #            options=None,  # type: Dict
         #            **kwargs):        
         payload = jwt.decode(auth_token,
-                             key=commonService.application_config_cache.get('oauth2_secret_key'),
+                             key=oauth2_secret_key,
                              algorithms=['HS512'])
         print("user:" + str(payload['sub']))
         return payload['sub']
@@ -69,13 +69,15 @@ def decode_auth_token(auth_token):
         return 'Invalid token. Please log in again.'
 
 
-def decode_auth_token_payload(jwt_token):
+def decode_auth_token_payload(jwt_token, oauth2_secret_key):
     """
     Decodes the auth token
     :param jwt_token:
+    :param oauth2_secret_key:
     :return: payload as Dictionary
     """
     try:
+        print(str(jwt_token))
         # def decode(self,
         #            jwt,  # type: str
         #            key='',   # type: str
@@ -84,7 +86,7 @@ def decode_auth_token_payload(jwt_token):
         #            options=None,  # type: Dict
         #            **kwargs):
         payload = jwt.decode(jwt_token,
-                             key=commonService.application_config_cache.get('oauth2_secret_key'),
+                             key=oauth2_secret_key,
                              algorithms=['HS512'])
         return payload
     except jwt.ExpiredSignatureError:

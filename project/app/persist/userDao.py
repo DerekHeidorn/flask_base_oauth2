@@ -63,7 +63,7 @@ def get_user_by_uuid(user_uuid, session=None):
     if session is None:
         session = baseDao.get_session()
 
-    user = session.query(User).filter(func.lower(User.uuid) == func.lower(user_uuid)).first()
+    user = session.query(User).filter(User.uuid == user_uuid).first()
     return user
 
 def get_user_by_username(username, session=None):
