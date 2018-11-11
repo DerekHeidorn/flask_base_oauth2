@@ -71,7 +71,7 @@ def runserver():
 
     # for k in sorted(os.environ.keys()):
     #    print(k + ":" + os.environ[k])
-    options = {'use_debugger': True, 'threaded': False, 'use_reloader': True}
+    options = {'use_debugger': False, 'threaded': True, 'use_reloader': True}
     app.run(debug=False, host="127.0.0.1", port=9000, **options)
 
 
