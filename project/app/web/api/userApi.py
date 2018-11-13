@@ -3,11 +3,10 @@ from flask import jsonify
 from flask import abort
 from flask import make_response
 from flask import request
-from flask import url_for
 from flask import Blueprint
 
 from project.app.services import userService
-from project.app.web.utils import dtoUtils
+from project.app.web.utils import serializeUtils
 from project.app.web import oauth2
 
 api = Blueprint('user_api', __name__)
@@ -19,7 +18,7 @@ def get_public_user_by_id(user_uuid):
     # TODO get token to validate the user
     current_user = userService.get_user_by_uuid(user_uuid)
     if current_user:
-        return jsonify(dtoUtils.user_serialize(current_user))
+        return jsonify(serializeUtils.serialize_user(current_user))
     else:
         #
         # In case we did not find the candidate by id
@@ -34,7 +33,7 @@ def get_users():
     users = userService.get_users()
     user_list = []
     for u in users:
-        user_list.append(dtoUtils.user_serialize(u))
+        user_list.append(serializeUtils.serialize_user(u))
 
     return jsonify(user_list)
 
@@ -44,7 +43,7 @@ def get_users():
 def get_user_by_id(user_id):
     current_user = userService.get_user_by_id(user_id)
     if current_user:
-        return jsonify(dtoUtils.user_serialize(current_user))
+        return jsonify(serializeUtils.serialize_user(current_user))
     else:
         #
         # In case we did not find the candidate by id
@@ -78,7 +77,7 @@ def update_public_user(user_id):
     if not updated_user:
         return make_response('', 404)
     else:
-        return jsonify(dtoUtils.user_serialize(updated_user))
+        return jsonify(serializeUtils.serialize_user(updated_user))
 
 
 @api.route('/api/v1.0/admin/user', methods=['POST'])
@@ -91,7 +90,4 @@ def add_public_user():
 
     new_user = userService.add_public_user(None, username, password, first_name, last_name)
 
-    return jsonify({
-        "id": new_user.id,
-        "url": url_for("user_api.getUserById", id=new_user.id)
-    }), 201
+    return jsonify(serializeUtils.serialize_user(new_user)), 201

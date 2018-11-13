@@ -10,9 +10,9 @@ from project.app.models.baseModel import BaseModel
 
 
 class OAuth2Client(BaseModel, OAuth2ClientMixin):
-    __tablename__ = 'TB_OAUTH2_CLIENT'  # oauth2_client'
+    __tablename__ = 'tb_oauth2_client'  # oauth2_client'
 
-    id = Column("OAUTH2CL_ID", Integer, primary_key=True)
+    id = Column("oauth2cl_id", Integer, primary_key=True)
 
     def __repr__(self):
         items = ("%s = %r" % (k, v) for k, v in self.__dict__.items())
@@ -20,11 +20,11 @@ class OAuth2Client(BaseModel, OAuth2ClientMixin):
 
 
 class OAuth2AuthorizationCode(BaseModel, OAuth2AuthorizationCodeMixin):
-    __tablename__ = 'TB_OAUTH2_CODE'  # 'oauth2_code'
+    __tablename__ = 'tb_oauth2_code'  # 'oauth2_code'
 
-    id = Column("OAUTH2CD_ID", Integer, primary_key=True)
+    id = Column("oauth2cd_id", Integer, primary_key=True)
 
-    user_id = Column("USER_ID", Integer, ForeignKey('TB_USER.USER_ID', ondelete='CASCADE'))
+    user_id = Column("user_id", Integer, ForeignKey('tb_user.user_id', ondelete='CASCADE'))
 
     def __repr__(self):
         items = ("%s = %r" % (k, v) for k, v in self.__dict__.items())
@@ -32,11 +32,11 @@ class OAuth2AuthorizationCode(BaseModel, OAuth2AuthorizationCodeMixin):
 
 
 class OAuth2Token(BaseModel, OAuth2TokenMixin):
-    __tablename__ = 'TB_OAUTH2_TOKEN'  # 'oauth2_token'
+    __tablename__ = 'tb_oauth2_token'  # 'oauth2_token'
 
-    id = Column("OAUTH2TKN_ID", Integer, primary_key=True)
+    id = Column("oauth2tkn_id", Integer, primary_key=True)
 
-    user_id = Column("USER_ID", Integer, ForeignKey('TB_USER.USER_ID', ondelete='CASCADE'))
+    user_id = Column("user_id", Integer, ForeignKey('tb_user.user_id', ondelete='CASCADE'))
 
     def is_refresh_token_expired(self):
         expires_at = self.issued_at + self.expires_in * 2

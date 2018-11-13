@@ -18,7 +18,7 @@ def add_user(new_user, session=None):
     session.add(new_user)
     session.commit()
 
-    return new_user.id
+    return new_user.user_id
 
 
 def get_users(session=None):
@@ -36,7 +36,7 @@ def get_users(session=None):
     return all_users
 
 
-def get_user(user_id, session=None):
+def get_user_by_id(user_id, session=None):
     """
     Gets the User based on the id parameter
 
@@ -47,7 +47,7 @@ def get_user(user_id, session=None):
     if session is None:
         session = baseDao.get_session()
 
-    user = session.query(User).filter(User.id == user_id).first()
+    user = session.query(User).filter(User.user_id == user_id).first()
     return user 
 
 
@@ -63,8 +63,9 @@ def get_user_by_uuid(user_uuid, session=None):
     if session is None:
         session = baseDao.get_session()
 
-    user = session.query(User).filter(User.uuid == user_uuid).first()
+    user = session.query(User).filter(User.user_uuid == user_uuid).first()
     return user
+
 
 def get_user_by_username(username, session=None):
     """
@@ -95,9 +96,9 @@ def is_username_unique(username, exclude_user_id=None, session=None):
     if session is None:
         session = baseDao.get_session()
 
-    query = session.query(func.count(User.id)).filter(func.lower(User.username) == func.lower(username))
+    query = session.query(func.count(User.user_id)).filter(func.lower(User.username) == func.lower(username))
     if exclude_user_id is not None:
-        query.filter(User.id != exclude_user_id)
+        query.filter(User.user_id != exclude_user_id)
 
     count = query.scalar()
 
@@ -129,7 +130,7 @@ def delete_user(user_id):
 
     if id_value > 0:
         session = baseDao.get_session()
-        items_deleted = session.query(User).filter(User.id == id_value).delete()
+        items_deleted = session.query(User).filter(User.user_id == id_value).delete()
         return items_deleted > 0
 
     return False

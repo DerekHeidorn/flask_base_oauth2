@@ -6,7 +6,7 @@ from authlib.specs.rfc6749 import grants
 from authlib.specs.rfc6750 import BearerTokenValidator
 from project.app.services import oauth2Service, userService, commonService
 from project.app.services.utils import userUtils
-from project.app.web.utils import authUtils, dtoUtils
+from project.app.web.utils import authUtils, serializeUtils
 
 
 class _PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
@@ -64,7 +64,7 @@ def save_token(token, request):
     decoded_token = authUtils.decode_auth_token_payload(token.get('access_token'), oauth2_secret_key)
 
     authorities = userUtils.get_user_authorities(request.user)
-    authority_list = dtoUtils.authority_serialize(authorities)
+    authority_list = serializeUtils.serialize_authority(authorities)
     scope_list = ' '.join(authority_list)
 
     client_id = request.client.client_id

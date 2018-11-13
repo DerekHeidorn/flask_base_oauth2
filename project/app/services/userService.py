@@ -25,7 +25,7 @@ def get_users():
 
 
 def get_user_by_id(user_id):
-    return userDao.get_user(user_id)
+    return userDao.get_user_by_id(user_id)
 
 
 def get_user_by_username(username):
@@ -59,7 +59,7 @@ def add_public_user(client_id, username, password, first_name=None, last_name=No
     oauth2_client = oauth2Dao.query_client(client_id, session=session)
 
     new_user = User(first_name=first_name, last_name=last_name, username=username)
-    new_user.uuid = uuid.uuid4()
+    new_user.user_uuid = uuid.uuid4()
     new_user.status_cd = 'A'
     new_user.type_cd = '1'
     new_user.failed_attempt_count = 0
@@ -71,6 +71,6 @@ def add_public_user(client_id, username, password, first_name=None, last_name=No
     new_user.oauth2_clients.append(oauth2_client)
     user_id = userDao.add_user(new_user, session=session)
     if user_id:
-        return userDao.get_user(user_id)
+        return userDao.get_user_by_id(user_id)
     else:
         return None

@@ -124,7 +124,6 @@ def signup_post():
                 form.username.errors.append(e)
                 return render_template('signup.html', form=form)
 
-
         return render_template('signup.html', form=form)
 
 

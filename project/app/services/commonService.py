@@ -6,7 +6,7 @@ _application_config_cache = SimpleCache()
 
 
 def get_config_by_key(key):
-    print("get_config_by_key->key=" + key)
+
     if _application_config_cache.has(key):
         value = _application_config_cache.get(key)
         return value
@@ -15,8 +15,6 @@ def get_config_by_key(key):
 
         if c is not None:
             _application_config_cache.add(c.key, c.value)
-            print("**get_config_by_key->key=" + c.key)
-            print("**get_config_by_key->value=" + c.value)
             return c.value
         else:
             return None

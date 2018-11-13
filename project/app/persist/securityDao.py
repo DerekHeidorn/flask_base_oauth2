@@ -11,7 +11,7 @@ def get_user_security_authorities(user_id, session=None):
 
     if session is None:
         session = baseDao.get_session()
-    user = session.query(User).filter(User.id == user_id).first()
+    user = session.query(User).filter(User.user_id == user_id).first()
 
     authorities = []
 

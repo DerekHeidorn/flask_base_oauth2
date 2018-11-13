@@ -4,71 +4,68 @@ from sqlalchemy.orm import relationship
 
 from project.app.models.baseModel import BaseModel
 
-userSecurityAssociation = Table('TB_USER_SCRTY',
+userSecurityAssociation = Table('tb_user_scrty',
                                 BaseModel.metadata,
-                                Column('USER_ID', Integer, ForeignKey('TB_USER.USER_ID')),
-                                Column('SCRGRP_ID', Integer, ForeignKey('TB_SCRTY_GRP.SCRGRP_ID'))
+                                Column('user_id', Integer, ForeignKey('tb_user.user_id')),
+                                Column('scrgrp_id', Integer, ForeignKey('tb_scrty_grp.scrgrp_id'))
                                 )
 
-userOauth2ClientAssociation = Table('TB_USER_OAUTH2_CLIENT',
+userOauth2ClientAssociation = Table('tb_user_oauth2_client',
                                     BaseModel.metadata,
-                                    Column('USER_ID', Integer, ForeignKey('TB_USER.USER_ID')),
-                                    Column('OAUTH2CL_ID', Integer, ForeignKey('TB_OAUTH2_CLIENT.OAUTH2CL_ID'))
+                                    Column('user_id', Integer, ForeignKey('tb_user.user_id')),
+                                    Column('oauth2cl_id', Integer, ForeignKey('tb_oauth2_client.oauth2cl_id'))
                                     )
 
 
 class User(BaseModel):
-    __tablename__ = 'TB_USER'
+    __tablename__ = 'tb_user'
 
     # USER_ID		System-generated ID for a User.
-    id = Column("USER_ID", Integer, primary_key=True)
+    user_id = Column("user_id", Integer, primary_key=True)
 
     def get_user_id(self):
-        return self.id
+        return self.user_id
 
-    uuid = Column("USER_UUID", Integer, unique=True)
+    user_uuid = Column("user_uuid", String(36), unique=True)
 
     # USER_FNAME		First Name of the User	
-    first_name = Column("USER_FNAME", String(50))
+    first_name = Column("user_fname", String(50))
     
     # USER_LNAME		Last Name of the User
-    last_name = Column("USER_LNAME", String(80))
+    last_name = Column("user_lname", String(80))
 
     # # USERNAME		Username for a User	
-    username = Column("USERNAME", String(100))
+    username = Column("username", String(100))
 
     # # USER_PASSWD		Hashed password used in USERNAME authentication
-    password_hash = Column("USER_PASSWD", String(256))
+    password_hash = Column("user_passwd", String(256))
 
     # # USER_PASSWD_SALT		Used in hashing and authentication	
-    password_salt = Column("USER_PASSWD_SALT", String(32))
-    
-    # # USER_PASSWD_EXP_TS		A timestamp for expiring a password, used for temporary passwords
-    password_expire_ts = Column("USER_PASSWD_EXP_TS", DateTime)
-    
+    password_salt = Column("user_passwd_salt", String(32))
+
     # # USRTYP_CD		Code value for user type (staff, camper)	
-    type_cd = Column("USRTYP_CD", String(2))
+    type_cd = Column("usrtyp_cd", String(2))
     
     # # USER_ATTEMPT_CNT		Number of attempts since the last sucessful login.	
-    failed_attempt_count = Column("USER_ATTEMPT_CNT", Integer)
+    failed_attempt_count = Column("user_attempt_cnt", Integer)
     
     # # USER_ATTEMPT_TS		When the last login attempt was made.	
-    last_attempts_ts = Column("USER_ATTEMPT_TS", DateTime)
+    last_attempts_ts = Column("user_attempt_ts", DateTime)
     
     # # USER_PRIV_KEY		Used for encrypting the data specific to the user.	
-    private_key = Column("USER_PRIV_KEY", String(32))
+    private_key = Column("user_priv_key", String(32))
     
     # # USER_ACTV_CODE		A code that is used to Reactivate an account that got deactivated.	
-    user_activation_code = Column("USER_ACTV_CODE", String(32))
+    user_activation_code = Column("user_actv_code", String(32))
     
     # # USER_RESET_CODE		Encrypted code passed to the user at the point of a password reset.	
-    reset_code = Column("USER_RESET_CODE", String(32))
+    reset_code = Column("user_reset_code", String(32))
     
     # # USRSTA_CD		User Status Code	
-    status_cd = Column("USRSTA_CD", String(1))
+    status_cd = Column("usrsta_cd", String(1))
     
     # # USER_RESET_PRSN_ID		ID of the individual (Staff User) who performed the reset	
-    reset_by_user = Column("USER_RESET_PRSN_ID", Integer, nullable=True)
+    reset_by_user = Column("user_reset_prsn_id", Integer, nullable=True)
 
     security_groups = relationship("SecurityGroup",
                                    secondary=userSecurityAssociation)
@@ -77,4 +74,4 @@ class User(BaseModel):
                                   secondary=userOauth2ClientAssociation)
 
     def __repr__(self):
-        return "<User(uuid='%s', username='%s')>" % (self.uuid, self.username)
+        return "<User(uuid='%s', username='%s')>" % (self.user_uuid, self.username)

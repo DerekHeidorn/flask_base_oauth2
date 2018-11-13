@@ -2,7 +2,7 @@ import traceback
 import jwt
 import uuid
 from datetime import datetime, timedelta
-from project.app.web.utils import dtoUtils
+from project.app.web.utils import serializeUtils
 
 
 def encode_auth_token(user, authorities, oauth2_secret_key):
@@ -17,7 +17,7 @@ def encode_auth_token(user, authorities, oauth2_secret_key):
         """
         iss (issuer), exp (expiration time), sub (subject), aud (audience)
         """
-        authority_list = dtoUtils.authority_serialize(authorities)
+        authority_list = serializeUtils.serialize_authority(authorities)
        
         # make a random UUID
         jti_uuid = uuid.uuid4()
@@ -25,7 +25,7 @@ def encode_auth_token(user, authorities, oauth2_secret_key):
         payload = {
             'exp': datetime.utcnow() + timedelta(days=1, seconds=0),
             'iat': datetime.utcnow(),
-            'sub': str(user.uuid),
+            'sub': str(user.user_uuid),
             'jti': str(jti_uuid),
             'auth': authority_list
         }

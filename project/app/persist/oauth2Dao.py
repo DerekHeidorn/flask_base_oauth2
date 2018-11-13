@@ -15,7 +15,7 @@ def add_authorization_code(client, user, request):
     item.client_id = client.client_id
     item.redirect_uri = request.redirect_uri
     item.scope = request.scope
-    item.user_id = user.id
+    item.user_id = user.user_id
 
     session.add(item)
     session.commit()
@@ -41,22 +41,8 @@ def delete_authorization_code(authorization_code):
 
 def authenticate_user(authorization_code):
     session = baseDao.get_session()
-    user = session.query(User).filter(User.id == authorization_code.user_id).first()
+    user = session.query(User).filter(User.user_id == authorization_code.user_id).first()
     return user 
-
-
-def create_access_token(client, grant_user=None):
-    user_id = client.user_id
-    if grant_user is not None:
-        user_id = grant_user.id
-
-    item = OAuth2Token()
-    item.client_id = client.client_id
-    item.user_id = user_id
-
-    session = baseDao.get_session()
-    session.add(item)
-    session.commit()
 
 
 def query_client(client_id, session=None):

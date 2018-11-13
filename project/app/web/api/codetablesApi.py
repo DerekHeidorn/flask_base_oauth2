@@ -4,13 +4,13 @@ from flask import jsonify
 from flask import abort
 from werkzeug.contrib.cache import SimpleCache
 
-from project.app.models.codetables.users import CtUserStatuses, CtUserTypes
+from project.app.models.codetables.users import CtUserStatus, CtUserType
 from project.app.services import codetablesService
-from project.app.web.utils import dtoUtils
+from project.app.web.utils import serializeUtils
 
 api = Blueprint('codetables_api', __name__)
 
-allowable_codetable_map = {"CtUserStatuses": CtUserStatuses, "CtUserTypes": CtUserTypes}
+allowable_codetable_map = {"CtUserStatus": CtUserStatus, "CtUserType": CtUserType}
 codetable_cache = SimpleCache()
 
 
@@ -29,7 +29,7 @@ def codetable_by_name(codetable_name):
 
         else:
             codetable_data = codetablesService.get_code_table(allowed_codetable)
-            data = dtoUtils.codetable_serialize(codetable_data)
+            data = serializeUtils.serialize_codetable(codetable_data)
             print("codetableData=" + str(data))
             if data:
                 codetable_cache.add(codetable_name, data)
