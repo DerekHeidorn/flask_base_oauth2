@@ -5,6 +5,8 @@ from flask import make_response
 from flask import request
 from flask import Blueprint
 
+from authlib.flask.oauth2 import current_token
+
 from project.app.services import userService
 from project.app.web.utils import serializeUtils
 from project.app.web import oauth2
@@ -12,19 +14,41 @@ from project.app.web import oauth2
 api = Blueprint('user_api', __name__)
 
 
-@api.route('/api/v1.0/public/user/<user_uuid>', methods=['GET'])
+@api.route('/api/v1.0/public/user/', methods=['GET'])
 @oauth2.require_oauth('CUST_ACCESS')
-def get_public_user_by_id(user_uuid):
-    # TODO get token to validate the user
-    current_user = userService.get_user_by_uuid(user_uuid)
-    if current_user:
-        return jsonify(serializeUtils.serialize_user(current_user))
+def get_public_user_by_id():
+    if current_token is not None and current_token.user_id is not None:
+
+        current_user = userService.get_user_by_id(current_token.user_id)
+        if current_user:
+            return jsonify(serializeUtils.serialize_user(current_user))
+        else:
+            #
+            # In case we did not find the candidate by id
+            # we send HTTP 404 - Not Found error to the client
+            #
+            abort(404)
     else:
-        #
-        # In case we did not find the candidate by id
-        # we send HTTP 404 - Not Found error to the client
-        #
-        abort(404)
+        abort(401)
+
+
+@api.route('/api/v1.0/public/user/profile', methods=['GET'])
+@oauth2.require_oauth('CUST_ACCESS')
+def get_public_user_profile_by_id():
+
+    if current_token is not None and current_token.user_id is not None:
+
+        current_user = userService.get_user_by_id(current_token.user_id)
+        if current_user:
+            return jsonify(serializeUtils.serialize_user(current_user))
+        else:
+            #
+            # In case we did not find the candidate by id
+            # we send HTTP 404 - Not Found error to the client
+            #
+            abort(404)
+    else:
+        abort(401)
 
 
 @api.route('/api/v1.0/admin/user', methods=['GET'])

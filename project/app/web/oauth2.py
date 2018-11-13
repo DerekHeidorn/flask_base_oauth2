@@ -30,8 +30,11 @@ class _BearerTokenValidator(BearerTokenValidator):
         # return oAuth2Token
 
         oauth2_secret_key = commonService.get_config_by_key('oauth2_secret_key')
+        print("oauth2_secret_key=" + str(oauth2_secret_key))
         payload = authUtils.decode_auth_token_payload(token_string, oauth2_secret_key)
+        print("payload=" + str(payload))
         db_token = oauth2Service.query_token(payload['jti'], 'access_token')
+        print("db_token=" + str(db_token))
 
         return db_token
 
