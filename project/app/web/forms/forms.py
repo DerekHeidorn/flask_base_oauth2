@@ -12,6 +12,18 @@ class UsernamePasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired(), Length(max=256)])
 
 
+class UsernamePasswordResetForm(FlaskForm):
+    client_id = HiddenField()
+    grant_type = HiddenField()
+    username = StringField('Email', validators=[DataRequired(), Email(), Length(max=100)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(max=256)])
+    password_repeat = PasswordField('Repeat Password', validators=[DataRequired()])
+
+
+class UsernamePasswordReactivateForm(FlaskForm):
+    client_id = HiddenField()
+
+
 class SignupForm(FlaskForm):
     client_id = HiddenField()
     grant_type = HiddenField()
@@ -33,4 +45,3 @@ class SignupForm(FlaskForm):
 
         if self.password.data != field.data:
             raise ValidationError('Passwords need to match')
-

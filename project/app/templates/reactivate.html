@@ -1,0 +1,73 @@
+<html>
+
+<head>
+    <link href="static/timeless-style.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+
+<div id="wrapper">
+    <div id="header-wrapper">
+        <div id="header">
+            <div style="text-align:right; padding: 10px">
+                {% if user %}
+                Logged in as <strong>{{user.login}}</strong> [<a href="{{ url_for('.logout') }}">Log Out</a>]
+                {% else %}
+                    [<a href="/">Home</a>]
+                    [<a href="/signup">Sign Up</a>]
+                    [<a href="/login">Login</a>]
+                {% endif %}
+            </div>
+            <div id="logo">
+                <h1><a href="#">oauth2 Project</a></h1>
+                <p>Application using JWT and OAuth2</p>
+            </div>
+        </div>
+    </div>
+    <div id="page">
+            <br/>
+            <form action="{{ url_for('home_api.login_post') }}" method="post">
+              <input type="hidden" name="grant_type" value="password">
+              <input type="hidden" name="client_id" value="CLTID-Zeq1LRso5q-iLU9RKCKnu">
+              {{ form.csrf_token }}
+              
+              <table>
+                <tr>
+                    <td>{{ form.username.label }}:</td>
+                    <td>{{ form.username }}<br/></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    {% for error in form.username.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                  <td>{{ form.password.label }}:</td>
+                  <td>{{ form.password }}<br/></td>
+              </tr>
+              <tr>
+                    <td colspan="2">
+                    {% for error in form.password.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                    </td>
+              </tr>
+              <tr>
+                  <td></td>
+                  <td style="text-align:right;"><button type="submit">Login</button></td>
+              </tr>
+            </table>
+
+              
+
+              
+            </form>
+            <br/>
+    </div>
+</div>
+<div id="footer">
+    <p>Stylesheet Design by <a href="http://www.freecsstemplates.org/">CSS Templates</a>.</p>
+</div>
+</body>
+</html>

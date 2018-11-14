@@ -4,6 +4,11 @@ import coverage
 
 from flask_script import Manager
 from project.app import main
+'''
+Setting an SMTP server:
+python -m smtpd -n -c DebuggingServer localhost:25
+'''
+
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 os.environ['OAUTH_INSECURE_TRANSPORT'] = '1'

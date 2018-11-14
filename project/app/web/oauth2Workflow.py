@@ -35,6 +35,23 @@ def login():
         return render_template('login.html', form=form)
 
 
+@api.route('/reactivate', methods=['GET'])
+def reactivate():
+    reactivate_code = request.args.get('code')
+
+
+    form = forms.UsernamePasswordReactivateForm()
+    return render_template('reactivate.html', form=form)
+
+
+@api.route('/reset', methods=['GET'])
+def reset():
+    reset_code = request.args.get('code')
+
+    form = forms.UsernamePasswordResetForm()
+    return render_template('reset.html', form=form)
+
+
 @api.route('/login', methods=['POST'])
 def login_post():
 
