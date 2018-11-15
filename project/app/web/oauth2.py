@@ -33,10 +33,17 @@ class _BearerTokenValidator(BearerTokenValidator):
         print("oauth2_secret_key=" + str(oauth2_secret_key))
         payload = authUtils.decode_auth_token_payload(token_string, oauth2_secret_key)
         print("payload=" + str(payload))
-        db_token = oauth2Service.query_token(payload['jti'], 'access_token')
-        print("db_token=" + str(db_token))
+        if isinstance(payload, str):
+            print(payload)
+            return payload
+        else:
+            if isinstance(payload, dict) and 'jti' in payload:
+                print("payload['jti']=" + str(payload['jti']))
+                db_token = oauth2Service.query_token(payload['jti'], 'access_token')
+                print("db_token=" + str(db_token))
 
-        return db_token
+                return db_token
+        return None
 
     def request_invalid(self, request):
         print("request_invalid->request:" + str(request))

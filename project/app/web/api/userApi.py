@@ -40,7 +40,7 @@ def get_public_user_profile_by_id():
 
         current_user = userService.get_user_by_id(current_token.user_id)
         if current_user:
-            return jsonify(serializeUtils.serialize_user(current_user))
+            return jsonify(serializeUtils.serialize_user_profile(current_user))
         else:
             #
             # In case we did not find the candidate by id

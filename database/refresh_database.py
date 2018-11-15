@@ -10,6 +10,7 @@ def refresh_database():
              'scripts/tables.sql',
              'scripts/data_codetables.sql',
              'scripts/test_data/TB_CONFIG.sql',
+             'scripts/test_data/TB_BATCH_JOB.sql',
              'scripts/test_data/OAUTH.sql',
              'scripts/test_data/TB_USER_data.sql']
     for f in files:

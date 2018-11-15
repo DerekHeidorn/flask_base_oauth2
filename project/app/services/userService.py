@@ -50,8 +50,6 @@ def get_user_by_username_and_validate(username, password):
 
 def add_public_user(client_id, username, password, first_name=None, last_name=None):
 
-    userUtils.random_user_private_key(32)
-
     session = baseDao.get_session()
     security_group = securityDao.get_security_group_by_name(securityDao.SECURITY_GROUP_CUSTOMER_NAME,
                                                             session=session)

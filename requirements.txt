@@ -1,7 +1,7 @@
 flask==1.0.2
 flask-script==2.0.6
 flask-sqlalchemy==2.3.2
-sqlalchemy==1.2.13
+sqlalchemy==1.2.14
 PyLD==1.0.3
 pytest==3.10.0
 psycopg2==2.7.5

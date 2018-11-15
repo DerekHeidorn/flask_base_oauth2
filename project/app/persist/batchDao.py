@@ -1,9 +1,21 @@
-from sqlalchemy.sql import text
-from sqlalchemy.sql import column
-from sqlalchemy.sql import select
 
 from project.app.persist import baseDao
 from project.app.models.batch import BatchJob
+
+
+def get_batch_jobs(session=None):
+    """
+    Get all batch jobs, order by Id
+
+    :param session: existing db session
+    :return: users.
+    """
+    if session is None:
+        session = baseDao.get_session()
+
+    all_users = session.query(BatchJob).order_by(BatchJob.batch_job_id).all()
+
+    return all_users
 
 
 def get_batch_job_by_id(batch_job_id, session=None):
