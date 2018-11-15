@@ -109,7 +109,7 @@ def update_user(user_id, user_to_be_updated):
     updated_user = None
     session = baseDao.get_session()
 
-    user = get_user(user_id, session=session)
+    user = get_user_by_id(user_id, session=session)
     if user is None:
         return updated_user
 
@@ -118,7 +118,7 @@ def update_user(user_id, user_to_be_updated):
     user.username = user_to_be_updated["username"]
 
     session.commit()
-    updated_user = get_user(user_id)
+    updated_user = get_user_by_id(user_id)
 
     return updated_user
 
@@ -134,3 +134,10 @@ def delete_user(user_id):
         return items_deleted > 0
 
     return False
+
+
+def get_user_count(session=None):
+    if session is None:
+        session = baseDao.get_session()
+    row_count = session.query(func.count(User.user_id)).scalar()
+    return row_count

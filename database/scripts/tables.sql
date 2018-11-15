@@ -220,7 +220,7 @@ CREATE INDEX XIF1TB_USER_SCRTY
 
   -- =================================================
 
-  CREATE TABLE TB_CONFIG
+  CREATE TABLE public.TB_CONFIG
    (
 	CFGPRM_KEY character varying(100) NOT NULL,
 	CFGPRM_VAL character varying(100) NOT NULL,
@@ -236,7 +236,7 @@ CREATE INDEX XIF1TB_USER_SCRTY
 
  -- =================================================
 
-    CREATE TABLE TB_BATCH_JOB_CD
+    CREATE TABLE public.TB_BATCH_JOB_CD
    (	BATJOC_CD character varying(10) NOT NULL,
 	BATJOC_DE character varying(30) NOT NULL,
 	BATJOC_COMMENT character varying(500) NOT NULL,
@@ -249,7 +249,7 @@ CREATE INDEX XIF1TB_USER_SCRTY
    COMMENT ON COLUMN TB_BATCH_JOB_CD.BATJOC_COMMENT IS 'Batch Job Comments; include at least Job(s) involved and execution scheduling';
    COMMENT ON TABLE TB_BATCH_JOB_CD  IS 'Batch Job code table';
 
-     CREATE TABLE TB_BATCH_JOB_STATUS_CD
+     CREATE TABLE public.TB_BATCH_JOB_STATUS_CD
    (	BATJOBSTA_CD character varying(10) NOT NULL,
 	BATJOBSTA_DE character varying(50) NOT NULL,
 	 CONSTRAINT XPKTB_BATCH_JOB_STATUS_CD PRIMARY KEY (BATJOBSTA_CD)
@@ -259,7 +259,7 @@ CREATE INDEX XIF1TB_USER_SCRTY
    COMMENT ON COLUMN TB_BATCH_JOB_STATUS_CD.BATJOBSTA_DE IS 'Batch Job Status Code description';
    COMMENT ON TABLE TB_BATCH_JOB_STATUS_CD  IS 'Batch Job Status Code table';
 
-  CREATE TABLE TB_BATCH_JOB
+  CREATE TABLE public.TB_BATCH_JOB
    (	BATJOB_ID serial NOT NULL,
 	BATJOC_CD character varying(10) NOT NULL,
 	BATJOB_START_TS timestamp without time zone NOT NULL,
@@ -311,7 +311,7 @@ CREATE INDEX XIF1TB_USER_SCRTY
 
   -- software_id = Column(String(36))
   -- software_version = Column(String(48))
-  CREATE TABLE TB_OAUTH2_CLIENT
+  CREATE TABLE public.TB_OAUTH2_CLIENT
     (	OAUTH2CL_ID serial NOT NULL,
        client_id character varying(48),
        client_secret character varying(120),
@@ -370,7 +370,7 @@ COMMENT ON COLUMN public.TB_USER_OAUTH2_CLIENT.OAUTH2CL_ID IS 'Oauth Client Id';
   --     default=lambda: int(time.time())
   -- )
 
- CREATE TABLE TB_OAUTH2_CODE
+ CREATE TABLE public.TB_OAUTH2_CODE
    (	OAUTH2CD_ID serial NOT NULL,
         USER_ID integer NOT NULL,
       code character varying(120) NOT NULL,
@@ -420,7 +420,7 @@ COMMENT ON COLUMN public.TB_USER_OAUTH2_CLIENT.OAUTH2CL_ID IS 'Oauth Client Id';
   -- )
   -- expires_in = Column(Integer, nullable=False, default=0)
 
- CREATE TABLE TB_OAUTH2_TOKEN
+ CREATE TABLE public.TB_OAUTH2_TOKEN
    (	OAUTH2TKN_ID serial NOT NULL,
         USER_ID integer NOT NULL,
       client_id character varying(48),

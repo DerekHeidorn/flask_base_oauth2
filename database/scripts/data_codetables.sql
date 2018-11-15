@@ -15,3 +15,5 @@ Insert into TB_BATCH_JOB_STATUS_CD (BATJOBSTA_CD,BATJOBSTA_DE) values ('INPROGRE
 Insert into TB_BATCH_JOB_STATUS_CD (BATJOBSTA_CD,BATJOBSTA_DE) values ('ERRORS','Errors');
 Insert into TB_BATCH_JOB_STATUS_CD (BATJOBSTA_CD,BATJOBSTA_DE) values ('DUPPROC','Duplicate Processs / Process Already Running');
 Insert into TB_BATCH_JOB_STATUS_CD (BATJOBSTA_CD,BATJOBSTA_DE) values ('WARNINGS','Completed With Warnings');
+
+Insert into tb_batch_job_cd (batjoc_cd, batjoc_de, batjoc_comment) values ('STATS','Application Statistics', 'Application Statistics');
