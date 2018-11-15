@@ -39,17 +39,51 @@ def login():
 def reactivate():
     reactivate_code = request.args.get('code')
 
-
     form = forms.UsernamePasswordReactivateForm()
     return render_template('reactivate.html', form=form)
 
 
-@api.route('/reset', methods=['GET'])
-def reset():
-    reset_code = request.args.get('code')
+@api.route('/reset/request', methods=['GET'])
+def reset_request():
 
     form = forms.UsernamePasswordResetForm()
     return render_template('reset.html', form=form)
+
+
+@api.route('/reset/request', methods=['POST'])
+def reset_request_post():
+
+    form = forms.UsernamePasswordResetForm()
+
+    username = form.username.data
+    userService.reset_user_password(username)
+
+    return render_template('reset.html', form=form)
+
+
+@api.route('/reset', methods=['GET'])
+def reset():
+    encrypted_reset_code = request.args.get('e')
+
+    form = forms.UsernamePasswordNewForm()
+
+    user_reset_code = userService.process_reset_user_password(encrypted_reset_code)
+    form.reset_code.data = user_reset_code
+
+    return render_template('new_password.html', form=form)
+
+
+@api.route('/reset', methods=['POST'])
+def reset_post():
+
+    form = forms.UsernamePasswordNewForm()
+
+    username = form.username.data
+    password = form.password.data
+    user_reset_code = form.reset_code.data
+    userService.complete_reset_user_password(username, password, user_reset_code)
+
+    return render_template('new_password.html', form=form)
 
 
 @api.route('/login', methods=['POST'])

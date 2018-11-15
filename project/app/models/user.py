@@ -26,6 +26,16 @@ class User(BaseModel):
     def get_user_id(self):
         return self.user_id
 
+    def get_formatted_name(self):
+        if self.last_name:
+            formatted_name = ""
+            if self.first_name:
+                formatted_name = self.first_name + " "
+            formatted_name += self.last_name
+            return formatted_name
+        else:
+            return self.username
+
     user_uuid = Column("user_uuid", String(36), unique=True)
 
     # USER_FNAME		First Name of the User	

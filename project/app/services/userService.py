@@ -1,6 +1,9 @@
 import uuid
+import time
+import hashlib
 from project.app.models.user import User
 from project.app.persist import baseDao, userDao, securityDao, oauth2Dao
+from project.app.services import emailService, encryptionService, commonService
 from project.app.services.utils import userUtils
 
 
@@ -17,7 +20,21 @@ def delete_user(user_id):
 
 
 def update_user(user_id, user_to_be_updated):
-    return userDao.update_user(user_id, user_to_be_updated)
+    updated_user = None
+    session = baseDao.get_session()
+
+    user = userDao.get_user_by_id(user_id, session=session)
+    if user is None:
+        return updated_user
+
+    user.first_name = user_to_be_updated["first_name"]
+    user.last_name = user_to_be_updated["last_name"]
+    user.username = user_to_be_updated["username"]
+
+    session.commit()
+    updated_user = userDao.get_user_by_id(user_id)
+
+    return updated_user
 
 
 def get_users():
@@ -72,3 +89,88 @@ def add_public_user(client_id, username, password, first_name=None, last_name=No
         return userDao.get_user_by_id(user_id)
     else:
         return None
+
+
+def reset_user_password(username):
+    # get the base url
+    base_url = commonService.get_config_by_key('app.base_url')
+
+    # create a new session
+    session = baseDao.get_session()
+
+    # get the current user
+    user = userDao.get_user_by_username(username, session)
+    user_formatted_name = user.get_formatted_name()
+
+    # if a reset code doesn't exist, create it.
+    if user.reset_code is None:
+        user.reset_code = userUtils.random_user_private_key(32)
+        userDao.update_user(user, session)
+
+    # new code is encrypted using the user's private key
+    encrypted_reset_code = encryptionService.encrypt_string(user.reset_code, user.private_key)
+
+    reset_info = {'username': user.username, 'code': encrypted_reset_code}
+    encrypted_reset_info = encryptionService.encrypt_dictionary_with_base64(reset_info)
+
+    # used for informational only, it'll show up in the error logs at the web layer if 500 error happens
+    epoch_time = int(time.time())
+    time_string = str(epoch_time)
+
+    # used for informational only, simple hashCode to compare if the encrypted values have been changed the user
+    reset_digest = hashlib.md5(encrypted_reset_info.encode()).hexdigest()
+
+    print("base_url=" + str(base_url))
+    print("time_string=" + str(time_string))
+    print("reset_digest=" + str(reset_digest))
+    print("encrypted_reset_info=" + str(encrypted_reset_info))
+    reset_url = base_url + '/?e=' + encrypted_reset_info + '&t=' + time_string + '&h=' + reset_digest
+
+    # email to the user
+    emailService.send_reset_password_email(user_formatted_name, user.username, user.reset_code, reset_url)
+
+    return user.reset_code
+
+
+def process_reset_user_password(encrypted_reset_info):
+    reset_info = encryptionService.decrypt_dictionary_with_base64(encrypted_reset_info)
+
+    if 'username' in reset_info and 'code' in reset_info:
+        # create a new session
+        session = baseDao.get_session()
+
+        user = userDao.get_user_by_username(reset_info['reset_info'], session)
+        reset_code = encryptionService.decrypt_string(reset_info['code'])
+
+        if user.reset_code == reset_code:
+            return reset_code
+
+    return None
+
+
+def complete_reset_user_password(username, password, user_reset_code):
+
+    # create a new session
+    session = baseDao.get_session()
+
+    user = userDao.get_user_by_username(username, session)
+
+    if user.reset_code == user_reset_code:
+
+        # set the user to active
+        user.status_cd = 'A'
+
+        # reset the failed attempts
+        user.failed_attempt_count = 0
+
+        # create a new salt
+        user.password_salt = userUtils.random_user_private_key(32)
+
+        # create a new hash
+        user.password_hash = userUtils.get_hashed_password(password, user.password_salt)
+
+        # reset the code
+        user.reset_code = None
+
+        userDao.update_user(user, session)
+

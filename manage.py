@@ -33,7 +33,9 @@ COV.start()
 def test():
     """Runs the unit tests without test coverage."""
     '''
-    other examples: python -m unittest project/tests/web/testCommon.py
+    other examples: 
+       python -m unittest project/tests/web/testCommon.py
+       python -m unittest project.tests.web.testUsers.UserWebTestCase.test_reset_password
     '''
     tests = unittest.TestLoader().discover('project/tests', pattern='test*.py')
     result = unittest.TextTestRunner(verbosity=2).run(tests)

@@ -5,6 +5,19 @@ from project.app.services import encryptionService
 
 class EncryptionServiceTestCase(BaseTest):
 
+    def test_encrypt_and_decrypt(self):
+        print("running test_encrypt_and_decrypt_string...")
+
+        test_data = "This is a test string".encode()
+
+        encrypted_data = encryptionService.encrypt(test_data)
+        print("encrypted_data=" + str(encrypted_data))
+        self.assertNotEqual(test_data, encrypted_data)
+
+        decrypted_data = encryptionService.decrypt(encrypted_data)
+        print("decrypted_data=" + str(decrypted_data))
+        self.assertEqual(test_data, decrypted_data)
+
     def test_encrypt_and_decrypt_string(self):
         print("running test_encrypt_and_decrypt_string...")
 
@@ -49,8 +62,8 @@ class EncryptionServiceTestCase(BaseTest):
         test_dictionary = {"abc": "123", "foo": "bar", "idea": "find yourself"}
 
         encrypted_string = encryptionService.encrypt_dictionary_with_base64(test_dictionary)
-        print("encrypted_string=" + str(encrypted_string))
+        print("test_encrypt_and_decrypt_with_base64_dictionary->encrypted_string=" + str(encrypted_string))
 
         decrypted_dictionary = encryptionService.decrypt_dictionary_with_base64(encrypted_string)
-        print("decrypted_string=" + str(decrypted_dictionary))
+        print("test_encrypt_and_decrypt_with_base64_dictionary->decrypted_string=" + str(decrypted_dictionary))
         self.assertEqual(str(test_dictionary), str(decrypted_dictionary))

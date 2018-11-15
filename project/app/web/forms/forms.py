@@ -13,8 +13,13 @@ class UsernamePasswordForm(FlaskForm):
 
 
 class UsernamePasswordResetForm(FlaskForm):
+    username = StringField('Email', validators=[DataRequired(), Email(), Length(max=100)])
+
+
+class UsernamePasswordNewForm(FlaskForm):
     client_id = HiddenField()
     grant_type = HiddenField()
+    reset_code = HiddenField()
     username = StringField('Email', validators=[DataRequired(), Email(), Length(max=100)])
     password = PasswordField('Password', validators=[DataRequired(), Length(max=256)])
     password_repeat = PasswordField('Repeat Password', validators=[DataRequired()])

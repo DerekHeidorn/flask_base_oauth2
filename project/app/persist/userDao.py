@@ -105,20 +105,9 @@ def is_username_unique(username, exclude_user_id=None, session=None):
     return count == 0
 
 
-def update_user(user_id, user_to_be_updated):
-    updated_user = None
-    session = baseDao.get_session()
-
-    user = get_user_by_id(user_id, session=session)
-    if user is None:
-        return updated_user
-
-    user.first_name = user_to_be_updated["first_name"]
-    user.last_name = user_to_be_updated["last_name"]
-    user.username = user_to_be_updated["username"]
-
+def update_user(user, session):
     session.commit()
-    updated_user = get_user_by_id(user_id)
+    updated_user = get_user_by_id(user.user_id)
 
     return updated_user
 

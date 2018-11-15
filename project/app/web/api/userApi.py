@@ -97,7 +97,12 @@ def update_public_user(user_id):
         "last_name": request.form["last_name"],
         "username": request.form["username"]
     }
-    updated_user = userService.update_user(user_id, user_to_be_updated)
+    user = userService.get_user_by_id(user_id)
+    user.first_name = request.form["first_name"]
+    user.last_name = request.form["last_name"]
+    user.username = request.form["username"]
+
+    updated_user = userService.update_user(user)
     if not updated_user:
         return make_response('', 404)
     else:

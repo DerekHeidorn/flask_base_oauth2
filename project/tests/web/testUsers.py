@@ -4,7 +4,7 @@ from urllib import parse
 from project.tests.web.baseTest import BaseTest 
 from project.tests.utils import randomUtil
 from project.tests.helpers import commonHelper
-from project.app.services import userService
+from project.app.services import userService, encryptionService
 
 
 class UserWebTestCase(BaseTest):
@@ -24,17 +24,17 @@ class UserWebTestCase(BaseTest):
         self.debug_response(resp)
 
         # should be redirected to new page
-        self.assertEquals(302, resp.status_code)
-        self.assertEquals("text/html; charset=utf-8", resp.content_type)
+        self.assertEqual(302, resp.status_code)
+        self.assertEqual("text/html; charset=utf-8", resp.content_type)
 
         print("resp.location=" + resp.location)
         param_dict = dict(parse.parse_qsl(parse.urlsplit(resp.location).query))
-        self.assertEquals('Bearer', param_dict.get('token_type'))
+        self.assertEqual('Bearer', param_dict.get('token_type'))
         self.assertTrue(len(param_dict.get('access_token')) > 0)
 
         # check the database for the new user
         user = userService.get_user_by_username(username)
-        self.assertEquals(user.username, username)
+        self.assertEqual(user.username, username)
 
     def test_login(self):
         print("Running: test_login")
@@ -56,12 +56,12 @@ class UserWebTestCase(BaseTest):
         self.debug_response(resp)
 
         # should be redirected to new page
-        self.assertEquals(302, resp.status_code)
-        self.assertEquals("text/html; charset=utf-8", resp.content_type)
+        self.assertEqual(302, resp.status_code)
+        self.assertEqual("text/html; charset=utf-8", resp.content_type)
 
         print("resp.location=" + resp.location)
         param_dict = dict(parse.parse_qsl(parse.urlsplit(resp.location).query))
-        self.assertEquals('Bearer', param_dict.get('token_type'))
+        self.assertEqual('Bearer', param_dict.get('token_type'))
         self.assertTrue(len(param_dict.get('access_token')) > 0)
 
         # check the database for the new user
@@ -82,12 +82,12 @@ class UserWebTestCase(BaseTest):
         self.debug_response(resp)
 
         # should be redirected to new page
-        self.assertEquals(302, resp.status_code)
-        self.assertEquals("text/html; charset=utf-8", resp.content_type)
+        self.assertEqual(302, resp.status_code)
+        self.assertEqual("text/html; charset=utf-8", resp.content_type)
 
         print("resp.location=" + resp.location)
         param_dict = dict(parse.parse_qsl(parse.urlsplit(resp.location).query))
-        self.assertEquals('Bearer', param_dict.get('token_type'))
+        self.assertEqual('Bearer', param_dict.get('token_type'))
         self.assertTrue(len(param_dict.get('access_token')) > 0)
 
         # -----------------------------------------------
@@ -104,8 +104,8 @@ class UserWebTestCase(BaseTest):
         self.debug_response(resp)
 
         # should be redirected to new page
-        self.assertEquals(302, resp.status_code)
-        self.assertEquals("text/html; charset=utf-8", resp.content_type)
+        self.assertEqual(302, resp.status_code)
+        self.assertEqual("text/html; charset=utf-8", resp.content_type)
 
     def test_user_profile(self):
         print("Running: test_user_profile")
@@ -119,12 +119,65 @@ class UserWebTestCase(BaseTest):
 
         self.debug_response(resp)
 
-        self.assertEquals(200, resp.status_code)
-        self.assertEquals("application/json", resp.content_type)
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual("application/json", resp.content_type)
 
         response_data = json.loads(resp.data)
 
-        self.assertEquals(new_user.username, response_data['username'])
+        self.assertEqual(new_user.username, response_data['username'])
+
+    def test_reset_password(self):
+        print("Running: test_reset_password")
+        user = commonHelper.create_public_user()
+        original_password_salt = user.password_salt
+        original_password_hash = user.password_hash
+        print("user=" + str(user))
+
+        # make the initial request to reset password
+        resp = self.testClient.get('/reset/request')
+
+        # returns HTML
+        self.assertEqual(200, resp.status_code)
+
+        resp = self.testClient.post('/reset/request',
+                                    data=dict(username=user.username
+                                              )
+                                    )
+        # returns HTML
+        self.assertEqual(200, resp.status_code)
+
+        user = userService.get_user_by_username(user.username)
+        print("user.reset_code=" + user.reset_code)
+        self.assertTrue(len(user.reset_code) > 0)
+
+        # --------------------------------------------------------------
+        # COPIED from userService to get the correct encrypted values
+        # new code is encrypted using the user's private key
+        encrypted_reset_code = encryptionService.encrypt_string(user.reset_code, user.private_key)
+
+        reset_info = {'username': user.username, 'code': encrypted_reset_code}
+        encrypted_reset_info = encryptionService.encrypt_dictionary_with_base64(reset_info)
+        # --------------------------------------------------------------
+
+        resp = self.testClient.get('/reset/request?e=' + encrypted_reset_info)
+        self.assertEqual(200, resp.status_code)
+
+        new_password = "123Foobar@ABC"
+        resp = self.testClient.post('/reset',
+                                    data=dict(username=user.username,
+                                              password=new_password,
+                                              password_repeat=new_password,
+                                              reset_code=user.reset_code
+                                              )
+                                    )
+        self.assertEqual(200, resp.status_code)
+
+        user = userService.get_user_by_username(user.username)
+
+        # values below should have changed
+        self.assertTrue(user.reset_code is None)
+        self.assertNotEqual(original_password_salt, user.password_salt)
+        self.assertNotEqual(original_password_hash, user.password_hash)
 
 
 if __name__ == '__main__':
