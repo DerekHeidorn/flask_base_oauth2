@@ -11,4 +11,4 @@ werkzeug==0.14.1
 coverage==4.5.1
 PyJWT==1.6.4
 cryptography==2.3.1
-schedule==0.5.0
+apscheduler==3.5.3
