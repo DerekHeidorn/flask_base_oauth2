@@ -138,8 +138,8 @@ def logout():
 def reactivate():
     encrypted_reactivation_info = request.args.get('e')
 
-    form = forms.UsernamePasswordReactivateForm()
-    user_reactivation_code = userService.process_reset_user_password(encrypted_reactivation_info)
+    form = forms.AccountReactivateForm()
+    user_reactivation_code = userService.process_reactivate_account(encrypted_reactivation_info)
 
     form.reactivation_code = user_reactivation_code
     return render_template('reactivate.html', form=form)
@@ -148,7 +148,7 @@ def reactivate():
 @api.route('/reactivate', methods=['POST'])
 def reactivate_post():
 
-    form = forms.UsernamePasswordReactivateForm()
+    form = forms.AccountReactivateForm()
 
     username = form.username.data
     user_reactivation_code = form.reactivation_code.data

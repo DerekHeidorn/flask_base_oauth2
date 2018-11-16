@@ -211,19 +211,21 @@ class UserWebTestCase(BaseTest):
         encrypted_activation_info = encryptionService.encrypt_dictionary_with_base64(reset_info)
         # --------------------------------------------------------------
 
-        resp = self.testClient.get('/activate?e=' + encrypted_activation_info)
+        resp = self.testClient.get('/reactivate?e=' + encrypted_activation_info)
         self.assertEqual(200, resp.status_code)
 
-        resp = self.testClient.post('/activate',
+        resp = self.testClient.post('/reactivate',
                                     data=dict(username=user.username,
-                                              reset_code=user.activation_code
+                                              reactivation_code=user.activation_code
                                               )
                                     )
-        self.assertEqual(200, resp.status_code)
+        self.assertEqual(302, resp.status_code)
 
         user = userService.get_user_by_username(user.username)
 
         # values below should have changed
+        print("user.activation_code=" + str(user.activation_code))
+        print("user.failed_attempt_count=" + str(user.failed_attempt_count))
         self.assertTrue(user.activation_code is None)
         self.assertEqual(0, user.failed_attempt_count)
 

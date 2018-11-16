@@ -17,16 +17,7 @@ os.environ['DEBUG'] = '1'
 app = main.create_application()
 manager = Manager(app)
 
-COV = coverage.coverage(
-    branch=True,
-    include='project/*',
-    omit=[
-        'project/tests/*',
-        'project/app/config.py',
-        'project/app/*/__init__.py'
-    ]
-)
-COV.start()
+
 
 
 @manager.command
@@ -46,19 +37,30 @@ def test():
 
 @manager.command
 def cov():
+    code_coverage = coverage.coverage(
+        branch=True,
+        include='project/*',
+        omit=[
+            'project/tests/*',
+            'project/app/config.py',
+            'project/app/*/__init__.py'
+        ]
+    )
+    code_coverage.start()
+
     """Runs the unit tests with coverage."""
     tests = unittest.TestLoader().discover('project/tests/web', pattern='test*.py')
     result = unittest.TextTestRunner(verbosity=2).run(tests)
     if result.wasSuccessful():
-        COV.stop()
-        COV.save()
+        code_coverage.stop()
+        code_coverage.save()
         print('Coverage Summary:')
-        COV.report()
+        code_coverage.report()
         basedir = os.path.abspath(os.path.dirname(__file__))
         covdir = os.path.join(basedir, 'tmp/coverage')
-        COV.html_report(directory=covdir)
+        code_coverage.html_report(directory=covdir)
         print('HTML version: file://%s/index.html' % covdir)
-        COV.erase()
+        code_coverage.erase()
         return 0
     return 1
 

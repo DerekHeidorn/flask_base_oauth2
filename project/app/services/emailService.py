@@ -4,8 +4,25 @@ import smtplib
 from email.message import EmailMessage
 from email.headerregistry import Address
 
+from project.app.services import commonService
+
+
+def _get_smtp_info():
+    smtp_info = commonService.get_config_by_key('app.smtp')
+    splitted_smtp = smtp_info.split(":")
+    return {'host': splitted_smtp[0], 'port': int(splitted_smtp[1])}
+
+
+def _send_email_msg(msg):
+    smtp_info = _get_smtp_info()
+
+    # Send the message via local SMTP server.
+    with smtplib.SMTP(smtp_info['host'], smtp_info['port']) as s:
+        s.send_message(msg)
+
 
 def send_reset_password_email(user_formatted_name, user_email, reset_code, reset_url):
+
     script_dir = os.path.dirname(__file__)
     txt_rel_path = 'email/templates/reset_password.txt'
     txt_abs_file_path = os.path.join(script_dir, txt_rel_path)
@@ -36,10 +53,8 @@ def send_reset_password_email(user_formatted_name, user_email, reset_code, reset
     msg.add_alternative(html_data.format(formatted_name=user_formatted_name,
                                          reset_password_link=reset_url,
                                          reset_password_code=reset_code), subtype='html')
-
     # Send the message via local SMTP server.
-    with smtplib.SMTP('localhost') as s:
-        s.send_message(msg)
+    _send_email_msg(msg)
 
 
 def send_reactivate_email(user_formatted_name, user_email, reactivate_code, reactivate_url):
@@ -75,5 +90,4 @@ def send_reactivate_email(user_formatted_name, user_email, reactivate_code, reac
                                          reactivate_code=reactivate_code), subtype='html')
 
     # Send the message via local SMTP server.
-    with smtplib.SMTP('localhost') as s:
-        s.send_message(msg)
+    _send_email_msg(msg)

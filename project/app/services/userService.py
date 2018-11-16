@@ -140,7 +140,7 @@ def process_reset_user_password(encrypted_reset_info):
         session = baseDao.get_session()
 
         user = userDao.get_user_by_username(reset_info['username'], session)
-        reset_code = encryptionService.decrypt_string(reset_info['code'])
+        reset_code = encryptionService.decrypt_string(reset_info['code'], user.private_key)
 
         if user.reset_code == reset_code:
             return reset_code
@@ -210,10 +210,6 @@ def deactivate_account(user_id):
         # used for informational only, simple hashCode to compare if the encrypted values have been changed the user
         reset_digest = hashlib.md5(encrypted_activation_info.encode()).hexdigest()
 
-        print("base_url=" + str(base_url))
-        print("time_string=" + str(time_string))
-        print("reset_digest=" + str(reset_digest))
-        print("encrypted_reset_info=" + str(encrypted_activation_info))
         reactivate_url = base_url + '/reactivate?e=' + encrypted_activation_info \
                                   + '&t=' + time_string + '&h=' + reset_digest
 
@@ -221,16 +217,16 @@ def deactivate_account(user_id):
 
 
 def process_reactivate_account(encrypted_account_info):
-    reset_info = encryptionService.decrypt_dictionary_with_base64(encrypted_account_info)
+    reactivate_info = encryptionService.decrypt_dictionary_with_base64(encrypted_account_info)
 
-    if 'username' in reset_info and 'code' in reset_info:
+    if 'username' in reactivate_info and 'code' in reactivate_info:
         # create a new session
         session = baseDao.get_session()
 
-        user = userDao.get_user_by_username(reset_info['username'], session)
-        reactivate_code = encryptionService.decrypt_string(reset_info['code'])
+        user = userDao.get_user_by_username(reactivate_info['username'], session)
+        reactivate_code = encryptionService.decrypt_string(reactivate_info['code'], user.private_key)
 
-        if user.user_activation_code == reactivate_code:
+        if user.activation_code == reactivate_code:
             return reactivate_code
 
     return None

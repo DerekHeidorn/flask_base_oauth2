@@ -25,8 +25,9 @@ class UsernamePasswordNewForm(FlaskForm):
     password_repeat = PasswordField('Repeat Password', validators=[DataRequired()])
 
 
-class UsernamePasswordReactivateForm(FlaskForm):
+class AccountReactivateForm(FlaskForm):
     reactivation_code = HiddenField()
+    username = StringField('Email', validators=[DataRequired(), Email(), Length(max=100)])
 
 
 class SignupForm(FlaskForm):
