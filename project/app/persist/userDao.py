@@ -1,4 +1,4 @@
-from sqlalchemy import func
+from sqlalchemy import func, update
 
 from project.app.models.user import User
 from project.app.persist import baseDao
@@ -103,6 +103,17 @@ def is_username_unique(username, exclude_user_id=None, session=None):
     count = query.scalar()
 
     return count == 0
+
+
+def update_user_login_access(user_id, failed_count, session):
+
+    stmt = update(User).where(User.user_id == user_id). \
+        values(failed_attempt_count=failed_count)
+
+    session.commit()
+    updated_user = get_user_by_id(user.user_id)
+
+    return updated_user
 
 
 def update_user(user, session):

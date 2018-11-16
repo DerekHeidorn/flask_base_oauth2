@@ -26,7 +26,7 @@ class UsernamePasswordNewForm(FlaskForm):
 
 
 class UsernamePasswordReactivateForm(FlaskForm):
-    client_id = HiddenField()
+    reactivation_code = HiddenField()
 
 
 class SignupForm(FlaskForm):

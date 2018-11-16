@@ -1,0 +1,13 @@
+
+Hi {formatted_name},
+
+Here's your link and code to continue to reactivate your account:
+
+Reactivate Code: {reactivate_code}
+
+Reactivate Url:
+{reactivate_link}
+
+Regards,
+
+Support

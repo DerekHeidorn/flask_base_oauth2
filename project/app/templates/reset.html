@@ -26,7 +26,8 @@
     <div id="page">
             <br/>
             <form action="{{ url_for('home_api.login_post') }}" method="post">
-              {{ form.csrf_token }}
+                <input type="hidden" name="reset_code"/>
+                {{ form.csrf_token }}
               
               <table>
                 <tr>

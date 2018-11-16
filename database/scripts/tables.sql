@@ -68,7 +68,6 @@ COMMENT ON COLUMN public.TB_USER.USER_PRIV_KEY IS 'Used for encrypting the data 
 COMMENT ON COLUMN public.TB_USER.USER_ACTV_CODE IS 'A code that is used to Reactivate an account that got deactivated.';
 COMMENT ON COLUMN public.TB_USER.USER_RESET_CODE IS 'Encrypted code passed to the user at the point of a password reset.';
 COMMENT ON COLUMN public.TB_USER.USRSTA_CD IS 'User Status Code';
-COMMENT ON COLUMN public.TB_USER.USER_RESET_PRSN_ID IS 'ID of the individual (Staff User) who performed the reset';
 COMMENT ON COLUMN public.TB_USER.USER_FNAME IS 'First Name of the User';
 COMMENT ON COLUMN public.TB_USER.USER_LNAME IS 'Last Name of the User';
 

@@ -66,22 +66,25 @@ class User(BaseModel):
     private_key = Column("user_priv_key", String(32))
     
     # # USER_ACTV_CODE		A code that is used to Reactivate an account that got deactivated.	
-    user_activation_code = Column("user_actv_code", String(32))
+    activation_code = Column("user_actv_code", String(32))
     
     # # USER_RESET_CODE		Encrypted code passed to the user at the point of a password reset.	
     reset_code = Column("user_reset_code", String(32))
     
     # # USRSTA_CD		User Status Code	
     status_cd = Column("usrsta_cd", String(1))
-    
-    # # USER_RESET_PRSN_ID		ID of the individual (Staff User) who performed the reset	
-    reset_by_user = Column("user_reset_prsn_id", Integer, nullable=True)
 
     security_groups = relationship("SecurityGroup",
                                    secondary=userSecurityAssociation)
 
     oauth2_clients = relationship("OAuth2Client",
                                   secondary=userOauth2ClientAssociation)
+
+    def is_active(self):
+        if self.status_cd == 'A':
+            return True
+        else:
+            return False
 
     def __repr__(self):
         return "<User(uuid='%s', username='%s')>" % (self.user_uuid, self.username)

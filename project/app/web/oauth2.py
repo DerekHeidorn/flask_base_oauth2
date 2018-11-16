@@ -1,10 +1,13 @@
 import time
-
+from datetime import datetime
 
 from authlib.flask.oauth2 import AuthorizationServer, ResourceProtector
 from authlib.specs.rfc6749 import grants
 from authlib.specs.rfc6750 import BearerTokenValidator
-from project.app.services import oauth2Service, userService, commonService
+from authlib.specs.rfc6749.errors import AccessDeniedError
+
+from project.app.persist import baseDao, userDao
+from project.app.services import oauth2Service, commonService, userService
 from project.app.services.utils import userUtils
 from project.app.web.utils import authUtils, serializeUtils
 
@@ -15,13 +18,31 @@ class _PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
     ]
 
     def authenticate_user(self, username, password):
-        user = userService.get_user_by_username(username)
-        if user is not None:
-            is_password_valid = userUtils.is_user_valid(user, password)
-            if is_password_valid:
-                return user
+        session = baseDao.get_session()
 
-        return None
+        user = userDao.get_user_by_username(username, session)
+        if user is not None:
+
+            if user.is_active:
+
+                is_password_valid = userUtils.is_user_valid(user, password)
+                if is_password_valid:
+                    user.last_attempts_ts = datetime.now()
+                    userDao.update_user(user, session)
+                    return user
+                else:
+                    user.failed_attempt_count += 1
+                    user.last_attempts_ts = datetime.now()
+                    userDao.update_user(user, session)
+
+                    if user.failed_attempt_count > 8:
+                        userService.deactivate_account(user.user_id)
+
+                    raise AccessDeniedError('Password is invalid')
+            else:
+                raise AccessDeniedError('User is not active')
+        else:
+            raise AccessDeniedError('User does not exist')
 
 
 class _BearerTokenValidator(BearerTokenValidator):
@@ -30,17 +51,17 @@ class _BearerTokenValidator(BearerTokenValidator):
         # return oAuth2Token
 
         oauth2_secret_key = commonService.get_config_by_key('oauth2_secret_key')
-        print("oauth2_secret_key=" + str(oauth2_secret_key))
+        # print("oauth2_secret_key=" + str(oauth2_secret_key))
         payload = authUtils.decode_auth_token_payload(token_string, oauth2_secret_key)
-        print("payload=" + str(payload))
+        # print("payload=" + str(payload))
         if isinstance(payload, str):
-            print(payload)
+            # print(payload)
             return payload
         else:
             if isinstance(payload, dict) and 'jti' in payload:
-                print("payload['jti']=" + str(payload['jti']))
+                # print("payload['jti']=" + str(payload['jti']))
                 db_token = oauth2Service.query_token(payload['jti'], 'access_token')
-                print("db_token=" + str(db_token))
+                # print("db_token=" + str(db_token))
 
                 return db_token
         return None

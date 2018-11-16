@@ -26,8 +26,7 @@
     <div id="page">
             <br/>
             <form action="{{ url_for('home_api.login_post') }}" method="post">
-              <input type="hidden" name="grant_type" value="password">
-              <input type="hidden" name="client_id" value="CLTID-Zeq1LRso5q-iLU9RKCKnu">
+              <input type="hidden" name="activation_code"/>
               {{ form.csrf_token }}
               
               <table>
@@ -42,20 +41,9 @@
                     {% endfor %}
                     </td>
                 </tr>
-                <tr>
-                  <td>{{ form.password.label }}:</td>
-                  <td>{{ form.password }}<br/></td>
-              </tr>
-              <tr>
-                    <td colspan="2">
-                    {% for error in form.password.errors %}
-                        <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                    </td>
-              </tr>
               <tr>
                   <td></td>
-                  <td style="text-align:right;"><button type="submit">Login</button></td>
+                  <td style="text-align:right;"><button type="submit">Sign In</button></td>
               </tr>
             </table>
 

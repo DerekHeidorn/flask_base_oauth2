@@ -18,7 +18,7 @@ print("Starting up sqlalchemy for database...")
 Session = sessionmaker()
 
 # later, we create the engine
-engine = create_engine(initializing_db_string, echo=engine_echo)
+engine = create_engine(initializing_db_string, echo=engine_echo, pool_size=40, max_overflow=0)
 
 # associate it with our custom Session class
 Session.configure(bind=engine)
