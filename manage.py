@@ -1,27 +1,49 @@
 import os
 import unittest
 import coverage
-
-from flask_script import Manager
+import argparse
+from subprocess import Popen, PIPE
 from project.app import main
+
+parser = argparse.ArgumentParser()
+parser.add_argument("command", choices=['test', 'coverage', 'runserver', 'emailserver'], help="Command Action")
+
+args = parser.parse_args()
+
+
+def setup_dev_settings():
+    # for using http instead of https
+    os.environ['AUTHLIB_INSECURE_TRANSPORT'] = '1'
+
+    # Application specific
+    os.environ["APP_FLASK_SECRET_KEY"] = "wbr59q8tof3k2FfeSIvO"
+    os.environ["APP_SECRET_KEY"] = "KlkdZyb5xrGpDcNkSBrDhe790ohLfuea"
+
+    os.environ["APP_JWT_ISS"] = "https://localhost:9000"
+    os.environ["APP_JWT_KEY"] = "BMcrqdcd7QeEmR8CXyU"
+
+    # database config
+    os.environ["APP_DB_CONNECTION_URI"] = "postgresql://postgres:P$F$xs+n?5+Ug3AU5PTe3q@localhost/postgres"
+    os.environ["APP_DB_ENGINE_DEBUG"] = "False"
+
+
 '''
 Setting an SMTP server:
 python -m smtpd -n -c DebuggingServer localhost:25
 '''
+def run_smtp_server():
+    print("Hello")
+    # smtpd_cmd = ["python", "-m", "smtpd", "-n", "-c", "DebuggingServer", "localhost:25"]
+    # process = Popen(smtpd_cmd, stdout=PIPE)
+    # (output, err) = process.communicate()
+    # exit_code = process.wait()
+    # print("called ffmpeg:" + str(exit_code))
 
 
-os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-os.environ['OAUTH_INSECURE_TRANSPORT'] = '1'
-os.environ['DEBUG'] = '1'
+def run_test():
+    setup_dev_settings()
+    app = main.create_application()
 
-app = main.create_application()
-manager = Manager(app)
-
-
-
-
-@manager.command
-def test():
     """Runs the unit tests without test coverage."""
     '''
     other examples: 
@@ -35,8 +57,10 @@ def test():
     return 1
 
 
-@manager.command
-def cov():
+def run_coverage():
+    setup_dev_settings()
+    app = main.create_application()
+
     code_coverage = coverage.coverage(
         branch=True,
         include='project/*',
@@ -57,32 +81,36 @@ def cov():
         print('Coverage Summary:')
         code_coverage.report()
         basedir = os.path.abspath(os.path.dirname(__file__))
-        covdir = os.path.join(basedir, 'tmp/coverage')
-        code_coverage.html_report(directory=covdir)
-        print('HTML version: file://%s/index.html' % covdir)
+        cov_dir = os.path.join(basedir, 'tmp/coverage')
+        code_coverage.html_report(directory=cov_dir)
+        print('HTML version: file://%s/index.html' % cov_dir)
         code_coverage.erase()
         return 0
     return 1
 
 
-@manager.command
-def runserver():
-
-    # apiApplication = createApplication()
-    # Server(host="127.0.0.1", port=9000)
-    # apiApplication.run()
-    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-    os.environ['OAUTH_INSECURE_TRANSPORT'] = '1'
-    os.environ['AUTHLIB_INSECURE_TRANSPORT'] = '1'
-    os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
-    os.environ['DEBUG'] = '1'
-    os.environ['FLASK_DEBUG'] = '1'
-
-    # for k in sorted(os.environ.keys()):
-    #    print(k + ":" + os.environ[k])
-    options = {'use_debugger': False, 'threaded': True, 'use_reloader': True}
+def run_dev_server():
+    setup_dev_settings()
+    app = main.create_application()
+    options = {'use_debugger': False, 'threaded': True, 'use_reloader': False}
     app.run(debug=False, host="127.0.0.1", port=9000, **options)
 
 
-if __name__ == "__main__":
-    manager.run()
+# ----------------------
+# --- Execute Type ---
+# ----------------------
+
+if args.command == 'runserver':
+    run_dev_server()
+
+elif args.command == 'test':
+    run_test()
+
+elif args.command == 'coverage':
+    run_coverage()
+
+elif args.command == 'emailserver':
+    run_smtp_server()
+
+# if __name__ == "__main__":
+#     run_server()

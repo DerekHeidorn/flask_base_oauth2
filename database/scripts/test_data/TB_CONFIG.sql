@@ -14,11 +14,7 @@ INSERT INTO public.TB_CONFIG(
 
 INSERT INTO TB_CONFIG(
             CFGPRM_KEY, CFGPRM_VAL, CFGPRM_DE)
-    VALUES ('oauth2_secret_key', 'LjPVqqG1rjpis1QvmcHCygSulSGPmYUZM4uCCLiA', 'Oauth2 Secret Key');
-
-INSERT INTO TB_CONFIG(
-            CFGPRM_KEY, CFGPRM_VAL, CFGPRM_DE)
-    VALUES ('app_secret_key', 'KlkdZyb5xrGpDcNkSBrDhe790ohLfuea', 'Application Secret Key');
+    VALUES ('app.web.secret_key', 'KlkdZyb5xrGpDcNkSBrDhe790ohLfuea', 'Application Secret Key');
 
 INSERT INTO TB_CONFIG(
             CFGPRM_KEY, CFGPRM_VAL, CFGPRM_DE)

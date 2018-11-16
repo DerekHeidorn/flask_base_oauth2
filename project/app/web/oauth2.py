@@ -1,3 +1,4 @@
+
 import time
 from datetime import datetime
 
@@ -6,15 +7,18 @@ from authlib.specs.rfc6749 import grants
 from authlib.specs.rfc6750 import BearerTokenValidator
 from authlib.specs.rfc6749.errors import AccessDeniedError
 
+from project.app import main
 from project.app.persist import baseDao, userDao
-from project.app.services import oauth2Service, commonService, userService
+from project.app.services import oauth2Service, userService
 from project.app.services.utils import userUtils
 from project.app.web.utils import authUtils, serializeUtils
+
+_authorization_server = None
 
 
 class _PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
     TOKEN_ENDPOINT_AUTH_METHODS = [
-        'none', 'client_secret_basic', 'client_secret_post'
+        'none'  # , 'client_secret_basic', 'client_secret_post'
     ]
 
     def authenticate_user(self, username, password):
@@ -50,7 +54,7 @@ class _BearerTokenValidator(BearerTokenValidator):
         # oAuth2Token = OAuth2Token()
         # return oAuth2Token
 
-        oauth2_secret_key = commonService.get_config_by_key('oauth2_secret_key')
+        oauth2_secret_key = main.global_config["APP_JWT_KEY"]
         # print("oauth2_secret_key=" + str(oauth2_secret_key))
         payload = authUtils.decode_auth_token_payload(token_string, oauth2_secret_key)
         # print("payload=" + str(payload))
@@ -91,7 +95,7 @@ def query_client(client_id):
 
 def save_token(token, request):
 
-    oauth2_secret_key = commonService.get_config_by_key('oauth2_secret_key')
+    oauth2_secret_key = main.global_config["APP_JWT_KEY"]
     decoded_token = authUtils.decode_auth_token_payload(token.get('access_token'), oauth2_secret_key)
 
     authorities = userUtils.get_user_authorities(request.user)
@@ -116,7 +120,7 @@ def generate_jwt_token(client, grant_type, user, scope):
     # print("scope:" + str(scope))
 
     authorities = userUtils.get_user_authorities(user)
-    oauth2_secret_key = commonService.get_config_by_key('oauth2_secret_key')
+    oauth2_secret_key = main.global_config["APP_JWT_KEY"]
     print("(*)oauth2_secret_key:" + str(oauth2_secret_key))
     token = authUtils.encode_auth_token(user, authorities, oauth2_secret_key)
     # print("token:" + str(token ))
@@ -129,29 +133,30 @@ def generate_jwt_token(client, grant_type, user, scope):
 # ------------------------------------------------------------------------------
 
 
-print("Creating AuthorizationServer...")
-authorizationServer = AuthorizationServer(
-    query_client=query_client,
-    save_token=save_token
-)
-
-# supported grants
-authorizationServer.register_grant(_PasswordGrant)
-
-# scopes definition
-scopes = {
-    'public': 'Public Access',
-    'admin': 'Admin Access'
-}
-
 # protect resource
 require_oauth = ResourceProtector()
 require_oauth.register_token_validator(_BearerTokenValidator())
+
+
+def create_token_response():
+    if _authorization_server is None:
+        raise Exception("authorization_server has not been started correctly.")
+
+    return _authorization_server.create_token_response()
 
 
 def init(app):
     app.config['OAUTH2_ACCESS_TOKEN_GENERATOR'] = generate_jwt_token
 
     print("initializing up AuthorizationServer...")
-    authorizationServer.init_jwt_config(app)
-    authorizationServer.init_app(app)
+    global _authorization_server
+    _authorization_server = AuthorizationServer(
+        query_client=query_client,
+        save_token=save_token
+    )
+
+    # supported grants
+    _authorization_server.register_grant(_PasswordGrant)
+
+    _authorization_server.init_jwt_config(app)
+    _authorization_server.init_app(app)

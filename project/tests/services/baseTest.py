@@ -1,15 +1,11 @@
 
-import os
 import unittest
 from project.app import main
-
-os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-os.environ['OAUTH_INSECURE_TRANSPORT'] = '1'
-os.environ['AUTHLIB_INSECURE_TRANSPORT'] = '1'
+from project.tests.helpers import commonHelper
 
 
 class BaseTest(unittest.TestCase):
-
+    commonHelper.setup_dev_settings()
     app = main.create_application()
 
     def setUp(self):

@@ -1,12 +1,12 @@
 from urllib import parse
 import base64
 from cryptography.fernet import Fernet
-from project.app.services import commonService
+from project.app import main
 
 
 def encrypt(data, encrypt_key=None):
     if encrypt_key is None:
-        encrypt_key = commonService.get_config_by_key("app_secret_key")
+        encrypt_key = main.global_config["APP_SECRET_KEY"]
 
     key = base64.urlsafe_b64encode(encrypt_key.encode())
 
@@ -18,7 +18,7 @@ def encrypt(data, encrypt_key=None):
 
 def encrypt_string(data_string, encrypt_key=None):
     if encrypt_key is None:
-        encrypt_key = commonService.get_config_by_key("app_secret_key")
+        encrypt_key = main.global_config["APP_SECRET_KEY"]
 
     key = base64.urlsafe_b64encode(encrypt_key.encode())
 
@@ -51,7 +51,7 @@ def encrypt_dictionary_with_base64(dictionary, encrypt_key=None):
 
 def decrypt(cipher_data, encrypt_key=None):
     if encrypt_key is None:
-        encrypt_key = commonService.get_config_by_key("app_secret_key")
+        encrypt_key = main.global_config["APP_SECRET_KEY"]
 
     key = base64.urlsafe_b64encode(encrypt_key.encode())
 

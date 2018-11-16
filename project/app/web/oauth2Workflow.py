@@ -4,7 +4,7 @@ from flask import render_template, redirect
 from project.app.services import userService, oauth2Service
 from project.app.web.forms import forms
 from project.app.web.utils import debugUtils
-from project.app.web.oauth2 import authorizationServer
+from project.app.web import oauth2
 
 api = Blueprint('home_api', __name__)
 
@@ -50,7 +50,7 @@ def login_post():
             oauth2_client = oauth2Service.query_client(form.client_id.data)
             if oauth2_client is not None:
 
-                token_response = authorizationServer.create_token_response()
+                token_response = oauth2.create_token_response()
                 debugUtils.debug_response(token_response)
 
                 json_string = token_response.data.decode("utf-8")
@@ -103,7 +103,7 @@ def signup_post():
                 if oauth2_client is not None:
                     user = userService.add_public_user(form.client_id.data, form.username.data, form.password.data)
 
-                    token_response = authorizationServer.create_token_response()
+                    token_response = oauth2.create_token_response()
                     json_string = token_response.data.decode("utf-8")
                     json_doc = json.JSONDecoder().decode(json_string)
                     parameters = ""

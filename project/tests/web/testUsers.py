@@ -196,6 +196,7 @@ class UserWebTestCase(BaseTest):
                                                     client_id=commonHelper.DEFAULT_PUBLIC_CLIENT_ID
                                                 )
                                         )
+            self.assertNotEqual(400, resp.status_code)
 
         user = userService.get_user_by_username(user.username)
         self.assertTrue(user.failed_attempt_count > 8)

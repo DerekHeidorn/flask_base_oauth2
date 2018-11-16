@@ -12,7 +12,7 @@ def run_stats():
 
     end_ts = datetime.now()
 
-    batch_job = BatchJob
+    batch_job = BatchJob()
     batch_job.start_ts = start_ts
     batch_job.job_code = 'STATS'
     batch_job.details = "stats: user_count=" + str(user_count)
