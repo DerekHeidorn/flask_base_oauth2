@@ -14,9 +14,9 @@ from project.app.web import oauth2
 api = Blueprint('user_api', __name__)
 
 
-@api.route('/api/v1.0/public/user/', methods=['GET'])
+@api.route('/api/v1.0/public/account/', methods=['GET'])
 @oauth2.require_oauth('CUST_ACCESS')
-def get_public_user_by_id():
+def get_public_account():
     if current_token is not None and current_token.user_id is not None:
 
         current_user = userService.get_user_by_id(current_token.user_id)
@@ -32,9 +32,9 @@ def get_public_user_by_id():
         abort(401)
 
 
-@api.route('/api/v1.0/public/user/profile', methods=['GET'])
+@api.route('/api/v1.0/public/account/profile/', methods=['GET'])
 @oauth2.require_oauth('CUST_ACCESS')
-def get_public_user_profile_by_id():
+def get_public_account_profile():
 
     if current_token is not None and current_token.user_id is not None:
 
@@ -51,7 +51,7 @@ def get_public_user_profile_by_id():
         abort(401)
 
 
-@api.route('/api/v1.0/admin/user', methods=['GET'])
+@api.route('/api/v1.0/admin/user/all/', methods=['GET'])
 @oauth2.require_oauth('STAFF_ACCESS')
 def get_users():
     users = userService.get_users()
@@ -60,6 +60,37 @@ def get_users():
         user_list.append(serializeUtils.serialize_user(u))
 
     return jsonify(user_list)
+
+
+@api.route('/api/v1.0/admin/account/', methods=['GET'])
+@oauth2.require_oauth('STAFF_ACCESS')
+def get_admin_account():
+    if current_token is not None and current_token.user_id is not None:
+
+        current_user = userService.get_user_by_id(current_token.user_id)
+        if current_user:
+            return jsonify(serializeUtils.serialize_user(current_user))
+        else:
+            #
+            # In case we did not find the candidate by id
+            # we send HTTP 404 - Not Found error to the client
+            #
+            abort(404)
+    else:
+        abort(401)
+
+
+@api.route('/api/v1.0/admin/user/', methods=['POST'])
+@oauth2.require_oauth('STAFF_ACCESS')
+def add_public_user():
+    first_name = request.form["first_name"]
+    last_name = request.form["last_name"]
+    username = request.form["username"]
+    password = request.form["password"]
+
+    new_user = userService.add_public_user(None, username, password, first_name, last_name)
+
+    return jsonify(serializeUtils.serialize_user(new_user)), 201
 
 
 @api.route('/api/v1.0/admin/user/<user_id>', methods=['GET'])
@@ -109,14 +140,4 @@ def update_public_user(user_id):
         return jsonify(serializeUtils.serialize_user(updated_user))
 
 
-@api.route('/api/v1.0/admin/user', methods=['POST'])
-@oauth2.require_oauth('STAFF_ACCESS')
-def add_public_user():
-    first_name = request.form["first_name"]
-    last_name = request.form["last_name"]
-    username = request.form["username"]
-    password = request.form["password"]
 
-    new_user = userService.add_public_user(None, username, password, first_name, last_name)
-
-    return jsonify(serializeUtils.serialize_user(new_user)), 201

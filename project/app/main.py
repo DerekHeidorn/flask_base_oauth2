@@ -27,7 +27,8 @@ def create_application():
         "APP_JWT_ISS",
         "APP_JWT_KEY",
         "APP_DB_CONNECTION_URI",
-        "APP_DB_ENGINE_DEBUG"
+        "APP_DB_ENGINE_DEBUG",
+        "APP_MODE"
     ]
 
     for r in required_os_environment_settings:
@@ -41,6 +42,7 @@ def create_application():
     app.config['OAUTH2_JWT_EXP'] = 3800
 
     # load keys and DB config globally
+    global_config["APP_MODE"] = os.environ["APP_MODE"]
     global_config["APP_SECRET_KEY"] = os.environ["APP_SECRET_KEY"]
     global_config["APP_JWT_KEY"] = os.environ["APP_JWT_KEY"]
     global_config["APP_FLASK_SECRET_KEY"] = os.environ["APP_FLASK_SECRET_KEY"]
@@ -48,7 +50,14 @@ def create_application():
     global_config["APP_DB_ENGINE_DEBUG"] = os.environ["APP_DB_ENGINE_DEBUG"]
 
     infrastructure.database_init()
-    CORS(app, resources={r"/api/*": {"origins": "http://127.0.0.1:4200"}})
+    CORS(app,
+         # resources={r"/api/*": {"origins": "http://127.0.0.1:4200"}},
+         allow_headers=["origin", "X-Requested-With", "Content-Type", "Accept", "Accept-Encoding",
+                        "Accept-Language", "Content-Language", "Authorization", "If-Modified-Since"],
+         expose_headers=["Content-Disposition"],
+         methods=["OPTIONS", "POST", "PUT", "GET", "DELETE"],
+         origins=["http://127.0.0.1:4200", "http://localhost:4200", "http://127.0.0.1:9000", "http://127.0.0.1:9001"],
+         max_age=1800)
     # CORS(app, resources=r"/api/*")
     # CORS(app)
     oauth2.init(app)

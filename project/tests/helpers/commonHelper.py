@@ -21,8 +21,9 @@ def setup_dev_settings():
     os.environ['AUTHLIB_INSECURE_TRANSPORT'] = '1'
 
     # Application specific
-    os.environ["APP_FLASK_SECRET_KEY"] = "wbr59q8tof3k2FfeSIvO"
+    os.environ["APP_MODE"] = "dev"  # dev, test, or prod
     os.environ["APP_SECRET_KEY"] = "KlkdZyb5xrGpDcNkSBrDhe790ohLfuea"
+    os.environ["APP_FLASK_SECRET_KEY"] = "wbr59q8tof3k2FfeSIvO"
 
     os.environ["APP_JWT_ISS"] = "https://localhost:9000"
     os.environ["APP_JWT_KEY"] = "BMcrqdcd7QeEmR8CXyU"
