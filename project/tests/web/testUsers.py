@@ -114,7 +114,7 @@ class UserWebTestCase(BaseTest):
         new_user = user_info["user"]
 
         print("token=" + user_info['token'])
-        resp = self.testClient.get('/api/v1.0/public/user/profile',
+        resp = self.testClient.get('/api/v1.0/public/account/profile/',
                                    headers={"Authorization": "bearer " + user_info['token']})
 
         self.debug_response(resp)

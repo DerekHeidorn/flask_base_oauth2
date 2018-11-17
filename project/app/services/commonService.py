@@ -1,8 +1,8 @@
 
-from werkzeug.contrib.cache import SimpleCache
 from project.app.persist import configDao
+from cacheout import Cache
 
-_application_config_cache = SimpleCache()
+_application_config_cache = Cache(maxsize=200, ttl=5 * 60)
 
 
 def get_config_by_key(key):

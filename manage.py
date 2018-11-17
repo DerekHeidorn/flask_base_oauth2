@@ -33,12 +33,12 @@ Setting an SMTP server:
 python -m smtpd -n -c DebuggingServer localhost:25
 '''
 def run_smtp_server():
-    print("Hello")
-    # smtpd_cmd = ["python", "-m", "smtpd", "-n", "-c", "DebuggingServer", "localhost:25"]
-    # process = Popen(smtpd_cmd, stdout=PIPE)
-    # (output, err) = process.communicate()
-    # exit_code = process.wait()
-    # print("called ffmpeg:" + str(exit_code))
+    print("Running email server")
+    smtpd_cmd = ["python", "-m", "smtpd", "-n", "-c", "DebuggingServer", "localhost:25"]
+    process = Popen(smtpd_cmd, stdout=PIPE)
+    process.communicate()
+    exit_code = process.wait()
+    print("called smtpd_cmd:" + str(exit_code))
 
 
 def run_test():
