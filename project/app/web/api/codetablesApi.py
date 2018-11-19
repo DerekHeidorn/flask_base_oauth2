@@ -34,6 +34,7 @@ def codetable_by_name(codetable_name):
             print("codetableData=" + str(data))
             if data:
                 _codetable_cache.add(codetable_name, data)
-                return jsonify(data)
+                resp = serializeUtils.generate_response_wrapper(data)
+                return jsonify(resp)
 
     abort(404)

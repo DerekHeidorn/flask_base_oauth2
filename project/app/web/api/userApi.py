@@ -21,7 +21,9 @@ def get_public_account():
 
         current_user = userService.get_user_by_id(current_token.user_id)
         if current_user:
-            return jsonify(serializeUtils.serialize_user(current_user))
+            data = serializeUtils.serialize_user(current_user)
+            resp = serializeUtils.generate_response_wrapper(data)
+            return jsonify(resp)
         else:
             #
             # In case we did not find the candidate by id
@@ -40,7 +42,9 @@ def get_public_account_profile():
 
         current_user = userService.get_user_by_id(current_token.user_id)
         if current_user:
-            return jsonify(serializeUtils.serialize_user_profile(current_user))
+            data = serializeUtils.serialize_user_profile(current_user)
+            resp = serializeUtils.generate_response_wrapper(data)
+            return jsonify(resp)
         else:
             #
             # In case we did not find the candidate by id
@@ -59,7 +63,8 @@ def get_users():
     for u in users:
         user_list.append(serializeUtils.serialize_user(u))
 
-    return jsonify(user_list)
+    resp = serializeUtils.generate_response_wrapper(user_list)
+    return jsonify(resp)
 
 
 @api.route('/api/v1.0/admin/account/', methods=['GET'])
@@ -69,7 +74,9 @@ def get_admin_account():
 
         current_user = userService.get_user_by_id(current_token.user_id)
         if current_user:
-            return jsonify(serializeUtils.serialize_user(current_user))
+            data = serializeUtils.serialize_user(current_user)
+            resp = serializeUtils.generate_response_wrapper(data)
+            return jsonify(resp)
         else:
             #
             # In case we did not find the candidate by id
@@ -90,7 +97,9 @@ def add_public_user():
 
     new_user = userService.add_public_user(None, username, password, first_name, last_name)
 
-    return jsonify(serializeUtils.serialize_user(new_user)), 201
+    data = serializeUtils.serialize_user(new_user)
+    resp = serializeUtils.generate_response_wrapper(data)
+    return jsonify(resp), 201
 
 
 @api.route('/api/v1.0/admin/user/<user_id>', methods=['GET'])
@@ -98,7 +107,9 @@ def add_public_user():
 def get_user_by_id(user_id):
     current_user = userService.get_user_by_id(user_id)
     if current_user:
-        return jsonify(serializeUtils.serialize_user(current_user))
+        data = serializeUtils.serialize_user(current_user)
+        resp = serializeUtils.generate_response_wrapper(data)
+        return jsonify(resp)
     else:
         #
         # In case we did not find the candidate by id
@@ -123,21 +134,16 @@ def delete_user(user_id):
 @api.route('/api/v1.0/admin/user/<user_id>', methods=['PUT'])
 @oauth2.require_oauth('STAFF_ACCESS')
 def update_public_user(user_id):
-    user_to_be_updated = {
-        "first_name": request.form["first_name"],
-        "last_name": request.form["last_name"],
-        "username": request.form["username"]
-    }
+
     user = userService.get_user_by_id(user_id)
     user.first_name = request.form["first_name"]
     user.last_name = request.form["last_name"]
     user.username = request.form["username"]
 
-    updated_user = userService.update_user(user)
+    updated_user = userService.update_user(user_id, user)
     if not updated_user:
         return make_response('', 404)
     else:
-        return jsonify(serializeUtils.serialize_user(updated_user))
-
-
-
+        data = serializeUtils.serialize_user(updated_user)
+        resp = serializeUtils.generate_response_wrapper(data)
+        return jsonify(resp)

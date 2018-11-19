@@ -17,11 +17,12 @@ class BaseTest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def debug_response(self, response):
+    @staticmethod
+    def debug_response(response):
         
         print("type=" + str(type(response)))
         print("status_code=" + str(response.status_code))
         print("response.content_type=" + str(response.content_type))
         
         if response.data:
-            print("Data=" + response.data.decode("utf-8"))
+            print("Response Data=" + response.data.decode("utf-8"))

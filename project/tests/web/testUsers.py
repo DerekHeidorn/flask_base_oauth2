@@ -124,7 +124,7 @@ class UserWebTestCase(BaseTest):
 
         response_data = json.loads(resp.data)
 
-        self.assertEqual(new_user.username, response_data['username'])
+        self.assertEqual(new_user.username, response_data['data']['username'])
 
     def test_reset_password(self):
         print("Running: test_reset_password")
