@@ -55,9 +55,20 @@ def get_public_account_profile():
         abort(401)
 
 
+@api.route('/api/v1.0/public/user/details/<user_uuid>', methods=['GET'])
+@oauth2.require_oauth('CUST_ACCESS')
+def get_public_user_details(user_uuid):
+    print('request=' + str(request))
+
+    user = userService.get_user_by_uuid(user_uuid)
+    data = serializeUtils.serialize_user_item(user)
+    resp = serializeUtils.generate_response_wrapper(data)
+    return jsonify(resp)
+
+
 @api.route('/api/v1.0/public/user/details', methods=['POST'])
 @oauth2.require_oauth('CUST_ACCESS')
-def get_public_user_details():
+def get_public_user_details_by_list():
     print('request=' + str(request))
     print('request.data=' + str(request.data))
     user_uuid_list = json.loads(request.data)
