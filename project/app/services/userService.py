@@ -53,6 +53,18 @@ def get_user_by_uuid(user_uuid):
     return userDao.get_user_by_uuid(user_uuid)
 
 
+def get_users_by_uuid_list(user_uuid_list):
+
+    session = baseDao.get_session()
+    users = []
+
+    for u in user_uuid_list:
+        user = userDao.get_user_by_uuid(u, session)
+        users.append(user)
+
+    return users
+
+
 def is_username_unique(username):
     return userDao.is_username_unique(username)
 

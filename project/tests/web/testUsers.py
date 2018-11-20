@@ -230,6 +230,28 @@ class UserWebTestCase(BaseTest):
         self.assertTrue(user.activation_code is None)
         self.assertEqual(0, user.failed_attempt_count)
 
+    def test_get_public_user_details(self):
+        print("Running: get_public_user_details")
+        user_info = commonHelper.create_public_user_and_token(self.testClient)
+        print("user_info=" + str(user_info))
+        new_user = user_info["user"]
+        users = [str(new_user.user_uuid)]
+        json_string = json.dumps(users)
+
+        print("token=" + user_info['token'])
+        resp = self.testClient.post('/api/v1.0/public/user/details',
+                                    headers={"Authorization": "bearer " + user_info['token']},
+                                    data=json_string)
+
+        self.debug_response(resp)
+
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual("application/json", resp.content_type)
+
+        response_data = json.loads(resp.data)
+
+        self.assertEqual(str(new_user.user_uuid), response_data['data'][0]['user_uuid'])
+
 
 if __name__ == '__main__':
     unittest.main()
