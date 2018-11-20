@@ -333,6 +333,26 @@ class UserWebTestCase(BaseTest):
         self.assertEqual('Bearer', param_dict.get('token_type'))
         self.assertTrue(len(param_dict.get('access_token')) > 0)
 
+    def test_update_public_account_username_invalid_username(self):
+        print("Running: test_update_public_account_username_invalid_username")
+        user_info = commonHelper.create_public_user_and_token(self.testClient)
+        new_user = user_info["user"]
+
+        password = commonHelper.DEFAULT_PUBLIC_USER_PASSWORD
+        new_username = randomUtil.random_string(5, 6)
+
+        json_string = json.dumps({"password": password,
+                                  "new_username": new_username})
+
+        resp = self.testClient.put('/api/v1.0/public/account/username',
+                                   headers={"Authorization": "bearer " + user_info['token']},
+                                   data=json_string)
+
+        self.debug_response(resp)
+
+        self.assertEqual(400, resp.status_code)
+
+
 
 if __name__ == '__main__':
     unittest.main()

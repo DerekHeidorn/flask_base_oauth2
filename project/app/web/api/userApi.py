@@ -4,11 +4,13 @@ from flask import abort
 from flask import make_response
 from flask import request
 from flask import Blueprint
+from marshmallow import ValidationError
 
 from authlib.flask.oauth2 import current_token
 
 from project.app.services import userService
-from project.app.web.utils import serializeUtils
+from project.app.web.utils import serializeUtils, apiUtils
+from project.app.web.schema.generalSchema import UsernameSchema
 from project.app.web import oauth2
 
 api = Blueprint('user_api', __name__)
@@ -211,17 +213,25 @@ def update_public_account_username():
 
         if current_token.user_id:
             data = json.loads(request.data)
-            new_username = data['new_username']
-            password = data['password']
+            try:
+                result = UsernameSchema().load(data)
+                print('UsernameSchema=' + str(result))
 
-            updated_username = userService.update_username_with_required_password(current_token.user_id,
-                                                                                  new_username,
-                                                                                  password
-                                                                                  )
+                updated_username = userService.update_username_with_required_password(current_token.user_id,
+                                                                                      result['new_username'],
+                                                                                      result['password']
+                                                                                      )
 
-            data = {'username': updated_username}
-            resp = serializeUtils.generate_response_wrapper(data)
-            return jsonify(resp)
+                data = {'username': updated_username}
+                resp = serializeUtils.generate_response_wrapper(data)
+                return jsonify(resp)
+
+            except ValidationError as err:
+                print("err.messages=" + str(err.messages))
+                print("err.valid_data=" + str(err.valid_data))
+                resp = apiUtils.handle_schema_validation_error(err.messages)
+                abort(resp)
+
         else:
             #
             # In case we did not find the candidate by id
@@ -243,9 +253,10 @@ def validate_account_username():
 
         if current_token.user_id:
             data = json.loads(request.data)
-            new_username = data['new_username'].lower()
+            u = UsernameSchema().load(data)
 
-            is_unique = userService.is_username_unique(new_username, current_token.user_id)
+
+            is_unique = userService.is_username_unique(u.new_username, current_token.user_id)
 
             data = {'is_unique': str(is_unique)}
             resp = serializeUtils.generate_response_wrapper(data)

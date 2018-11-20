@@ -50,6 +50,7 @@ def create_application():
     global_config["APP_DB_ENGINE_DEBUG"] = os.environ["APP_DB_ENGINE_DEBUG"]
 
     infrastructure.database_init()
+
     CORS(app,
          # resources={r"/api/*": {"origins": "http://127.0.0.1:4200"}},
          allow_headers=["origin", "X-Requested-With", "Content-Type", "Accept", "Accept-Encoding",
