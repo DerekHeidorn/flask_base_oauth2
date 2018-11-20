@@ -174,3 +174,120 @@ def update_public_user(user_id):
         data = serializeUtils.serialize_user(updated_user)
         resp = serializeUtils.generate_response_wrapper(data)
         return jsonify(resp)
+
+
+@api.route('/api/v1.0/public/account/username', methods=['GET'])
+@oauth2.require_oauth('CUST_ACCESS')
+def get_public_account_username():
+    """
+    get username (email)
+    :return:
+    """
+    if current_token is not None and current_token.user_id is not None:
+
+        current_user = userService.get_user_by_id(current_token.user_id)
+        if current_user:
+            data = {'username': current_user.username}
+            resp = serializeUtils.generate_response_wrapper(data)
+            return jsonify(resp)
+        else:
+            #
+            # In case we did not find the candidate by id
+            # we send HTTP 404 - Not Found error to the client
+            #
+            abort(404)
+    else:
+        abort(401)
+
+
+@api.route('/api/v1.0/public/account/username', methods=['PUT'])
+@oauth2.require_oauth('CUST_ACCESS')
+def update_public_account_username():
+    """
+    Update username (email)
+    :return:
+    """
+    if current_token is not None and current_token.user_id is not None:
+
+        if current_token.user_id:
+            data = json.loads(request.data)
+            new_username = data['new_username']
+            password = data['password']
+
+            updated_username = userService.update_username_with_required_password(current_token.user_id,
+                                                                                  new_username,
+                                                                                  password
+                                                                                  )
+
+            data = {'username': updated_username}
+            resp = serializeUtils.generate_response_wrapper(data)
+            return jsonify(resp)
+        else:
+            #
+            # In case we did not find the candidate by id
+            # we send HTTP 404 - Not Found error to the client
+            #
+            abort(404)
+    else:
+        abort(401)
+
+
+@api.route('/api/v1.0/public/account/username/validate', methods=['POST'])
+@oauth2.require_oauth('CUST_ACCESS')
+def validate_account_username():
+    """
+    validate username (email)
+    :return:
+    """
+    if current_token is not None and current_token.user_id is not None:
+
+        if current_token.user_id:
+            data = json.loads(request.data)
+            new_username = data['new_username'].lower()
+
+            is_unique = userService.is_username_unique(new_username, current_token.user_id)
+
+            data = {'is_unique': str(is_unique)}
+            resp = serializeUtils.generate_response_wrapper(data)
+            return jsonify(resp)
+        else:
+            #
+            # In case we did not find the candidate by id
+            # we send HTTP 404 - Not Found error to the client
+            #
+            abort(404)
+    else:
+        abort(401)
+
+
+@api.route('/api/v1.0/public/account/password', methods=['PUT'])
+@oauth2.require_oauth('CUST_ACCESS')
+def update_public_account_password():
+    """
+    Update Password for a User Account
+    :return:
+    """
+
+    if current_token is not None and current_token.user_id is not None:
+
+        if current_token.user_id:
+            data = json.loads(request.data)
+            old_password = data['old_password']
+            new_password = data['new_password']
+
+            userService.update_user_password(current_token.user_id,
+                                             old_password,
+                                             new_password
+                                             )
+
+            data = {}
+            resp = serializeUtils.generate_response_wrapper(data)
+            return jsonify(resp)
+        else:
+            #
+            # In case we did not find the candidate by id
+            # we send HTTP 404 - Not Found error to the client
+            #
+            abort(404)
+    else:
+        abort(401)

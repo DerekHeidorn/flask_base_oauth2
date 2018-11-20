@@ -25,9 +25,9 @@ def is_user_valid(user, password):
     if user is None:
         return False
 
-    tmp = get_hashed_password(password, user.password_salt)
+    new_hash = get_hashed_password(password, user.password_salt)
 
-    if tmp.strip() == user.password_hash.strip():
+    if new_hash.strip() == user.password_hash.strip():
         return True
     else:
         return False

@@ -49,7 +49,7 @@ def create_public_user_and_token(test_client):
 
     print("common helper: create_public_user_and_token")
     username = randomUtil.random_username()
-    password = randomUtil.random_string(10, 25)
+    password = DEFAULT_PUBLIC_USER_PASSWORD
     resp = test_client.post('/signup',
                             data=dict(username=username,
                                       password=password,

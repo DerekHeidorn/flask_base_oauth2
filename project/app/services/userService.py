@@ -65,8 +65,8 @@ def get_users_by_uuid_list(user_uuid_list):
     return users
 
 
-def is_username_unique(username):
-    return userDao.is_username_unique(username)
+def is_username_unique(username, exclude_user_id=None):
+    return userDao.is_username_unique(username, exclude_user_id)
 
 
 def get_user_by_username_and_validate(username, password):
@@ -186,6 +186,9 @@ def complete_reset_user_password(username, password, user_reset_code):
 
         userDao.update_user(user, session)
 
+        # send an email about the password changed
+        emailService.send_update_password_email(user.get_formatted_name(), user.username)
+
 
 def deactivate_account(user_id):
     # get the base url
@@ -263,3 +266,52 @@ def complete_reactivate_account(username, reactivate_code):
         user.activation_code = None
 
         userDao.update_user(user, session)
+
+
+def update_username_with_required_password(user_id, new_username, password):
+    # create a new session
+    session = baseDao.get_session()
+
+    user = userDao.get_user_by_id(user_id, session)
+    if user:
+        if user.username.lower() != new_username.lower():
+            if userUtils.is_user_valid(user, password):
+                user.username = new_username.lower()
+                userDao.update_user(user, session)
+
+                # send an email to the user about the change
+                emailService.send_update_username_email(user.get_formatted_name(), user.username, new_username)
+
+                return user.username
+            else:
+                raise Exception('password is invalid')
+        else:
+            return new_username.lower()
+    else:
+        raise Exception('No user found by username')
+
+
+def update_user_password(user_id, old_password, new_password):
+    # create a new session
+    session = baseDao.get_session()
+
+    user = userDao.get_user_by_id(user_id, session)
+    if user:
+        if userUtils.is_user_valid(user, old_password):
+            # reset the failed attempts
+            user.failed_attempt_count = 0
+
+            # create a new salt
+            user.password_salt = userUtils.random_user_private_key(32)
+
+            # create a new hash
+            user.password_hash = userUtils.get_hashed_password(new_password, user.password_salt)
+
+            userDao.update_user(user, session)
+
+            # send an email to the user about the change
+            emailService.send_update_password_email(user.get_formatted_name(), user.username)
+        else:
+            raise Exception('Password is invalid')
+    else:
+        raise Exception('No user found')

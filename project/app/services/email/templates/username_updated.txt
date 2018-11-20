@@ -1,0 +1,11 @@
+
+Hi {formatted_name},
+
+This email is to confirm that your account has been successfully updated.
+
+Old Username: {old_username}</a>
+New Username: {new_username}</a>
+
+Regards,
+
+Support
