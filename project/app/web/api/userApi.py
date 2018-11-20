@@ -55,6 +55,24 @@ def get_public_account_profile():
         abort(401)
 
 
+@api.route('/api/v1.0/public/user/detail/<user_uuid>', methods=['GET'])
+@oauth2.require_oauth('CUST_ACCESS')
+def get_public_user_details(user_uuid):
+
+    user = userService.get_user_by_uuid(user_uuid)
+    if user:
+        data = serializeUtils.serialize_user_profile(user)
+        resp = serializeUtils.generate_response_wrapper(data)
+        return jsonify(resp)
+    else:
+        #
+        # In case we did not find the candidate by id
+        # we send HTTP 404 - Not Found error to the client
+        #
+        abort(404)
+
+
+
 @api.route('/api/v1.0/admin/user/all/', methods=['GET'])
 @oauth2.require_oauth('STAFF_ACCESS')
 def get_users():
