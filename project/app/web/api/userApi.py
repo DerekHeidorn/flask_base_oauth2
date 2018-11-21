@@ -11,7 +11,9 @@ from authlib.flask.oauth2 import current_token
 from project.app import core
 from project.app.services import userService
 from project.app.web.utils import serializeUtils, apiUtils
-from project.app.web.schemas.userSchema import ChangePasswordSchema, ChangeUsernameSchema
+from project.app.web.schemas.userSchema import \
+    ChangePasswordSchema, ChangeUsernameSchema, \
+    UserProfileBasicSchema, UserExternalBasicSchema, UserProfileDetailSchema
 from project.app.web import oauth2
 
 api = Blueprint('user_api', __name__)
@@ -24,7 +26,7 @@ def get_public_account():
 
         current_user = userService.get_user_by_id(current_token.user_id)
         if current_user:
-            data = serializeUtils.serialize_user(current_user)
+            data = UserProfileBasicSchema().dump(current_user)
             resp = serializeUtils.generate_response_wrapper(data)
             return jsonify(resp)
         else:
@@ -45,7 +47,7 @@ def get_public_account_profile():
 
         current_user = userService.get_user_by_id(current_token.user_id)
         if current_user:
-            data = serializeUtils.serialize_user_profile(current_user)
+            data = UserProfileDetailSchema().dump(current_user)
             resp = serializeUtils.generate_response_wrapper(data)
             return jsonify(resp)
         else:
@@ -64,7 +66,7 @@ def get_public_user_details(user_uuid):
     core.logger.debug('request=' + str(request))
 
     user = userService.get_user_by_uuid(user_uuid)
-    data = serializeUtils.serialize_user_item(user)
+    data = UserExternalBasicSchema().dump(user)
     resp = serializeUtils.generate_response_wrapper(data)
     return jsonify(resp)
 
@@ -79,7 +81,7 @@ def get_public_user_details_by_list():
     users = userService.get_users_by_uuid_list(user_uuid_list)
     data = []
     for u in users:
-        data.append(serializeUtils.serialize_user_item(u))
+        data.append(UserExternalBasicSchema().dump(u))
 
     resp = serializeUtils.generate_response_wrapper(data)
     return jsonify(resp)
@@ -91,7 +93,7 @@ def get_users():
     users = userService.get_users()
     user_list = []
     for u in users:
-        user_list.append(serializeUtils.serialize_user(u))
+        user_list.append(UserProfileBasicSchema().dump(u))
 
     resp = serializeUtils.generate_response_wrapper(user_list)
     return jsonify(resp)
@@ -104,7 +106,7 @@ def get_admin_account():
 
         current_user = userService.get_user_by_id(current_token.user_id)
         if current_user:
-            data = serializeUtils.serialize_user(current_user)
+            data = UserProfileBasicSchema().dump(current_user)
             resp = serializeUtils.generate_response_wrapper(data)
             return jsonify(resp)
         else:
@@ -127,7 +129,7 @@ def add_public_user():
 
     new_user = userService.add_public_user(None, username, password, first_name, last_name)
 
-    data = serializeUtils.serialize_user(new_user)
+    data = UserProfileBasicSchema().dump(new_user)
     resp = serializeUtils.generate_response_wrapper(data)
     return jsonify(resp), 201
 
@@ -137,7 +139,7 @@ def add_public_user():
 def get_user_by_id(user_id):
     current_user = userService.get_user_by_id(user_id)
     if current_user:
-        data = serializeUtils.serialize_user(current_user)
+        data = UserProfileBasicSchema().dump(current_user)
         resp = serializeUtils.generate_response_wrapper(data)
         return jsonify(resp)
     else:
@@ -174,7 +176,7 @@ def update_public_user(user_id):
     if not updated_user:
         return make_response('', 404)
     else:
-        data = serializeUtils.serialize_user(updated_user)
+        data = UserProfileBasicSchema().dump(updated_user)
         resp = serializeUtils.generate_response_wrapper(data)
         return jsonify(resp)
 
@@ -216,17 +218,23 @@ def update_public_account_username():
             data = json.loads(request.data)
 
             result = ChangeUsernameSchema().load(data)
-            core.logger.debug('UsernameSchema=' + str(result))
+            core.logger.debug('ChangeUsernameSchema=' + str(result))
 
-            updated_username = userService.update_username_with_required_password(current_token.user_id,
-                                                                                  result['new_username'],
-                                                                                  result['password']
-                                                                                  )
+            is_unique = userService.is_username_unique(result['new_username'], current_token.user_id)
+            core.logger.debug('is_unique=' + str(is_unique))
+            if not is_unique:
+                raise ValidationError("Username is not unique", field_names=["new_username"])
 
-            data = {'username': updated_username}
-            resp = serializeUtils.generate_response_wrapper(data)
-            return jsonify(resp)
-
+            updated_user = userService.update_username_with_required_password(current_token.user_id,
+                                                                              result['new_username'],
+                                                                              result['password']
+                                                                              )
+            if updated_user is not None:
+                data = UserProfileBasicSchema().dump(updated_user)
+                resp = serializeUtils.generate_response_wrapper(data)
+                return jsonify(resp)
+            else:
+                abort(400)
         else:
             #
             # In case we did not find the candidate by id
@@ -251,8 +259,9 @@ def validate_account_username():
 
             u = ChangeUsernameSchema().load(data)
 
-            # TODO
             is_unique = userService.is_username_unique(u.new_username, current_token.user_id)
+            if not is_unique:
+                raise ValidationError("Username is not unique", field_names=["new_username"])
 
             data = {'is_unique': str(is_unique)}
             resp = serializeUtils.generate_response_wrapper(data)
@@ -282,16 +291,18 @@ def update_public_account_password():
             data = json.loads(request.data)
             try:
                 result = ChangePasswordSchema().load(data)
-                core.logger.debug('UsernameSchema=' + str(result))
+                core.logger.debug('ChangePasswordSchema=' + str(result))
 
                 userService.update_user_password(current_token.user_id,
                                                  result['old_password'],
                                                  result['new_password']
                                                  )
-
-                data = {}
-                resp = serializeUtils.generate_response_wrapper(data)
+                resp = serializeUtils.generate_response_wrapper(None)
                 return jsonify(resp)
+
+                # data = {}
+                # resp = serializeUtils.generate_response_wrapper(data)
+                # return jsonify(resp)
 
             except ValidationError as err:
                 core.logger.debug("err.messages=" + str(err.messages))

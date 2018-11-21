@@ -282,11 +282,11 @@ def update_username_with_required_password(user_id, new_username, password):
                 # send an email to the user about the change
                 emailService.send_update_username_email(user.get_formatted_name(), user.username, new_username)
 
-                return user.username
+                return user
             else:
                 raise Exception('password is invalid')
         else:
-            return new_username.lower()
+            raise Exception('Username is the same')
     else:
         raise Exception('No user found by username')
 
