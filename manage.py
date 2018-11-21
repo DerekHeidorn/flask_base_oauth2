@@ -3,7 +3,7 @@ import unittest
 import coverage
 import argparse
 from subprocess import Popen, PIPE
-from project.app import main
+from project.app import core
 
 parser = argparse.ArgumentParser()
 parser.add_argument("command", choices=['test', 'coverage', 'runserver', 'emailserver'], help="Command Action")
@@ -12,6 +12,7 @@ args = parser.parse_args()
 
 
 def setup_dev_settings():
+    print("Setting up development settings")
     # for using http instead of https
     os.environ['AUTHLIB_INSECURE_TRANSPORT'] = '1'
 
@@ -43,7 +44,7 @@ def run_smtp_server():
 
 def run_test():
     setup_dev_settings()
-    app = main.create_application()
+    app = core.create_application()
 
     """Runs the unit tests without test coverage."""
     '''
@@ -60,7 +61,7 @@ def run_test():
 
 def run_coverage():
     setup_dev_settings()
-    app = main.create_application()
+    # app = main.create_application()
 
     code_coverage = coverage.coverage(
         branch=True,
@@ -92,7 +93,7 @@ def run_coverage():
 
 def run_dev_server():
     setup_dev_settings()
-    app = main.create_application()
+    app = core.create_application()
     options = {'use_debugger': False, 'threaded': True, 'use_reloader': False}
     app.run(debug=False, host="127.0.0.1", port=9000, **options)
 

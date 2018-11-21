@@ -8,9 +8,10 @@ from marshmallow import ValidationError
 
 from authlib.flask.oauth2 import current_token
 
+from project.app import core
 from project.app.services import userService
 from project.app.web.utils import serializeUtils, apiUtils
-from project.app.web.schema.generalSchema import UsernameSchema
+from project.app.web.schemas.userSchema import ChangePasswordSchema, ChangeUsernameSchema
 from project.app.web import oauth2
 
 api = Blueprint('user_api', __name__)
@@ -60,7 +61,7 @@ def get_public_account_profile():
 @api.route('/api/v1.0/public/user/details/<user_uuid>', methods=['GET'])
 @oauth2.require_oauth('CUST_ACCESS')
 def get_public_user_details(user_uuid):
-    print('request=' + str(request))
+    core.logger.debug('request=' + str(request))
 
     user = userService.get_user_by_uuid(user_uuid)
     data = serializeUtils.serialize_user_item(user)
@@ -71,8 +72,8 @@ def get_public_user_details(user_uuid):
 @api.route('/api/v1.0/public/user/details', methods=['POST'])
 @oauth2.require_oauth('CUST_ACCESS')
 def get_public_user_details_by_list():
-    print('request=' + str(request))
-    print('request.data=' + str(request.data))
+    core.logger.debug('request=' + str(request))
+    core.logger.debug('request.data=' + str(request.data))
     user_uuid_list = json.loads(request.data)
 
     users = userService.get_users_by_uuid_list(user_uuid_list)
@@ -213,24 +214,18 @@ def update_public_account_username():
 
         if current_token.user_id:
             data = json.loads(request.data)
-            try:
-                result = UsernameSchema().load(data)
-                print('UsernameSchema=' + str(result))
 
-                updated_username = userService.update_username_with_required_password(current_token.user_id,
-                                                                                      result['new_username'],
-                                                                                      result['password']
-                                                                                      )
+            result = ChangeUsernameSchema().load(data)
+            core.logger.debug('UsernameSchema=' + str(result))
 
-                data = {'username': updated_username}
-                resp = serializeUtils.generate_response_wrapper(data)
-                return jsonify(resp)
+            updated_username = userService.update_username_with_required_password(current_token.user_id,
+                                                                                  result['new_username'],
+                                                                                  result['password']
+                                                                                  )
 
-            except ValidationError as err:
-                print("err.messages=" + str(err.messages))
-                print("err.valid_data=" + str(err.valid_data))
-                resp = apiUtils.handle_schema_validation_error(err.messages)
-                abort(resp)
+            data = {'username': updated_username}
+            resp = serializeUtils.generate_response_wrapper(data)
+            return jsonify(resp)
 
         else:
             #
@@ -253,14 +248,16 @@ def validate_account_username():
 
         if current_token.user_id:
             data = json.loads(request.data)
-            u = UsernameSchema().load(data)
 
+            u = ChangeUsernameSchema().load(data)
 
+            # TODO
             is_unique = userService.is_username_unique(u.new_username, current_token.user_id)
 
             data = {'is_unique': str(is_unique)}
             resp = serializeUtils.generate_response_wrapper(data)
             return jsonify(resp)
+
         else:
             #
             # In case we did not find the candidate by id
@@ -283,17 +280,25 @@ def update_public_account_password():
 
         if current_token.user_id:
             data = json.loads(request.data)
-            old_password = data['old_password']
-            new_password = data['new_password']
+            try:
+                result = ChangePasswordSchema().load(data)
+                core.logger.debug('UsernameSchema=' + str(result))
 
-            userService.update_user_password(current_token.user_id,
-                                             old_password,
-                                             new_password
-                                             )
+                userService.update_user_password(current_token.user_id,
+                                                 result['old_password'],
+                                                 result['new_password']
+                                                 )
 
-            data = {}
-            resp = serializeUtils.generate_response_wrapper(data)
-            return jsonify(resp)
+                data = {}
+                resp = serializeUtils.generate_response_wrapper(data)
+                return jsonify(resp)
+
+            except ValidationError as err:
+                core.logger.debug("err.messages=" + str(err.messages))
+                core.logger.debug("err.valid_data=" + str(err.valid_data))
+                resp = apiUtils.handle_schema_validation_error(err.messages)
+                abort(resp)
+
         else:
             #
             # In case we did not find the candidate by id

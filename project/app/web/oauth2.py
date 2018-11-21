@@ -7,7 +7,7 @@ from authlib.specs.rfc6749 import grants
 from authlib.specs.rfc6750 import BearerTokenValidator
 from authlib.specs.rfc6749.errors import AccessDeniedError
 
-from project.app import main
+from project.app import core
 from project.app.persist import baseDao, userDao
 from project.app.services import oauth2Service, userService
 from project.app.services.utils import userUtils
@@ -54,7 +54,7 @@ class _BearerTokenValidator(BearerTokenValidator):
         # oAuth2Token = OAuth2Token()
         # return oAuth2Token
 
-        oauth2_secret_key = main.global_config["APP_JWT_KEY"]
+        oauth2_secret_key = core.global_config["APP_JWT_KEY"]
         # print("oauth2_secret_key=" + str(oauth2_secret_key))
         payload = authUtils.decode_auth_token_payload(token_string, oauth2_secret_key)
         # print("payload=" + str(payload))
@@ -95,7 +95,7 @@ def query_client(client_id):
 
 def save_token(token, request):
 
-    oauth2_secret_key = main.global_config["APP_JWT_KEY"]
+    oauth2_secret_key = core.global_config["APP_JWT_KEY"]
     decoded_token = authUtils.decode_auth_token_payload(token.get('access_token'), oauth2_secret_key)
 
     authorities = userUtils.get_user_authorities(request.user)
@@ -120,7 +120,7 @@ def generate_jwt_token(client, grant_type, user, scope):
     # print("scope:" + str(scope))
 
     authorities = userUtils.get_user_authorities(user)
-    oauth2_secret_key = main.global_config["APP_JWT_KEY"]
+    oauth2_secret_key = core.global_config["APP_JWT_KEY"]
     print("(*)oauth2_secret_key:" + str(oauth2_secret_key))
     token = authUtils.encode_auth_token(user, authorities, oauth2_secret_key)
     # print("token:" + str(token ))

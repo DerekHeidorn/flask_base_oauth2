@@ -4,7 +4,7 @@ from project.app.services import userService
 from project.app.services.utils import userUtils
 from project.app.web.utils import authUtils
 from project.tests.utils import randomUtil
-from project.app import main
+from project.app import core
 
 DEFAULT_PUBLIC_USER_PASSWORD = "foobar@123"
 DEFAULT_PUBLIC_USERNAME = "Joe.Customer@foo.com.invali"
@@ -78,7 +78,7 @@ def get_default_staff_and_token():
 def generate_jwt_token(user):
 
     authorities = userUtils.get_user_authorities(user)
-    oauth2_secret_key = main.global_config["APP_JWT_KEY"]
+    oauth2_secret_key = core.global_config["APP_JWT_KEY"]
     token = authUtils.encode_auth_token(user, authorities, oauth2_secret_key)
 
     return token.decode("utf-8")

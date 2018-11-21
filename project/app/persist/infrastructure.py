@@ -1,13 +1,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from project.app import main
+from project.app import core
 
 Session = sessionmaker()
 
 
 def database_init():
-    initializing_db_string = main.global_config["APP_DB_CONNECTION_URI"]
-    engine_debug = main.global_config["APP_DB_ENGINE_DEBUG"]
+    initializing_db_string = core.global_config["APP_DB_CONNECTION_URI"]
+    engine_debug = core.global_config["APP_DB_ENGINE_DEBUG"]
     engine_echo = False
     if engine_debug.lower() == 'true':
         engine_echo = "debug"
