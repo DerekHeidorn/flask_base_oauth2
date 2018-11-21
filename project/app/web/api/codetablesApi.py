@@ -31,7 +31,7 @@ def codetable_by_name(codetable_name):
 
         else:
             codetable_data = codetablesService.get_code_table(allowed_codetable)
-            data = CodeTableSchema.dump(codetable_data)
+            data = CodeTableSchema.dump(codetable_data, many=True)
             print("codetableData=" + str(data))
             if data:
                 _codetable_cache.add(codetable_name, data)
