@@ -27,7 +27,7 @@ def encode_auth_token(user, authorities, oauth2_secret_key):
             'iat': datetime.utcnow(),
             'sub': str(user.user_uuid),
             'jti': str(jti_uuid),
-            'auth': authority_list
+            'authorities': authority_list
         }
         print(str(payload))
         jwt_encode = jwt.encode(

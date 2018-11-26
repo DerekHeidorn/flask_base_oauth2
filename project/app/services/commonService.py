@@ -26,4 +26,3 @@ def load_application_cache_from_db():
     config_items = configDao.get_config_all()
     for c in config_items:
         _application_config_cache.add(c.key, c.value)
-        print("app config: " + c.key + "=" + c.value)

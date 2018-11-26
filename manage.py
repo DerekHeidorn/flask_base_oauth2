@@ -2,7 +2,6 @@ import os
 import unittest
 import coverage
 import argparse
-from subprocess import Popen, PIPE
 from project.app import core
 
 parser = argparse.ArgumentParser()
@@ -27,19 +26,6 @@ def setup_dev_settings():
     # database config
     os.environ["APP_DB_CONNECTION_URI"] = "postgresql://postgres:P$F$xs+n?5+Ug3AU5PTe3q@localhost/postgres"
     os.environ["APP_DB_ENGINE_DEBUG"] = "False"
-
-
-'''
-Setting an SMTP server:
-python -m smtpd -n -c DebuggingServer localhost:25
-'''
-def run_smtp_server():
-    print("Running email server")
-    smtpd_cmd = ["python", "-m", "smtpd", "-n", "-c", "DebuggingServer", "localhost:25"]
-    process = Popen(smtpd_cmd, stdout=PIPE)
-    process.communicate()
-    exit_code = process.wait()
-    print("called smtpd_cmd:" + str(exit_code))
 
 
 def run_test():
@@ -110,9 +96,3 @@ elif args.command == 'test':
 
 elif args.command == 'coverage':
     run_coverage()
-
-elif args.command == 'emailserver':
-    run_smtp_server()
-
-# if __name__ == "__main__":
-#     run_server()
