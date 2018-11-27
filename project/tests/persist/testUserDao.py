@@ -19,6 +19,7 @@ class UserDaoTestCase(BaseTest):
     def test_add_user(self):
 
         new_user = User()
+        new_user.alias = randomUtil.random_string(8, 30)
         new_user.first_name = randomUtil.random_string(6, 6)
         new_user.last_name = randomUtil.random_string(10, 10)
         new_user.username = randomUtil.random_username()

@@ -34,6 +34,7 @@ CREATE TABLE public.TB_USER
 (
   USER_ID serial NOT NULL, -- System-generated ID for a User.
   USER_UUID uuid NOT NULL,
+  USER_ALIAS character varying(30) NOT NULL, -- Username for a User
   USERNAME character varying(100) NOT NULL, -- Username for a User
   USER_PASSWD character(256), -- Hashed password used in login authentication
   USER_PASSWD_SALT character(32), -- Used in hashing and authentication
@@ -58,6 +59,7 @@ COMMENT ON TABLE public.TB_USER
   IS 'User Table - A User is an individual who logs into the system ';
 COMMENT ON COLUMN public.TB_USER.USER_ID IS 'System-generated ID for a User.';
 COMMENT ON COLUMN public.TB_USER.USER_UUID IS 'Unique User Id';
+COMMENT ON COLUMN public.TB_USER.USER_ALIAS IS 'Unique Alias for a User';
 COMMENT ON COLUMN public.TB_USER.USERNAME IS 'Username for a User';
 COMMENT ON COLUMN public.TB_USER.USER_PASSWD IS 'Hashed password used in login authentication';
 COMMENT ON COLUMN public.TB_USER.USER_PASSWD_SALT IS 'Used in hashing and authentication';
@@ -111,6 +113,11 @@ CREATE INDEX XIE4TB_USER
 -- Index: public.XIF8TB_USER
 
 -- DROP INDEX public.XIF8TB_USER;
+
+CREATE INDEX XIE5TB_USER
+  ON public.TB_USER
+  USING btree
+  (lower(USER_ALIAS::text) COLLATE pg_catalog.default);
 
 CREATE INDEX XIF8TB_USER
   ON public.TB_USER

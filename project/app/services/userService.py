@@ -69,6 +69,10 @@ def is_username_unique(username, exclude_user_id=None):
     return userDao.is_username_unique(username, exclude_user_id)
 
 
+def is_alias_unique(alias, exclude_user_id=None):
+    return userDao.is_alias_unique(alias, exclude_user_id)
+
+
 def get_user_by_username_and_validate(username, password):
     user = userDao.get_user_by_username(username)
     if user is not None:
@@ -77,7 +81,7 @@ def get_user_by_username_and_validate(username, password):
         return {"user": None, "is_password_valid": False}
 
 
-def add_public_user(client_id, username, password, first_name=None, last_name=None):
+def add_public_user(client_id, alias, username, password, first_name=None, last_name=None):
 
     session = baseDao.get_session()
     security_group = securityDao.get_security_group_by_name(securityDao.SECURITY_GROUP_CUSTOMER_NAME,
@@ -85,7 +89,11 @@ def add_public_user(client_id, username, password, first_name=None, last_name=No
 
     oauth2_client = oauth2Dao.query_client(client_id, session=session)
 
-    new_user = User(first_name=first_name, last_name=last_name, username=username)
+    new_user = User()
+    new_user.first_name = first_name
+    new_user.last_name = last_name
+    new_user.username = username
+    new_user.alias = alias
     new_user.user_uuid = uuid.uuid4()
     new_user.status_cd = 'A'
     new_user.type_cd = '1'

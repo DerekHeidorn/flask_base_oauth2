@@ -7,14 +7,16 @@ from project.tests.helpers import commonHelper
 from project.app.services import userService, encryptionService
 
 
-class UserWebTestCase(BaseTest):
+class UserApiTestCase(BaseTest):
 
     def test_signup(self):
         print("Running: test_signup")
         username = randomUtil.random_username()
+        alias = randomUtil.random_string(10, 25)
         password = randomUtil.random_string(10, 25)
         resp = self.testClient.post('/signup',
                                     data=dict(username=username,
+                                              alias=alias,
                                               password=password,
                                               password_repeat=password,
                                               grant_type="password",
@@ -40,6 +42,7 @@ class UserWebTestCase(BaseTest):
         print("Running: test_login")
         username_gen = randomUtil.random_username()
         password_gen = randomUtil.random_string(10, 25)
+        alias_gen = randomUtil.random_string(8, 22)
 
         # -----------------------------------------------
         #  Signup
@@ -47,6 +50,7 @@ class UserWebTestCase(BaseTest):
         resp = self.testClient.post('/signup',
                                     data=dict(
                                               username=username_gen,
+                                              alias=alias_gen,
                                               password=password_gen,
                                               password_repeat=password_gen,
                                               grant_type="password",
@@ -67,6 +71,7 @@ class UserWebTestCase(BaseTest):
         # check the database for the new user
         user = userService.get_user_by_username(username_gen)
         self.assertEquals(user.username, username_gen)
+        self.assertEquals(user.alias, alias_gen)
 
         # -----------------------------------------------
         #  Login
@@ -295,8 +300,8 @@ class UserWebTestCase(BaseTest):
     def test_update_public_account_username(self):
         print("Running: test_update_public_account_username")
         user_info = commonHelper.create_public_user_and_token(self.testClient)
-        new_user = user_info["user"]
-        username = new_user.username
+        # new_user = user_info["user"]
+        # username = new_user.username
         password = commonHelper.DEFAULT_PUBLIC_USER_PASSWORD
         new_username = randomUtil.random_username()
 
@@ -336,7 +341,7 @@ class UserWebTestCase(BaseTest):
     def test_update_public_account_username_invalid_username(self):
         print("Running: test_update_public_account_username_invalid_username")
         user_info = commonHelper.create_public_user_and_token(self.testClient)
-        new_user = user_info["user"]
+        # new_user = user_info["user"]
 
         password = commonHelper.DEFAULT_PUBLIC_USER_PASSWORD
         new_username = randomUtil.random_string(5, 6)
@@ -351,7 +356,6 @@ class UserWebTestCase(BaseTest):
         self.debug_response(resp)
 
         self.assertEqual(400, resp.status_code)
-
 
 
 if __name__ == '__main__':

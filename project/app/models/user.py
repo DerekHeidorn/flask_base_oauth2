@@ -34,7 +34,7 @@ class User(BaseModel):
             formatted_name += self.last_name
             return formatted_name
         else:
-            return self.username
+            return self.alias
 
     user_uuid = Column("user_uuid", String(36), unique=True)
 
@@ -46,6 +46,9 @@ class User(BaseModel):
 
     # # USERNAME		Username for a User	
     username = Column("username", String(100))
+
+    # # user_alias		Alias for a User
+    alias = Column("user_alias", String(30))
 
     # # USER_PASSWD		Hashed password used in USERNAME authentication
     password_hash = Column("user_passwd", String(256))

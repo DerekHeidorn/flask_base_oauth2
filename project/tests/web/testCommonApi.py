@@ -4,7 +4,7 @@ import json
 from project.tests.web.baseTest import BaseTest 
 
 
-class CommonTestCases(BaseTest):
+class CommonApiTestCases(BaseTest):
 
     def testVersion_OK(self):
         print("Running: test_version_OK")

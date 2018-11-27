@@ -124,10 +124,11 @@ def get_admin_account():
 def add_public_user():
     first_name = request.form["first_name"]
     last_name = request.form["last_name"]
+    alias = request.form["alias"]
     username = request.form["username"]
     password = request.form["password"]
 
-    new_user = userService.add_public_user(None, username, password, first_name, last_name)
+    new_user = userService.add_public_user(None, alias, username, password, first_name, last_name)
 
     data = UserProfileBasicSchema().dump(new_user)
     resp = serializeUtils.generate_response_wrapper(data)
@@ -227,7 +228,7 @@ def update_public_account_username():
             if not is_unique:
                 raise ValidationError("Username is not unique", field_names=["new_username"])
 
-            updated_user = userService.update_username_with_required_password(current_token.user_id,
+            updated_user = userService.update_username_with_required_password(current_user.user_id,
                                                                               result['new_username'],
                                                                               result['password']
                                                                               )
@@ -289,15 +290,17 @@ def update_public_account_password():
     :return:
     """
 
-    if current_token is not None and current_token.user_id is not None:
+    if current_token is not None and current_token.user is not None:
 
-        if current_token.user_id:
+        current_user = current_token.user
+
+        if current_user.user_id:
             data = json.loads(request.data)
             try:
                 result = ChangePasswordSchema().load(data)
                 core.logger.debug('ChangePasswordSchema=' + str(result))
 
-                userService.update_user_password(current_token.user_id,
+                userService.update_user_password(current_user.user_id,
                                                  result['old_password'],
                                                  result['new_password']
                                                  )

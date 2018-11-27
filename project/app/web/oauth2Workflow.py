@@ -101,7 +101,10 @@ def signup_post():
             try:
                 oauth2_client = oauth2Service.query_client(form.client_id.data)
                 if oauth2_client is not None:
-                    user = userService.add_public_user(form.client_id.data, form.username.data, form.password.data)
+                    user = userService.add_public_user(form.client_id.data,
+                                                       form.alias.data,
+                                                       form.username.data,
+                                                       form.password.data)
 
                     token_response = oauth2.create_token_response()
                     json_string = token_response.data.decode("utf-8")

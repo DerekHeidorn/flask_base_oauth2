@@ -31,6 +31,17 @@
               {{ form.csrf_token }}
               <table>
                   <tr>
+                      <td>{{ form.alias.label }}:</td>
+                      <td>{{ form.alias }}<br/></td>
+                  </tr>
+                  <tr>
+                        <td colspan="2">
+                        {% for error in form.alias.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                        </td>
+                  </tr>
+                  <tr>
                       <td>{{ form.username.label }}:</td>
                       <td>{{ form.username }}<br/></td>
                   </tr>

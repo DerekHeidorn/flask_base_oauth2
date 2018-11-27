@@ -67,6 +67,22 @@ def get_user_by_uuid(user_uuid, session=None):
     return user
 
 
+def get_user_by_alias(alias, session=None):
+    """
+    Gets the User based on the username parameter
+
+    :param alias: The alias of the user
+    :param session: existing db session
+    :return: The user.
+    """
+
+    if session is None:
+        session = baseDao.get_session()
+
+    user = session.query(User).filter(func.lower(User.alias) == func.lower(alias)).first()
+    return user
+
+
 def get_user_by_username(username, session=None):
     """
     Gets the User based on the username parameter
@@ -104,6 +120,27 @@ def is_username_unique(username, exclude_user_id=None, session=None):
 
     return count == 0
 
+
+def is_alias_unique(alias, exclude_user_id=None, session=None):
+    """
+    Gets the User based on the username parameter
+
+    :param alias: The alias of the user w
+    :param exclude_user_id: exclude the current user
+    :param session: existing db session
+    :return: The user.
+    """
+
+    if session is None:
+        session = baseDao.get_session()
+
+    query = session.query(func.count(User.user_id)).filter(func.lower(User.alias) == func.lower(alias))
+    if exclude_user_id is not None:
+        query.filter(User.user_id != exclude_user_id)
+
+    count = query.scalar()
+
+    return count == 0
 
 def update_user_login_access(user_id, failed_count, session):
 

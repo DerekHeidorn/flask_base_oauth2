@@ -62,10 +62,13 @@ class _PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
         'none'  # , 'client_secret_basic', 'client_secret_post'
     ]
 
-    def authenticate_user(self, username, password):
+    def authenticate_user(self, username_or_alias, password):
         session = baseDao.get_session()
 
-        user = userDao.get_user_by_username(username, session)
+        user = userDao.get_user_by_username(username_or_alias, session)
+        if user is None:  # no username found, try Alias
+            user = userDao.get_user_by_alias(username_or_alias, session)
+
         if user is not None:
 
             if user.is_active:

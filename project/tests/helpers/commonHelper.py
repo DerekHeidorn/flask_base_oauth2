@@ -43,10 +43,11 @@ def create_public_user():
 
     username = randomUtil.random_username()
     password = DEFAULT_PUBLIC_USER_PASSWORD
+    alias = "Alias_" + randomUtil.random_string(6, 10)
     first_name = "FirstNm_" + randomUtil.random_string(6, 10)
     last_name = "LastNm_" + randomUtil.random_string(6, 10)
 
-    new_user = userService.add_public_user(DEFAULT_PUBLIC_CLIENT_ID, username, password, first_name, last_name)
+    new_user = userService.add_public_user(DEFAULT_PUBLIC_CLIENT_ID, alias, username, password, first_name, last_name)
 
     return new_user
 
@@ -55,10 +56,12 @@ def create_public_user_and_token(test_client):
 
     print("common helper: create_public_user_and_token")
     username = randomUtil.random_username()
+    alias = "Alias_" + randomUtil.random_string(6, 10)
     password = DEFAULT_PUBLIC_USER_PASSWORD
     resp = test_client.post('/signup',
                             data=dict(username=username,
                                       password=password,
+                                      alias=alias,
                                       password_repeat=password,
                                       grant_type="password",
                                       client_id=DEFAULT_PUBLIC_CLIENT_ID

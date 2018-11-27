@@ -6,7 +6,7 @@ import traceback
 
 
 def handle_error(e):
-    traceback.print_last()
+    traceback.print_exc()
     print("Exception:" + str(type(e)) + " msg=" + str(e))
     code = 500
     if isinstance(e, HTTPException):
