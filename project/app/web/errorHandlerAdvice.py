@@ -2,9 +2,11 @@ import json
 from werkzeug.exceptions import HTTPException
 from flask import jsonify, abort, Response
 from project.app.web.utils import serializeUtils
+import traceback
 
 
 def handle_error(e):
+    traceback.print_last()
     print("Exception:" + str(type(e)) + " msg=" + str(e))
     code = 500
     if isinstance(e, HTTPException):

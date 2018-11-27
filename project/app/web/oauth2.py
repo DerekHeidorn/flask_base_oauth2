@@ -11,9 +11,50 @@ from project.app import core
 from project.app.persist import baseDao, userDao
 from project.app.services import oauth2Service, userService
 from project.app.services.utils import userUtils
-from project.app.web.utils import authUtils, serializeUtils
+from project.app.web.utils import authUtils
+from authlib.specs.rfc6749 import TokenMixin
 
 _authorization_server = None
+
+
+class _OAuth2TokenMixin(TokenMixin):
+    user = None
+    scope = None
+    expires_in = None
+    expires_at = None
+
+    def get_scope(self):
+        """A method to get scope of the authorization code. For instance,
+        the column is called ``scope``::
+
+            def get_scope(self):
+                return self.scope
+
+        :return: scope string
+        """
+        return self.scope
+
+    def get_expires_in(self):
+        """A method to get the ``expires_in`` value of the token. e.g.
+        the column is called ``expires_in``::
+
+            def get_expires_in(self):
+                return self.expires_in
+
+        :return: timestamp int
+        """
+        return self.expires_in
+
+    def get_expires_at(self):
+        """A method to get the value when this token will be expired. e.g.
+        it would be::
+
+            def get_expires_at(self):
+                return self.created_at + self.expires_in
+
+        :return: timestamp int
+        """
+        return self.expires_at
 
 
 class _PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
@@ -57,15 +98,25 @@ class _BearerTokenValidator(BearerTokenValidator):
         oauth2_secret_key = core.global_config["APP_JWT_KEY"]
         # print("oauth2_secret_key=" + str(oauth2_secret_key))
         payload = authUtils.decode_auth_token_payload(token_string, oauth2_secret_key)
-        # print("payload=" + str(payload))
-        if isinstance(payload, str):
-            # print(payload)
-            return payload
+        print("payload=" + str(payload))
+        if isinstance(payload, dict):
+            user = userService.get_user_by_uuid(payload['sub'])
+
+            if user is None:
+                raise AccessDeniedError("No active user")
+
+            token = _OAuth2TokenMixin()
+            token.user = user
+            token.scope = payload['authorities']
+            token.expires_in = payload['exp'] - payload['iat']
+            token.expires_at = payload['exp']
+
+            return token
         else:
             if isinstance(payload, dict) and 'jti' in payload:
                 # print("payload['jti']=" + str(payload['jti']))
                 db_token = oauth2Service.query_token(payload['jti'], 'access_token')
-                # print("db_token=" + str(db_token))
+                print("db_token=" + str(db_token))
 
                 return db_token
         return None
@@ -76,7 +127,7 @@ class _BearerTokenValidator(BearerTokenValidator):
 
     def token_revoked(self, token):
         print("token_revoked:" + str(token))
-        return token.revoked
+        return False
 
 
 OAUTH2_TOKEN_EXPIRES_IN = {
@@ -98,9 +149,10 @@ def save_token(token, request):
     oauth2_secret_key = core.global_config["APP_JWT_KEY"]
     decoded_token = authUtils.decode_auth_token_payload(token.get('access_token'), oauth2_secret_key)
 
-    authorities = userUtils.get_user_authorities(request.user)
-    authority_list = serializeUtils.serialize_authority(authorities)
-    scope_list = ' '.join(authority_list)
+    # authorities = userUtils.get_user_authorities(request.user)
+    # authority_list = serializeUtils.serialize_authority(authorities)
+    # scope_list = ' '.join(authority_list)
+    scope_list = 'app.public'
 
     client_id = request.client.client_id
     user_id = request.user.get_user_id()

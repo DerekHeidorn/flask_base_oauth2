@@ -10,6 +10,12 @@ DEFAULT_PUBLIC_USER_PASSWORD = "foobar@123"
 DEFAULT_PUBLIC_USERNAME = "Joe.Customer@foo.com.invali"
 DEFAULT_PUBLIC_UUID = "c95802ac-e465-11e8-9f32-f2801f1b9fd1"  # Joe.Customer@foo.com.invali
 
+DEFAULT_PUBLIC_SUBSCRIBED_USERNAME = "Joe.Subscribed@foo.com.invali"
+DEFAULT_PUBLIC_SUBSCRIBED_UUID = "14468f27-44e8-4fc3-8cc6-3a48c80fd5aa"  # Joe.Subscribed@foo.com.invali
+
+DEFAULT_PUBLIC_GROUP_SUBSCRIBED_USERNAME = "Joe.Group.Subscribed@foo.com.invali"
+DEFAULT_PUBLIC_GROUP_SUBSCRIBED_UUID = "d71b920a-04a9-44d3-beda-a736601a64c5"  # Joe.Group.Subscribed@foo.com.invali
+
 DEFAULT_ADMIN_USERNAME = "sys.admin@foo.com.invali"
 DEFAULT_ADMIN_UUID = "c957fece-e465-11e8-9f32-f2801f1b9fd1"  # sys.admin@foo.com.invali
 

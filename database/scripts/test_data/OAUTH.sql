@@ -4,4 +4,4 @@ INSERT INTO public.TB_OAUTH2_CLIENT(
             scope, client_name, client_uri)
     VALUES (1, 'CLTID-Zeq1LRso5q-iLU9RKCKnu', null, 1531271519, 0
 			, 'http://127.0.0.1:4200/oauth/callback', 'none', 'password', 'code'
-			, 'public', 'UsernamePasswordClient', 'http://127.0.0.1:4200/');
+			, 'app.public', 'UsernamePasswordClient', 'http://127.0.0.1:4200/');

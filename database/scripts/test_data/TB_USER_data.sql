@@ -1,46 +1,92 @@
 -- 1;Customer Access;General Customer Access;CUST_ACCESS
 INSERT INTO public.TB_SCRTY_AUTH(
             SCRAUTH_ID, SCRAUTH_NAME, SCRAUTH_DE, SCRAUTH_KEY)
-    VALUES (1, 'Customer Access', 'General Customer Access', 'CUST_ACCESS');
+    VALUES (100, 'Customer Access', 'General Customer Access', 'CUST_ACCESS');
 
 -- 5;Customer Profile;Customer Profile;CUST_PROFILE
 INSERT INTO public.TB_SCRTY_AUTH(
             SCRAUTH_ID, SCRAUTH_NAME, SCRAUTH_DE, SCRAUTH_KEY)
-    VALUES (2, 'Customer Profile', 'Customer Profile', 'CUST_PROFILE');
+    VALUES (101, 'Customer Reports', 'Customer Reports', 'CUST_RPTS');
+
+INSERT INTO public.TB_SCRTY_AUTH(
+            SCRAUTH_ID, SCRAUTH_NAME, SCRAUTH_DE, SCRAUTH_KEY)
+    VALUES (200, 'Subscribed Customer', 'Subscribed Customer', 'CUST_SUB');
+
+INSERT INTO public.TB_SCRTY_AUTH(
+            SCRAUTH_ID, SCRAUTH_NAME, SCRAUTH_DE, SCRAUTH_KEY)
+    VALUES (201, 'Subscribed Customer Reports', 'Subscribed Customer Reports', 'CUST_RPTS_SUB');
+
+INSERT INTO public.TB_SCRTY_AUTH(
+            SCRAUTH_ID, SCRAUTH_NAME, SCRAUTH_DE, SCRAUTH_KEY)
+    VALUES (300, 'Subscribed Customer', 'Subscribed Customer', 'CUST_GRP_SUB');
+
+ INSERT INTO public.TB_SCRTY_AUTH(
+            SCRAUTH_ID, SCRAUTH_NAME, SCRAUTH_DE, SCRAUTH_KEY)
+    VALUES (301, 'Subscribed Group Manager Reports', 'Subscribed Group Manager Reports', 'CUST_RPTS_GRP_SUB');
+
+
 	
 -- 2;Staff Access;General Staff Access;STAFF_ACCESS
 INSERT INTO public.TB_SCRTY_AUTH(
             SCRAUTH_ID, SCRAUTH_NAME, SCRAUTH_DE, SCRAUTH_KEY)
-    VALUES (301, 'Staff Access', 'General Staff Access', 'STAFF_ACCESS');
-	
+    VALUES (1000, 'Staff Access', 'General Staff Access', 'ADM_ACCESS');
+
+INSERT INTO public.TB_SCRTY_AUTH(
+            SCRAUTH_ID, SCRAUTH_NAME, SCRAUTH_DE, SCRAUTH_KEY)
+    VALUES (1001, 'Staff Access', 'General Staff Access', 'ADM_RPTS');
+
 -- 3;Batch Operations;General Batch Operation Permissions;BATCH	
 INSERT INTO public.TB_SCRTY_AUTH(
             SCRAUTH_ID, SCRAUTH_NAME, SCRAUTH_DE, SCRAUTH_KEY)
-    VALUES (302, 'Batch Operations', 'General Batch Operation Permissions', 'BATCH');
+    VALUES (1100, 'Batch Operations', 'General Batch Operation Permissions', 'BATCH');
 	
 -- 4;System Operations;General System Permissions;SYSTEM
 INSERT INTO public.TB_SCRTY_AUTH(
             SCRAUTH_ID, SCRAUTH_NAME, SCRAUTH_DE, SCRAUTH_KEY)
-    VALUES (303, 'System Operations', 'General System Permissions', 'SYSTEM');	
-	
--- 1;SYS_ADMIN;System Administrator;1
-INSERT INTO public.TB_SCRTY_GRP(
-            SCRGRP_ID, SCRGRP_NAME, SCRGRP_DE, SCRGRP_LEVEL)
-    VALUES (1, 'SYS_ADMIN', 'System Administrator', 1);
+    VALUES (1200, 'System Operations', 'General System Permissions', 'SYSTEM');
 
 -- 2;CUSTOMER;Customer;100
 INSERT INTO public.TB_SCRTY_GRP(
             SCRGRP_ID, SCRGRP_NAME, SCRGRP_DE, SCRGRP_LEVEL)
-    VALUES (2, 'CUSTOMER', 'Customer', 100);
-	
--- SYS_ADMIN
-INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (1, 301);
-INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (1, 302);
-INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (1, 303);
+    VALUES (100, 'CUSTOMER', 'Customer', 100);
+
+INSERT INTO public.TB_SCRTY_GRP(
+            SCRGRP_ID, SCRGRP_NAME, SCRGRP_DE, SCRGRP_LEVEL)
+    VALUES (200, 'CUSTOMER_SUB', 'Subscribed Customer', 80);
+
+INSERT INTO public.TB_SCRTY_GRP(
+            SCRGRP_ID, SCRGRP_NAME, SCRGRP_DE, SCRGRP_LEVEL)
+    VALUES (300, 'CUSTOMER_GRP_SUB', 'Subscribed Group Manager', 60);
+
+-- 1;SYS_ADMIN;System Administrator;1001
+INSERT INTO public.TB_SCRTY_GRP(
+            SCRGRP_ID, SCRGRP_NAME, SCRGRP_DE, SCRGRP_LEVEL)
+    VALUES (1000, 'SYS_ADMIN', 'System Administrator', 1);
 
 -- CUSTOMER
-INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (2, 1);
-INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (2, 2);
+INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (100, 100);
+INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (100, 101);
+
+-- Subscribed CUSTOMER
+INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (200, 100);
+INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (200, 101);
+INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (200, 200);
+INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (200, 201);
+
+-- Subscribed Group CUSTOMER
+INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (300, 100);
+INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (300, 101);
+INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (300, 200);
+INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (300, 201);
+INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (300, 300);
+INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (300, 301);
+
+-- SYS_ADMIN
+INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (1000, 1000);
+INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (1000, 1001);
+
+
+
 
 -- Sys Admin Staff
 INSERT INTO public.TB_USER(
@@ -48,42 +94,83 @@ INSERT INTO public.TB_USER(
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
             USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
             USER_FNAME, USER_LNAME)
-    VALUES (1, 'c957fece-e465-11e8-9f32-f2801f1b9fd1', 'sys.admin@foo.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
+    VALUES (1000, 'c957fece-e465-11e8-9f32-f2801f1b9fd1', 'sys.admin@foo.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
             '2', 0, null, 'QFDbVjDtCwu2d4J523y6suQwtEleE3aE',
             null, null, 'A',
             'Sys', 'Admin');
-		
+
+INSERT INTO public.TB_USER_SCRTY(
+            USER_ID, SCRGRP_ID)
+    VALUES (1000, 1000);
+
+INSERT INTO public.TB_USER_OAUTH2_CLIENT(
+            USER_ID, OAUTH2CL_ID)
+    VALUES (1000, 1);
+
 -- Customer		
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
             USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
             USER_FNAME, USER_LNAME)
-    VALUES (2, 'c95802ac-e465-11e8-9f32-f2801f1b9fd1', 'Joe.Customer@foo.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
+    VALUES (1, 'c95802ac-e465-11e8-9f32-f2801f1b9fd1', 'Joe.Customer@foo.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
             '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
             null, null, 'A',
             'Joe', 'Customer');			
 
-
-INSERT INTO public.TB_USER_SCRTY(
-            USER_ID, SCRGRP_ID)
-    VALUES (1, 1);
 	
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (2, 2);
-
+    VALUES (1, 100);
 
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (1, 1);
 
+
+-- Subscribed Customer
+INSERT INTO public.TB_USER(
+            USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
+            USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_FNAME, USER_LNAME)
+    VALUES (200, '14468f27-44e8-4fc3-8cc6-3a48c80fd5aa', 'Joe.Subscribed@foo.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
+            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A',
+            'Joe', 'Subscribed');
+
+
+INSERT INTO public.TB_USER_SCRTY(
+            USER_ID, SCRGRP_ID)
+    VALUES (200, 200);
+
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
-    VALUES (2, 1);
+    VALUES (200, 1);
 
-ALTER SEQUENCE public.TB_USER_USER_ID_seq RESTART WITH 200;
-ALTER SEQUENCE public.TB_OAUTH2_CLIENT_OAUTH2CL_ID_seq RESTART WITH 20;
+
+-- Subscribed Group Customer
+INSERT INTO public.TB_USER(
+            USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
+            USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_FNAME, USER_LNAME)
+    VALUES (300, 'd71b920a-04a9-44d3-beda-a736601a64c5', 'Joe.Group.Subscribed@foo.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
+            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A',
+            'Joe', 'GroupSubscribed');
+
+
+INSERT INTO public.TB_USER_SCRTY(
+            USER_ID, SCRGRP_ID)
+    VALUES (300, 300);
+
+INSERT INTO public.TB_USER_OAUTH2_CLIENT(
+            USER_ID, OAUTH2CL_ID)
+    VALUES (300, 1);
+
+ALTER SEQUENCE public.TB_USER_USER_ID_seq RESTART WITH 2000;
+ALTER SEQUENCE public.TB_OAUTH2_CLIENT_OAUTH2CL_ID_seq RESTART WITH 200;
 
 
 
@@ -99,7 +186,7 @@ INSERT INTO public.TB_USER(
             'Tony', 'Stark');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (3, 2);
+    VALUES (3, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (3, 1);
@@ -117,7 +204,7 @@ INSERT INTO public.TB_USER(
             'Janet', 'Dyne');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (4, 2);
+    VALUES (4, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (4, 1);
@@ -133,7 +220,7 @@ INSERT INTO public.TB_USER(
             'Bruce', 'Banner');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (5, 2);
+    VALUES (5, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (5, 1);
@@ -150,7 +237,7 @@ INSERT INTO public.TB_USER(
             'Wanda', 'Maximoff');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (6, 2);
+    VALUES (6, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (6, 1);
@@ -167,7 +254,7 @@ INSERT INTO public.TB_USER(
             'Victor', 'Shade');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (7, 2);
+    VALUES (7, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (7, 1);
@@ -184,7 +271,7 @@ INSERT INTO public.TB_USER(
             'Natasha', 'Romanoff');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (8, 2);
+    VALUES (8, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (8, 1);
@@ -201,7 +288,7 @@ INSERT INTO public.TB_USER(
             'Samuel', 'Wilson');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (9, 2);
+    VALUES (9, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (9, 1);
@@ -217,7 +304,7 @@ INSERT INTO public.TB_USER(
             'Monica', 'Rambeau');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (10, 2);
+    VALUES (10, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (10, 1);
@@ -233,7 +320,7 @@ INSERT INTO public.TB_USER(
             'James', 'Rhodes');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (11, 2);
+    VALUES (11, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (11, 1);
@@ -249,7 +336,7 @@ INSERT INTO public.TB_USER(
             'Peter', 'Parker');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (12, 2);
+    VALUES (12, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (12, 1);
@@ -265,7 +352,7 @@ INSERT INTO public.TB_USER(
             'Scott', 'Lang');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (13, 2);
+    VALUES (13, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (13, 1);
@@ -281,7 +368,7 @@ INSERT INTO public.TB_USER(
             'Carl', 'Lucas');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (14, 2);
+    VALUES (14, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (14, 1);
@@ -297,7 +384,7 @@ INSERT INTO public.TB_USER(
             'Zoe', 'Washburne');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (15, 2);
+    VALUES (15, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (15, 1);
@@ -313,7 +400,7 @@ INSERT INTO public.TB_USER(
             'Hoban', 'Washburne');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (16, 2);
+    VALUES (16, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (16, 1);
@@ -329,7 +416,7 @@ INSERT INTO public.TB_USER(
             'Inara', 'Serra');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (17, 2);
+    VALUES (17, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (17, 1);
@@ -345,7 +432,7 @@ INSERT INTO public.TB_USER(
             'Jayne', 'Cobb');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (18, 2);
+    VALUES (18, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (18, 1);
@@ -361,7 +448,7 @@ INSERT INTO public.TB_USER(
             'Kaylee', 'Frye');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (19, 2);
+    VALUES (19, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (19, 1);
@@ -377,7 +464,7 @@ INSERT INTO public.TB_USER(
             'Simon', 'Tam');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (20, 2);
+    VALUES (20, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (20, 1);
@@ -393,7 +480,7 @@ INSERT INTO public.TB_USER(
             'River', 'Tam');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (21, 2);
+    VALUES (21, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (21, 1);
@@ -409,7 +496,7 @@ INSERT INTO public.TB_USER(
             'Derrial', 'Book');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (22, 2);
+    VALUES (22, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (22, 1);
@@ -425,7 +512,7 @@ INSERT INTO public.TB_USER(
             'Ada', 'Wong');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (23, 2);
+    VALUES (23, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (23, 1);
@@ -441,7 +528,7 @@ INSERT INTO public.TB_USER(
             'Albert', 'Wesker');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (24, 2);
+    VALUES (24, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (24, 1);
@@ -457,7 +544,7 @@ INSERT INTO public.TB_USER(
             'Chris', 'Redfield');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (25, 2);
+    VALUES (25, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (25, 1);
@@ -473,7 +560,7 @@ INSERT INTO public.TB_USER(
             'Claire', 'Redfield');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (26, 2);
+    VALUES (26, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (26, 1);
@@ -489,7 +576,7 @@ INSERT INTO public.TB_USER(
             'Jill', 'Valentine');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (27, 2);
+    VALUES (27, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (27, 1);
@@ -505,7 +592,7 @@ INSERT INTO public.TB_USER(
             'Leon', 'Kennedy');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (28, 2);
+    VALUES (28, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (28, 1);
@@ -521,7 +608,7 @@ INSERT INTO public.TB_USER(
             'Rebecca', 'Chambers');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (29, 2);
+    VALUES (29, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (29, 1);
@@ -537,7 +624,7 @@ INSERT INTO public.TB_USER(
             'Janus', 'Prospero');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (30, 2);
+    VALUES (30, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (30, 1);
@@ -553,7 +640,7 @@ INSERT INTO public.TB_USER(
             'Malcolm', 'Reynolds');		
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
-    VALUES (31, 2);
+    VALUES (31, 200);
 INSERT INTO public.TB_USER_OAUTH2_CLIENT(
             USER_ID, OAUTH2CL_ID)
     VALUES (31, 1);
