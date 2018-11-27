@@ -30,7 +30,7 @@ class UserDaoTestCase(BaseTest):
         new_user.last_attempts_ts = datetime.now()
         new_user.private_key = randomUtil.random_string(32, 32)
         new_user.password_salt = randomUtil.random_string(32, 32)
-        new_user.password_hash = randomUtil.random_string(32, 32)  # Fake Hask
+        new_user.password_hash = randomUtil.random_string(32, 32)  # Fake Hash
 
         user_id = userDao.add_user(new_user)
         self.assertTrue(user_id > 0)
