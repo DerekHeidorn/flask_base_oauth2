@@ -357,6 +357,27 @@ class UserApiTestCase(BaseTest):
 
         self.assertEqual(400, resp.status_code)
 
+    def test_get_public_user_details_2(self):
+        print("Running: get_public_user_details")
+        user_info_1 = commonHelper.create_public_user_and_token(self.testClient)
+        print("user_info=" + str(user_info_1))
+
+        new_user_2 = commonHelper.create_public_user()
+
+        resp = self.testClient.get('/api/v1.0/public/user/details/' + str(new_user_2.user_uuid),
+                                   headers={"Authorization": "bearer " + user_info_1['token']})
+
+        self.debug_response(resp)
+
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual("application/json", resp.content_type)
+
+        response_data = json.loads(resp.data)
+
+        self.assertEqual(str(new_user_2.user_uuid), response_data['data']['user_uuid'])
+        self.assertEqual(str(new_user_2.alias), response_data['data']['alias'])
+        self.assertTrue(response_data['data']['user_uuid_digest'] is not None)
+
 
 if __name__ == '__main__':
     unittest.main()

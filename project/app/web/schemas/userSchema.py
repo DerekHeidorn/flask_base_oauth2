@@ -1,4 +1,5 @@
 from marshmallow import fields, Schema
+from project.app.services.utils import sha256
 
 
 class UserProfileBasicSchema(Schema):
@@ -28,6 +29,13 @@ class UserProfileDetailSchema(Schema):
 class UserExternalBasicSchema(Schema):
     user_uuid = fields.String(required=True)
     alias = fields.String(required=True)
+
+    user_uuid_digest = fields.Method('get_digest')
+
+    def get_digest(self, obj):
+        if obj.user_uuid is not None:
+            return sha256.to_sha256(str(obj.user_uuid))
+        return None
 
 
 class ChangeUsernameSchema(Schema):
