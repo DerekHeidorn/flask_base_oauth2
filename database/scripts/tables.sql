@@ -17,7 +17,7 @@ COMMENT ON COLUMN public.TB_USER_STA_CD.USRSTA_DE IS 'User Status Description';
   -- ===================================================================
 
     CREATE TABLE TB_USER_TYP_CD
-   (	USRTYP_CD character varying(2) NOT NULL,
+   (	USRTYP_CD character varying(1) NOT NULL,
 	USRTYP_DE character varying(20) NOT NULL,
 	 CONSTRAINT PKTB_USER_TYP_CD PRIMARY KEY (USRTYP_CD));
 
@@ -38,13 +38,14 @@ CREATE TABLE public.TB_USER
   USERNAME character varying(100) NOT NULL, -- Username for a User
   USER_PASSWD character(256), -- Hashed password used in login authentication
   USER_PASSWD_SALT character(32), -- Used in hashing and authentication
-  USRTYP_CD character(2) NOT NULL, -- Code value for user type
+  USRTYP_CD character(1) NOT NULL DEFAULT 'C', -- Code value for user type
+  USER_PRIVATE_FL boolean NOT NULL DEFAULT TRUE, -- Code value for user type
   USER_ATTEMPT_CNT integer NOT NULL DEFAULT 0, -- Number of attempts since the last sucessful login.
   USER_ATTEMPT_TS timestamp without time zone, -- When the last login attempt was made.
   USER_PRIV_KEY character(32), -- Used for encrypting the data specific to the user.
   USER_ACTV_CODE character(32), -- A code that is used to Reactivate an account that got deactivated.
   USER_RESET_CODE character(32), -- Encrypted code passed to the user at the point of a password reset.
-  USRSTA_CD character(1) NOT NULL, -- User Status Code
+  USRSTA_CD character(1) NOT NULL DEFAULT 'A', -- User Status Code
   USER_RESET_PRSN_ID integer, -- ID of the individual (Staff User) who performed the reset
   USER_FNAME character varying(50), -- First Name of the User
   USER_LNAME character varying(80), -- Last Name of the User

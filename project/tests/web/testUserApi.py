@@ -378,6 +378,31 @@ class UserApiTestCase(BaseTest):
         self.assertEqual(str(new_user_2.alias), response_data['data']['alias'])
         self.assertTrue(response_data['data']['user_uuid_digest'] is not None)
 
+#
+    def test_get_public_user_list(self):
+        print("Running: get_public_user_details")
+        user_info = commonHelper.get_default_customer_and_token()
+        print("user_info=" + str(user_info))
+
+        resp = self.testClient.get('/api/v1.0/public/user/list',
+                                   headers={"Authorization": "bearer " + user_info['token']})
+
+        self.debug_response(resp)
+
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual("application/json", resp.content_type)
+
+        response_data = json.loads(resp.data)
+
+        found = False;
+
+        # DEFAULT_PUBLIC_UUID
+        for user_data in response_data['data']:
+            if user_data['user_uuid'] == commonHelper.DEFAULT_PUBLIC_SUBSCRIBED_UUID:
+                found = True
+
+        self.assertTrue(found)
+
 
 if __name__ == '__main__':
     unittest.main()

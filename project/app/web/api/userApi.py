@@ -19,6 +19,26 @@ from project.app.web import oauth2
 api = Blueprint('user_api', __name__)
 
 
+@api.route('/api/v1.0/my/profile/', methods=['GET'])
+@oauth2.require_oauth('CUST_ACCESS')
+def get_public_account():
+    if current_token is not None and current_token.user is not None:
+
+        current_user = current_token.user
+        if current_user:
+            data = UserProfileBasicSchema().dump(current_user)
+            resp = serializeUtils.generate_response_wrapper(data)
+            return jsonify(resp)
+        else:
+            #
+            # In case we did not find the candidate by id
+            # we send HTTP 404 - Not Found error to the client
+            #
+            abort(404)
+    else:
+        abort(401)
+
+
 @api.route('/api/v1.0/public/account/', methods=['GET'])
 @oauth2.require_oauth('CUST_ACCESS')
 def get_public_account():
@@ -68,6 +88,18 @@ def get_public_user_details(user_uuid):
     user = userService.get_user_by_uuid(user_uuid)
     data = UserExternalBasicSchema().dump(user)
     resp = serializeUtils.generate_response_wrapper(data)
+    return jsonify(resp)
+
+
+@api.route('/api/v1.0/public/user/list', methods=['GET'])
+@oauth2.require_oauth('CUST_ACCESS')
+def get_public_user_list():
+    users = userService.get_public_users()
+    user_list = []
+    for u in users:
+        user_list.append(UserExternalBasicSchema().dump(u))
+
+    resp = serializeUtils.generate_response_wrapper(user_list)
     return jsonify(resp)
 
 

@@ -1,8 +1,8 @@
 -- REM INSERTING into TB_USER_TYP_CD
-Insert into TB_USER_TYP_CD (USRTYP_CD,USRTYP_DE) values ('0','System');
-Insert into TB_USER_TYP_CD (USRTYP_CD,USRTYP_DE) values ('1','Batch');
-Insert into TB_USER_TYP_CD (USRTYP_CD,USRTYP_DE) values ('2','Staff');
-Insert into TB_USER_TYP_CD (USRTYP_CD,USRTYP_DE) values ('3','Customer');
+Insert into TB_USER_TYP_CD (USRTYP_CD,USRTYP_DE) values ('Y','System');
+Insert into TB_USER_TYP_CD (USRTYP_CD,USRTYP_DE) values ('B','Batch');
+Insert into TB_USER_TYP_CD (USRTYP_CD,USRTYP_DE) values ('S','Staff');
+Insert into TB_USER_TYP_CD (USRTYP_CD,USRTYP_DE) values ('C','Customer');
 
 -- REM INSERTING into TB_USER_STA_CD
 Insert into TB_USER_STA_CD (USRSTA_CD,USRSTA_DE) values ('A','Active');

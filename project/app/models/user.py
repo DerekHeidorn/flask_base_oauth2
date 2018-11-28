@@ -1,5 +1,5 @@
 
-from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Table
+from sqlalchemy import Column, String, Boolean, Integer, ForeignKey, DateTime, Table
 from sqlalchemy.orm import relationship
 
 from project.app.models.baseModel import BaseModel
@@ -56,8 +56,11 @@ class User(BaseModel):
     # # USER_PASSWD_SALT		Used in hashing and authentication	
     password_salt = Column("user_passwd_salt", String(32))
 
-    # # USRTYP_CD		Code value for user type (staff, camper)	
-    type_cd = Column("usrtyp_cd", String(2))
+    # # USRTYP_CD
+    type_cd = Column("usrtyp_cd", String(1))
+
+    # USER_PRIVATE_FL
+    private_fl = Column("user_private_fl", Boolean())
     
     # # USER_ATTEMPT_CNT		Number of attempts since the last sucessful login.	
     failed_attempt_count = Column("user_attempt_cnt", Integer)

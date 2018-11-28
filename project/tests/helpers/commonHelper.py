@@ -37,7 +37,7 @@ def setup_dev_settings():
 
     # database config
     os.environ["APP_DB_CONNECTION_URI"] = "postgresql://postgres:P$F$xs+n?5+Ug3AU5PTe3q@localhost/postgres"
-    os.environ["APP_DB_ENGINE_DEBUG"] = "False"
+    os.environ["APP_DB_ENGINE_DEBUG"] = "True"
 
 
 def create_public_user():
@@ -75,6 +75,14 @@ def create_public_user_and_token(test_client):
     user = userService.get_user_by_username(username)
 
     return {"user": user, "token": param_dict.get('access_token')}
+
+
+def get_default_customer_and_token():
+
+    user = userService.get_user_by_uuid(DEFAULT_PUBLIC_UUID)
+    bearer_token = generate_jwt_token(user)
+
+    return {"user": user, "token": bearer_token}
 
 
 def get_default_staff_and_token():

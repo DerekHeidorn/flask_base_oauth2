@@ -1,5 +1,4 @@
-from sqlalchemy import func, update
-
+from sqlalchemy import func, update, or_, and_
 from project.app.models.user import User
 from project.app.persist import baseDao
 
@@ -32,6 +31,27 @@ def get_users(session=None):
         session = baseDao.get_session()
 
     all_users = session.query(User).order_by(User.lastName).all()
+
+    return all_users
+
+
+def get_public_users(session=None):
+    """
+    Get all users, order by Last Name
+
+    :param session: existing db session
+    :return: users.
+    """
+    if session is None:
+        session = baseDao.get_session()
+
+    all_users = session.query(User)\
+                                   .filter(and_(User.private_fl == False,  # is not private
+                                                User.type_cd == 'C',  # 'C' == Customer
+                                                User.status_cd == 'A'  # Active User
+                                                )) \
+                                    .order_by(User.alias) \
+                                    .all()
 
     return all_users
 
@@ -142,13 +162,14 @@ def is_alias_unique(alias, exclude_user_id=None, session=None):
 
     return count == 0
 
+
 def update_user_login_access(user_id, failed_count, session):
 
     stmt = update(User).where(User.user_id == user_id). \
         values(failed_attempt_count=failed_count)
 
     session.commit()
-    updated_user = get_user_by_id(user.user_id)
+    updated_user = get_user_by_id(user_id)
 
     return updated_user
 

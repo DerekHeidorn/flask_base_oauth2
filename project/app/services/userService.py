@@ -37,6 +37,10 @@ def update_user(user_id, user_to_be_updated):
     return updated_user
 
 
+def get_public_users():
+    return userDao.get_public_users()
+
+
 def get_users():
     return userDao.get_users()
 
@@ -96,7 +100,8 @@ def add_public_user(client_id, alias, username, password, first_name=None, last_
     new_user.alias = alias
     new_user.user_uuid = uuid.uuid4()
     new_user.status_cd = 'A'
-    new_user.type_cd = '1'
+    new_user.type_cd = 'C'
+    new_user.private_fl = True
     new_user.failed_attempt_count = 0
     new_user.private_key = userUtils.random_user_private_key(32)
     new_user.password_salt = userUtils.random_user_private_key(32)

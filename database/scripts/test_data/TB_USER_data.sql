@@ -112,11 +112,11 @@ INSERT INTO public.TB_SCRTY_GRP_AUTH(SCRGRP_ID, SCRAUTH_ID) VALUES (1000, 1000);
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (1000, 'c957fece-e465-11e8-9f32-f2801f1b9fd1', 'sys.admin@foo.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '2', 0, null, 'QFDbVjDtCwu2d4J523y6suQwtEleE3aE',
-            null, null, 'A',
+            'S', 0, null, 'QFDbVjDtCwu2d4J523y6suQwtEleE3aE',
+            null, null, 'A', TRUE,
             'Sys', 'Admin', 'Sys_Admin');
 
 INSERT INTO public.TB_USER_SCRTY(
@@ -131,11 +131,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (1, 'c95802ac-e465-11e8-9f32-f2801f1b9fd1', 'Joe.Customer@foo.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Joe', 'Customer', 'Joe_Customer');
 
 	
@@ -152,11 +152,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY,
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (200, '14468f27-44e8-4fc3-8cc6-3a48c80fd5aa', 'Joe.Subscribed@foo.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Joe', 'Subscribed', 'Joe_Subscribed');
 
 
@@ -173,11 +173,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY,
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (300, 'd71b920a-04a9-44d3-beda-a736601a64c5', 'Joe.Group.Subscribed@foo.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Joe', 'GroupSubscribed', 'Joe_GroupSubscribed');
 
 
@@ -198,11 +198,11 @@ ALTER SEQUENCE public.TB_OAUTH2_CLIENT_OAUTH2CL_ID_seq RESTART WITH 200;
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (3, '4e5d14ab-e91e-49b3-9c61-795748c41e09', 'Iron.Man@avengers.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Tony', 'Stark', 'Ironman');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -216,11 +216,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (4, 'f55b7b25-6ef5-4727-9645-7564fb777f21', 'Wasp@avengers.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Janet', 'Dyne', 'Wasp');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -232,11 +232,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (5, 'e4176c50-9e84-49d3-a2b7-f8773d57fb9b', 'Hulk@avengers.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Bruce', 'Banner', 'Hulk');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -249,11 +249,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (6, '29ef21b2-825f-4d49-a654-df9dd2295630', 'Scarlet.Witch@avengers.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Wanda', 'Maximoff', 'Scarlet_Witch');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -266,11 +266,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (7, '5fa2a30d-403c-4ae8-b3fa-5dd207ef926b', 'Vision@avengers.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Victor', 'Shade', 'Vision');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -283,11 +283,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (8, 'b130cdd5-e09c-471f-b3df-da80413d58d5', 'Black.Widow@avengers.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Natasha', 'Romanoff', 'Black_Widow');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -300,11 +300,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (9, 'b8919fd0-0379-4fe3-b81e-4d06f079ce1f', 'Falcon@avengers.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Samuel', 'Wilson', 'Falcon');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -316,11 +316,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (10, '48667be7-9b99-4353-af8d-814b4c308b15', 'Captain.Marvel@avengers.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Monica', 'Rambeau', 'Captain_Marvel');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -332,11 +332,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (11, 'd627b053-7986-41ab-9065-f37fec698148', 'War.Machine@avengers.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'James', 'Rhodes', 'War_Machine');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -348,11 +348,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (12, '179c80b3-a6f4-4c39-9edd-f38db0c7d0af', 'Spider.Man@avengers.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Peter', 'Parker', 'Spider_Man');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -364,11 +364,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (13, 'a787b4e4-b09d-4d08-9073-2b47c8abbe5b', 'Ant.Man@avengers.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Scott', 'Lang', 'Ant_Man');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -380,11 +380,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (14, 'fc21caba-fcfc-48b5-a567-2bee36ef535d', 'Luke.Cage@avengers.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Carl', 'Lucas', 'Luke_Cage');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -396,11 +396,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (15, '8ead1ce9-8867-4523-a84e-a1cf920038df', 'Zoe.Washburne@Firefly.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Zoe', 'Washburne', 'ZoeW1');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -412,11 +412,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (16, 'bb3985d3-9d2f-49c7-8304-a8271330f762', 'Hoban.Washburne@Firefly.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Hoban', 'Washburne', 'Wash');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -428,11 +428,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (17, 'ac08889e-1c82-4e4e-8912-8e7c95b81a25', 'Inara.Serra@Firefly.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Inara', 'Serra', 'Inara_firefly');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -444,11 +444,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (18, 'e6abb20f-75f7-43b2-8be6-421876ff4db4', 'Jayne.Cobb@Firefly.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Jayne', 'Cobb', 'Jayne_firefly');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -460,11 +460,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (19, 'd9c83075-6efa-4554-9ab1-891ab6472950', 'Kaylee.Frye@Firefly.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Kaylee', 'Frye', 'Kaylee_firefly');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -476,11 +476,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (20, '53271313-d6a6-41a4-b733-a2c450834e07', 'Simon.Tam@Firefly.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Simon', 'Tam', 'Simon_firefly');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -492,11 +492,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (21, '3e1bef3b-562c-4c0c-a1b2-123c1385a1d4', 'River.Tam@Firefly.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'River', 'Tam', 'River_firefly');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -508,11 +508,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (22, '441fa406-54c1-45b5-b33d-981b7197f277', 'Derrial.Book@Firefly.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Derrial', 'Book', 'Bishop');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -524,11 +524,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (23, 'c64ea92c-757b-4846-a385-15ee2febb2e2', 'Ada.Book@ResidentEvil.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Ada', 'Wong', 'Ada_1');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -540,11 +540,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (24, '0ec0aeb8-8f3b-4d51-a3a0-a862cfcf0f96', 'Albert.Wesker@ResidentEvil.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Albert', 'Wesker', 'Albert_1');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -556,11 +556,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (25, '68d3d343-d5cd-4d46-8cf7-f8707c46a148', 'Chris.Redfield@ResidentEvil.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Chris', 'Redfield', 'Chris_1');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -572,11 +572,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (26, 'bfaec952-7b06-4791-a321-02a925ff59b4', 'Claire.Redfield@ResidentEvil.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Claire', 'Redfield', 'Claire_1');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -588,11 +588,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (27, 'd81dc597-ed99-46a7-846f-6495898b40c9', 'Jill.Valentine@ResidentEvil.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Jill', 'Valentine', 'Jill_1');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -604,11 +604,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (28, 'ac6e6270-87eb-4be7-b3ce-385d9a7a2057', 'Leon.Kennedy@ResidentEvil.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Leon', 'Kennedy', 'Leon_1');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -620,11 +620,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (29, '78f59ccd-7dcf-4b85-8251-5bc1ba8f9b51', 'Rebecca.Chambers@ResidentEvil.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Rebecca', 'Chambers', 'Rebecca_1');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -636,11 +636,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (30, '121461d4-a78b-4bbb-9471-9cf8233fdc78', 'Janus.Prospero@ResidentEvil.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Janus', 'Prospero', 'Janus_1');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)
@@ -652,11 +652,11 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 INSERT INTO public.TB_USER(
             USER_ID, USER_UUID, USERNAME, USER_PASSWD, USER_PASSWD_SALT,
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY, 
-            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD,
+            USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
     VALUES (31, 'a10541a9-46f4-49ae-97f4-625bc92b5f7c', 'Malcolm.Reynolds@Firefly.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
-            '3', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
-            null, null, 'A',
+            'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
+            null, null, 'A', FALSE,
             'Malcolm', 'Reynolds', 'Captain_Reynolds');
 INSERT INTO public.TB_USER_SCRTY(
             USER_ID, SCRGRP_ID)

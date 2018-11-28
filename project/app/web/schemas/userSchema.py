@@ -6,8 +6,8 @@ class UserProfileBasicSchema(Schema):
     user_uuid = fields.String(required=True)
     username = fields.Email(required=True)
     alias = fields.String(required=True)
-    first_name = fields.String(required=True)
-    last_name = fields.String(required=True)
+    first_name = fields.String()
+    last_name = fields.String()
     formatted_name = fields.Method('get_formatted_name')
 
     def get_formatted_name(self, obj):
@@ -18,8 +18,8 @@ class UserProfileDetailSchema(Schema):
     user_uuid = fields.String(required=True)
     username = fields.Email(required=True)
     alias = fields.String(required=True)
-    first_name = fields.String(required=True)
-    last_name = fields.String(required=True)
+    first_name = fields.String()
+    last_name = fields.String()
     formatted_name = fields.Method('get_formatted_name')
 
     def get_formatted_name(self, obj):
