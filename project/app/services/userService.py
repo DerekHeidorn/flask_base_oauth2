@@ -1,5 +1,6 @@
 import uuid
 import time
+from datetime import datetime
 import hashlib
 from project.app.models.user import User
 from project.app.persist import baseDao, userDao, securityDao, oauth2Dao
@@ -94,6 +95,7 @@ def add_public_user(client_id, alias, username, password, first_name=None, last_
     oauth2_client = oauth2Dao.query_client(client_id, session=session)
 
     new_user = User()
+    new_user.created_ts = datetime.now()
     new_user.first_name = first_name
     new_user.last_name = last_name
     new_user.username = username

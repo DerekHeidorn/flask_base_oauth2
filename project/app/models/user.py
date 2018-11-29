@@ -56,6 +56,9 @@ class User(BaseModel):
     # # USER_PASSWD_SALT		Used in hashing and authentication	
     password_salt = Column("user_passwd_salt", String(32))
 
+    # USER_CREATED_TS
+    created_ts = Column("user_created_ts", DateTime)
+
     # # USRTYP_CD
     type_cd = Column("usrtyp_cd", String(1))
 

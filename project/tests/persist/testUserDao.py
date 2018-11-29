@@ -66,7 +66,7 @@ class UserDaoTestCase(BaseTest):
 
         self.assertEqual(friendship_history.user_id, created_user_1.user_id)
         self.assertEqual(friendship_history.friend_user_id, created_user_2.user_id)
-        self.assertEqual(friendship_history.status_cd, 'C')
+        self.assertEqual(friendship_history.status_cd, 'A')
         self.assertTrue(friendship_history.to_ts is not None)
 
         friendship = userDao.get_friendship_by_ids(friendship_history.user_id, created_user_1.user_id)
