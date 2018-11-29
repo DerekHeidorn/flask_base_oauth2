@@ -1,8 +1,8 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from project.app import core
 
-Session = sessionmaker()
+session_factory = scoped_session(sessionmaker())
 
 
 def database_init():
@@ -21,5 +21,5 @@ def database_init():
     engine = create_engine(initializing_db_string, echo=engine_echo, pool_size=40, max_overflow=0)
 
     # associate it with our custom Session class
-    Session.configure(bind=engine)
+    session_factory.configure(bind=engine)
     print("finished setting up sqlalchemy for database...")

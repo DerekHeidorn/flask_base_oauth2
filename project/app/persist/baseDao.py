@@ -1,5 +1,5 @@
-from project.app.persist.infrastructure import Session
+from project.app.persist.infrastructure import session_factory
 
 
 def get_session():
-    return Session()
+    return session_factory()
