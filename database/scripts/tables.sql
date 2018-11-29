@@ -46,7 +46,7 @@ CREATE TABLE public.TB_USER
   USER_UUID uuid NOT NULL,
   USER_ALIAS character varying(30) NOT NULL, -- Username for a User
   USERNAME character varying(100) NOT NULL, -- Username for a User
-  USER_CREATED_TS timestamp without time zone, -- When the user account was created
+  USER_CREATED_TS timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP, -- When the user account was created
   USER_PASSWD character(256), -- Hashed password used in login authentication
   USER_PASSWD_SALT character(32), -- Used in hashing and authentication
   USRTYP_CD character(1) NOT NULL DEFAULT 'C', -- Code value for user type
