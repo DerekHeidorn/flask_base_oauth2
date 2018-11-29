@@ -56,9 +56,9 @@ class UserDaoTestCase(BaseTest):
         self.assertEqual(friendship.user_id, created_user_1.user_id)
         self.assertEqual(friendship.friend_user_id, created_user_2.user_id)
 
-        userDao.update_friendship_to_complete(created_user_1.user_id, created_user_2.user_id)
+        userDao.update_friendship_to_accepted(created_user_1.user_id, created_user_2.user_id)
 
-        userDao.remove_completed_friendship(created_user_1.user_id, created_user_2.user_id)
+        userDao.remove_accepted_friendship(created_user_1.user_id, created_user_2.user_id)
 
         friendship_history = userDao.get_friendship_history_by_ids(created_user_1.user_id, created_user_2.user_id)
 

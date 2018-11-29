@@ -699,3 +699,9 @@ INSERT INTO public.TB_USER_OAUTH2_CLIENT(
 -- e73eae4a-70ed-4366-9785-9cabefdb2b4e
 
 -- dd67ea1d-f811-4b7c-97ec-9eeb69e759bf
+
+
+-- Friendships
+INSERT INTO public.tb_friendship(
+            user_id, friend_user_id, friendship_sta_cd, friendship_from_ts)
+    VALUES (1, 200, 'A', CURRENT_TIMESTAMP);

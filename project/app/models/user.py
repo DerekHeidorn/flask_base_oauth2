@@ -118,11 +118,14 @@ class Friendship(BaseModel):
 class FriendshipHistory(BaseModel):
     __tablename__ = 'tb_friendship_history'
 
+    # FRIENDSHIP_HISTORY_ID
+    friendship_history_id = Column("friendship_history_id", Integer, primary_key=True)
+
     # user_id
-    user_id = Column("user_id", Integer, primary_key=True)
+    user_id = Column("user_id", Integer)
 
     # friend_user_id
-    friend_user_id = Column("friend_user_id", Integer, primary_key=True)
+    friend_user_id = Column("friend_user_id", Integer)
 
     # friend_sta_cd
     status_cd = Column("friendship_sta_cd", String(1))

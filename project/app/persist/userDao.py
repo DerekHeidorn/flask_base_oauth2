@@ -1,4 +1,4 @@
-from sqlalchemy import func, update, and_
+from sqlalchemy import func, update, and_, or_
 from datetime import datetime
 from project.app.models.user import User, Friendship, FriendshipHistory
 from project.app.persist import baseDao
@@ -36,6 +36,14 @@ def get_users(session=None):
     return all_users
 
 
+def get_users_by_ids(user_ids, session=None):
+
+    all_users = session.query(User) \
+        .filter(User.user_id.in_(user_ids)) \
+        .all()
+    return all_users
+
+
 def get_public_users(session=None):
     """
     Get all users, order by Last Name
@@ -69,7 +77,7 @@ def get_user_by_id(user_id, session=None):
         session = baseDao.get_session()
 
     user = session.query(User).filter(User.user_id == user_id).first()
-    return user 
+    return user
 
 
 def get_user_by_uuid(user_uuid, session=None):
@@ -284,14 +292,35 @@ def get_friendship_by_ids(user_id, friend_user_id, session=None):
     return friendship
 
 
-def update_friendship_to_complete(user_id, friend_user_id, session=None):
+def get_friendships_by_user_id(user_id, session=None):
+    """
+    Gets the friendship based on the id parameters
+
+    :param user_id: The id of the user
+    :param session: existing db session
+    :return: The friendship.
+    """
+    if session is None:
+        session = baseDao.get_session()
+
+    friendships = session.query(Friendship) \
+                         .filter(or_(Friendship.user_id == user_id,
+                                     Friendship.friend_user_id == user_id
+                                     )
+                                 ) \
+                         .all()
+
+    return friendships
+
+
+def update_friendship_to_accepted(user_id, friend_user_id, session=None):
     if session is None:
         session = baseDao.get_session()
 
     friendship = get_friendship_by_ids(user_id, friend_user_id, session)
 
     if friendship is not None:
-        friendship.status_cd = 'C'
+        friendship.status_cd = 'A'
         session.commit()
         return friendship
 
@@ -303,17 +332,18 @@ def remove_pending_friendship(user_id, friend_user_id, session=None):
         session = baseDao.get_session()
 
     session.query(Friendship).filter(Friendship.user_id == user_id,
-                                     Friendship.friend_user_id == friend_user_id).delete()
+                                     Friendship.friend_user_id == friend_user_id,
+                                     Friendship.status_cd == 'P').delete()
 
 
-def remove_completed_friendship(user_id, friend_user_id, session=None):
+def remove_accepted_friendship(user_id, friend_user_id, session=None):
     if session is None:
         session = baseDao.get_session()
 
     friendship = get_friendship_by_ids(user_id, friend_user_id, session)
 
     if friendship is not None:
-        if friendship.status_cd == 'C':
-            add_friendship_history(friendship, session)
+        add_friendship_history(friendship, session)
         session.query(Friendship).filter(Friendship.user_id == user_id,
-                                         Friendship.friend_user_id == friend_user_id).delete()
+                                         Friendship.friend_user_id == friend_user_id,
+                                         Friendship.status_cd == 'A').delete()

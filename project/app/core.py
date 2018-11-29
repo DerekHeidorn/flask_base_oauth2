@@ -14,7 +14,7 @@ from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from project.app.persist import infrastructure
 from project.app.services import commonService, schedulerService
 from project.app.web import oauth2
-from project.app.web.api import commonApi, userApi, codetablesApi
+from project.app.web.api import commonApi, userApi, codetablesApi, friendshipApi
 from project.app.web import oauth2Workflow
 from project.app.web import errorHandlerAdvice
 
@@ -122,6 +122,7 @@ def create_application():
     app.register_blueprint(codetablesApi.api)
     app.register_blueprint(userApi.api)
     app.register_blueprint(oauth2Workflow.api)
+    app.register_blueprint(friendshipApi.api)
 
     # Information output
     for b in app.blueprints:

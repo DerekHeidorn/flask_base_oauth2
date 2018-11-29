@@ -1,7 +1,7 @@
 
 
 Insert into TB_FRIENDSHIP_STA_CD (FRIENDSHIP_STA_CD,FRIENDSHIP_STA_DE) values ('P','Pending');
-Insert into TB_FRIENDSHIP_STA_CD (FRIENDSHIP_STA_CD,FRIENDSHIP_STA_DE) values ('C','Complete');
+Insert into TB_FRIENDSHIP_STA_CD (FRIENDSHIP_STA_CD,FRIENDSHIP_STA_DE) values ('A','Accepted');
 
 -- REM INSERTING into TB_USER_TYP_CD
 Insert into TB_USER_TYP_CD (USRTYP_CD,USRTYP_DE) values ('Y','System');
