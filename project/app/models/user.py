@@ -94,3 +94,44 @@ class User(BaseModel):
 
     def __repr__(self):
         return "<User(uuid='%s', username='%s')>" % (self.user_uuid, self.username)
+
+
+class Friendship(BaseModel):
+    __tablename__ = 'tb_friendship'
+
+    # user_id
+    user_id = Column("user_id", Integer, primary_key=True)
+
+    # friend_user_id
+    friend_user_id = Column("friend_user_id", Integer, primary_key=True)
+
+    # friend_sta_cd
+    status_cd = Column("friendship_sta_cd", String(1))
+
+    # friend_from_ts
+    from_ts = Column("friendship_from_ts", DateTime)
+
+    def __repr__(self):
+        return "<Friendship(user_id='%s', friend_user_id='%s')>" % (self.user_id, self.friend_user_id)
+
+
+class FriendshipHistory(BaseModel):
+    __tablename__ = 'tb_friendship_history'
+
+    # user_id
+    user_id = Column("user_id", Integer, primary_key=True)
+
+    # friend_user_id
+    friend_user_id = Column("friend_user_id", Integer, primary_key=True)
+
+    # friend_sta_cd
+    status_cd = Column("friendship_sta_cd", String(1))
+
+    # friend_from_ts
+    from_ts = Column("friendship_from_ts", DateTime)
+
+    # friend_from_ts
+    to_ts = Column("friendship_to_ts", DateTime)
+
+    def __repr__(self):
+        return "<Friendship(user_id='%s', friend_user_id='%s')>" % (self.user_id, self.friend_user_id)

@@ -21,7 +21,7 @@ api = Blueprint('user_api', __name__)
 
 @api.route('/api/v1.0/my/profile/', methods=['GET'])
 @oauth2.require_oauth('CUST_ACCESS')
-def get_public_account():
+def get_my_public_account():
     if current_token is not None and current_token.user is not None:
 
         current_user = current_token.user

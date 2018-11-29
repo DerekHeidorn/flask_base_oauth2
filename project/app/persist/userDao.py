@@ -1,5 +1,6 @@
-from sqlalchemy import func, update, or_, and_
-from project.app.models.user import User
+from sqlalchemy import func, update, and_
+from datetime import datetime
+from project.app.models.user import User, Friendship, FriendshipHistory
 from project.app.persist import baseDao
 
 
@@ -165,7 +166,7 @@ def is_alias_unique(alias, exclude_user_id=None, session=None):
 
 def update_user_login_access(user_id, failed_count, session):
 
-    stmt = update(User).where(User.user_id == user_id). \
+    update(User).where(User.user_id == user_id). \
         values(failed_attempt_count=failed_count)
 
     session.commit()
@@ -199,3 +200,120 @@ def get_user_count(session=None):
         session = baseDao.get_session()
     row_count = session.query(func.count(User.user_id)).scalar()
     return row_count
+
+
+def add_friendship(user_id, friend_user_id, session=None):
+    """
+    Creates and saves a new user to the database.
+
+    :param user_id: user's id
+    :param friend_user_id: the friend's user id
+    :param session: database session
+
+    """
+    if session is None:
+        session = baseDao.get_session()
+
+    friendship = Friendship()
+    friendship.user_id = user_id
+    friendship.friend_user_id = friend_user_id
+    friendship.status_cd = 'P'
+    friendship.from_ts = datetime.now()
+
+    session.add(friendship)
+    session.commit()
+
+    return friendship
+
+
+def add_friendship_history(friendship, session=None):
+    """
+    Creates and saves a new user to the database.
+
+    :param friendship: friendship to make history record from
+    :param session: database session
+
+    """
+    if session is None:
+        session = baseDao.get_session()
+
+    friendship_history = FriendshipHistory()
+    friendship_history.user_id = friendship.user_id
+    friendship_history.friend_user_id = friendship.friend_user_id
+    friendship_history.status_cd = friendship.status_cd
+    friendship_history.from_ts = friendship.from_ts
+    friendship_history.to_ts = datetime.now()
+
+    session.add(friendship_history)
+    session.commit()
+
+    return friendship_history
+
+
+def get_friendship_history_by_ids(user_id, friend_user_id, session=None):
+    """
+    Gets the friendship based on the id parameters
+
+    :param user_id: The id of the user
+    :param friend_user_id: The id of the friend
+    :param session: existing db session
+    :return: The friendship.
+    """
+    if session is None:
+        session = baseDao.get_session()
+
+    friendshipHistory = session.query(FriendshipHistory).filter(FriendshipHistory.user_id == user_id,
+                                      FriendshipHistory.friend_user_id == friend_user_id).first()
+    return friendshipHistory
+
+
+def get_friendship_by_ids(user_id, friend_user_id, session=None):
+    """
+    Gets the friendship based on the id parameters
+
+    :param user_id: The id of the user
+    :param friend_user_id: The id of the friend
+    :param session: existing db session
+    :return: The friendship.
+    """
+    if session is None:
+        session = baseDao.get_session()
+
+    friendship = session.query(Friendship).filter(Friendship.user_id == user_id,
+                                                  Friendship.friend_user_id == friend_user_id).first()
+    return friendship
+
+
+def update_friendship_to_complete(user_id, friend_user_id, session=None):
+    if session is None:
+        session = baseDao.get_session()
+
+    friendship = get_friendship_by_ids(user_id, friend_user_id, session)
+
+    if friendship is not None:
+        friendship.status_cd = 'C'
+        session.commit()
+        return friendship
+
+    return
+
+
+def remove_pending_friendship(user_id, friend_user_id, session=None):
+    if session is None:
+        session = baseDao.get_session()
+
+    session.query(Friendship).filter(Friendship.user_id == user_id,
+                                     Friendship.friend_user_id == friend_user_id).delete()
+
+
+def remove_completed_friendship(user_id, friend_user_id, session=None):
+    if session is None:
+        session = baseDao.get_session()
+
+    friendship = get_friendship_by_ids(user_id, friend_user_id, session)
+
+    if friendship is not None:
+        if friendship.status_cd == 'C':
+            add_friendship_history(friendship, session)
+        session.query(Friendship).filter(Friendship.user_id == user_id,
+                                         Friendship.friend_user_id == friend_user_id).delete()
