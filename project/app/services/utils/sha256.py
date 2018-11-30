@@ -2,7 +2,7 @@ import hashlib
 from project.app import core
 
 
-def to_sha256(input_string, password=None):
+def hexdigest(input_string, password=None):
     if password is None:
         password = core.global_config["APP_SHARED_SECRET_KEY"]
 

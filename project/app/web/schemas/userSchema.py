@@ -34,7 +34,7 @@ class UserExternalBasicSchema(Schema):
 
     def get_digest(self, obj):
         if obj.user_uuid is not None:
-            return sha256.to_sha256(str(obj.user_uuid))
+            return sha256.hexdigest(str(obj.user_uuid))
         return None
 
 
