@@ -14,9 +14,10 @@ from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from project.app.persist import infrastructure
 from project.app.services import commonService, schedulerService
 from project.app.web import oauth2
-from project.app.web.api import commonApi, userApi, codetablesApi, friendshipApi
 from project.app.web import oauth2Workflow
 from project.app.web import errorHandlerAdvice
+from project.app.web.api import commonApi, privateUserApi, publicUserApi, adminUserApi, codetablesApi, friendshipApi
+
 
 global_config = {}
 
@@ -120,7 +121,9 @@ def create_application():
     # -- API registration --
     app.register_blueprint(commonApi.api)
     app.register_blueprint(codetablesApi.api)
-    app.register_blueprint(userApi.api)
+    app.register_blueprint(privateUserApi.api)
+    app.register_blueprint(publicUserApi.api)
+    app.register_blueprint(adminUserApi.api)
     app.register_blueprint(oauth2Workflow.api)
     app.register_blueprint(friendshipApi.api)
 

@@ -6,7 +6,7 @@ from authlib.flask.oauth2 import current_token
 from project.app.services import friendshipService
 from project.app.web import oauth2
 from project.app.web.utils import serializeUtils
-from project.app.web.schemas.userSchema import UserExternalBasicSchema
+from project.app.web.schemas.userSchema import PublicUserProfileSchema
 
 api = Blueprint('friendship_api', __name__)
 
@@ -22,7 +22,7 @@ def get_my_friends():
 
             user_list = []
             for u in friends:
-                user_list.append(UserExternalBasicSchema().dump(u))
+                user_list.append(PublicUserProfileSchema().dump(u))
 
             resp = serializeUtils.generate_response_wrapper(user_list)
             return jsonify(resp)

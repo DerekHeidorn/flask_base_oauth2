@@ -2,7 +2,7 @@ from marshmallow import fields, Schema
 from project.app.services.utils import sha256
 
 
-class UserProfileBasicSchema(Schema):
+class PrivateUserAccountSchema(Schema):
     user_uuid = fields.String(required=True)
     username = fields.Email(required=True)
     alias = fields.String(required=True)
@@ -14,19 +14,21 @@ class UserProfileBasicSchema(Schema):
         return obj.get_formatted_name()
 
 
-class UserProfileDetailSchema(Schema):
+class PrivateUserPreferencesSchema(Schema):
     user_uuid = fields.String(required=True)
     username = fields.Email(required=True)
     alias = fields.String(required=True)
     first_name = fields.String()
     last_name = fields.String()
     formatted_name = fields.Method('get_formatted_name')
+    is_private = fields.Boolean()
+    account_type = fields.String();
 
     def get_formatted_name(self, obj):
         return obj.get_formatted_name()
 
 
-class UserExternalBasicSchema(Schema):
+class PublicUserProfileSchema(Schema):
     user_uuid = fields.String(required=True)
     alias = fields.String(required=True)
 
@@ -39,7 +41,7 @@ class UserExternalBasicSchema(Schema):
 
 
 class ChangeUsernameSchema(Schema):
-
+    old_username = fields.String(required=True)
     new_username = fields.Email(required=True)
     password = fields.String(required=True)
 
