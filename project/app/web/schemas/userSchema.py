@@ -43,6 +43,15 @@ class PublicUserProfileSchema(Schema):
         return None
 
 
+class ChangeUserNamesSchema(Schema):
+    first_name = fields.String(required=True)
+    last_name = fields.String(required=True)
+
+
+class ChangePrivateSchema(Schema):
+    is_private = fields.Boolean(required=True)
+
+
 class ChangeUsernameSchema(Schema):
     old_username = fields.String(required=True)
     new_username = fields.Email(required=True)

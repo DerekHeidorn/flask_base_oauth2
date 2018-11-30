@@ -20,6 +20,35 @@ def delete_user(user_id):
     return userDao.delete_user(user_id)
 
 
+def update_user_names(user_uuid, first_name, last_name):
+    session = baseDao.get_session()
+
+    user = userDao.get_user_by_uuid(user_uuid, session=session)
+    if user is None:
+        return None
+
+    user.first_name = first_name
+    user.last_name = last_name
+
+    session.commit()
+
+    return user
+
+
+def update_user_private_fl(user_uuid, is_private):
+    session = baseDao.get_session()
+
+    user = userDao.get_user_by_uuid(user_uuid, session=session)
+    if user is None:
+        return None
+
+    user.is_private = is_private
+
+    session.commit()
+
+    return user
+
+
 def update_user(user_id, user_to_be_updated):
     updated_user = None
     session = baseDao.get_session()
@@ -103,7 +132,7 @@ def add_public_user(client_id, alias, username, password, first_name=None, last_
     new_user.user_uuid = uuid.uuid4()
     new_user.status_cd = 'A'
     new_user.type_cd = 'C'
-    new_user.private_fl = True
+    new_user.is_private = True
     new_user.failed_attempt_count = 0
     new_user.private_key = userUtils.random_user_private_key(32)
     new_user.password_salt = userUtils.random_user_private_key(32)

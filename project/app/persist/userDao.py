@@ -55,7 +55,7 @@ def get_public_users(session=None):
         session = baseDao.get_session()
 
     all_users = session.query(User)\
-                                   .filter(and_(User.private_fl == False,  # is not private
+                                   .filter(and_(User.is_private == False,  # is not private
                                                 User.type_cd == 'C',  # 'C' == Customer
                                                 User.status_cd == 'A'  # Active User
                                                 )) \

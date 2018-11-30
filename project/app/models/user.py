@@ -63,7 +63,7 @@ class User(BaseModel):
     type_cd = Column("usrtyp_cd", String(1))
 
     # USER_PRIVATE_FL
-    private_fl = Column("user_private_fl", Boolean())
+    is_private = Column("user_private_fl", Boolean())
     
     # # USER_ATTEMPT_CNT		Number of attempts since the last sucessful login.	
     failed_attempt_count = Column("user_attempt_cnt", Integer)

@@ -26,7 +26,7 @@ class UserDaoTestCase(BaseTest):
         new_user.user_uuid = uuid.uuid4()
         new_user.status_cd = 'A'
         new_user.type_cd = '1'
-        new_user.private_fl = False
+        new_user.is_private = False
         new_user.failed_attempt_count = 0
         new_user.last_attempts_ts = datetime.now()
         new_user.private_key = randomUtil.random_string(32, 32)

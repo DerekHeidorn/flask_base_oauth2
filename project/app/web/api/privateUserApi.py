@@ -12,7 +12,8 @@ from project.app.services import userService
 from project.app.web.utils import serializeUtils, apiUtils
 from project.app.web.schemas.userSchema import \
     ChangePasswordSchema, ChangeUsernameSchema, \
-    PrivateUserAccountSchema, PrivateUserPreferencesSchema, PublicUserProfileSchema
+    PrivateUserAccountSchema, PrivateUserPreferencesSchema, PublicUserProfileSchema, \
+    ChangeUserNamesSchema, ChangePrivateSchema
 from project.app.web import oauth2
 
 api = Blueprint('private_user_api', __name__)
@@ -54,6 +55,61 @@ def get_my_preferences():
             # we send HTTP 404 - Not Found error to the client
             #
             abort(404)
+    else:
+        abort(401)
+
+
+@api.route('/api/v1.0/my/preferences/names', methods=['PUT'])
+@oauth2.require_oauth('CUST_ACCESS')
+def update_my_preferences_names():
+    if current_token is not None and current_token.user is not None:
+
+        current_user = current_token.user
+        if current_user:
+            data = json.loads(request.data)
+            core.logger.debug('data=' + str(data))
+
+            names_to_update = ChangeUserNamesSchema().load(data)
+            core.logger.debug('ChangeUserNamesSchema=' + str(names_to_update))
+
+            user = userService.update_user_names(current_user.user_uuid,
+                                                 names_to_update['first_name'],
+                                                 names_to_update['last_name'])
+            if user:
+                data = PrivateUserPreferencesSchema().dump(user)
+                resp = serializeUtils.generate_response_wrapper(data)
+                return jsonify(resp)
+            else:
+                abort(403)
+        else:
+            abort(403)
+    else:
+        abort(401)
+
+
+@api.route('/api/v1.0/my/preferences/private', methods=['PUT'])
+@oauth2.require_oauth('CUST_ACCESS')
+def update_my_preferences_private():
+    if current_token is not None and current_token.user is not None:
+
+        current_user = current_token.user
+        if current_user:
+            data = json.loads(request.data)
+            core.logger.debug('data=' + str(data))
+
+            private_fl_to_update = ChangePrivateSchema().load(data)
+            core.logger.debug('ChangePrivateSchema=' + str(private_fl_to_update))
+
+            user = userService.update_user_private_fl(current_user.user_uuid,
+                                                      private_fl_to_update['is_private'])
+            if user:
+                data = PrivateUserPreferencesSchema().dump(user)
+                resp = serializeUtils.generate_response_wrapper(data)
+                return jsonify(resp)
+            else:
+                abort(403)
+        else:
+            abort(403)
     else:
         abort(401)
 
