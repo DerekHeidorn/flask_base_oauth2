@@ -11,7 +11,7 @@ from project.app.web.schemas.userSchema import PublicUserProfileSchema
 api = Blueprint('friendship_api', __name__)
 
 
-@api.route('/api/v1.0/my/friends/', methods=['GET'])
+@api.route('/api/v1.0/my/friends', methods=['GET'])
 @oauth2.require_oauth('CUST_ACCESS')
 def get_my_friends():
     if current_token is not None and current_token.user is not None:

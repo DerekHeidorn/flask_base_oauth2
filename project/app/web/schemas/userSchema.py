@@ -22,10 +22,13 @@ class PrivateUserPreferencesSchema(Schema):
     last_name = fields.String()
     formatted_name = fields.Method('get_formatted_name')
     is_private = fields.Boolean()
-    account_type = fields.String();
+    account_type = fields.Method('get_account_type')
 
     def get_formatted_name(self, obj):
         return obj.get_formatted_name()
+
+    def get_account_type(self, obj):
+        return "Basic"
 
 
 class PublicUserProfileSchema(Schema):
