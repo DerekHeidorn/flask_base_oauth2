@@ -1,14 +1,47 @@
-import uuid
-import time
-import hashlib
-from project.app.models.user import User
-from project.app.persist import baseDao, userDao, securityDao, oauth2Dao
-from project.app.services import emailService, encryptionService, commonService
-from project.app.services.utils import userUtils
+
+from project.app.persist import baseDao, userDao
 
 
-def remove_pending_friendship(user_id, friend_user_id):
-    userDao.remove_pending_friendship(user_id, friend_user_id)
+def add_pending_friendship(user_uuid, friend_user_uuid):
+    session = baseDao.get_session()
+
+    user = userDao.get_user_by_uuid(user_uuid, session)
+    friend_user = userDao.get_user_by_uuid(friend_user_uuid, session)
+
+    if user is not None and friend_user is not None:
+        userDao.add_pending_friendship(user.user_id, friend_user.user_id, session)
+        session.commit()
+
+    friends = get_friends_by_user_id(user.user_id)
+    return friends
+
+
+def remove_pending_friendship(user_uuid, friend_user_uuid):
+    session = baseDao.get_session()
+
+    user = userDao.get_user_by_uuid(user_uuid, session)
+    friend_user = userDao.get_user_by_uuid(friend_user_uuid, session)
+
+    if user is not None and friend_user is not None:
+        userDao.remove_pending_friendship(user.user_id, friend_user.user_id, session)
+        session.commit()
+
+    friends = get_friends_by_user_id(user.user_id)
+    return friends
+
+
+def remove_accepted_friendship(user_uuid, friend_user_uuid):
+    session = baseDao.get_session()
+
+    user = userDao.get_user_by_uuid(user_uuid, session)
+    friend_user = userDao.get_user_by_uuid(friend_user_uuid, session)
+
+    if user is not None and friend_user is not None:
+        userDao.remove_accepted_friendship(user.user_id, friend_user.user_id, session)
+        session.commit()
+
+    friends = get_friends_by_user_id(user.user_id)
+    return friends
 
 
 def get_friends_by_user_id(user_id):

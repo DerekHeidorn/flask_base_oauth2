@@ -210,7 +210,7 @@ def get_user_count(session=None):
     return row_count
 
 
-def add_friendship(user_id, friend_user_id, session=None):
+def add_pending_friendship(user_id, friend_user_id, session=None):
     """
     Creates and saves a new user to the database.
 
