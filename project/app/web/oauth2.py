@@ -1,6 +1,7 @@
 
 import time
 from datetime import datetime
+from cacheout import Cache
 
 from authlib.flask.oauth2 import AuthorizationServer, ResourceProtector
 from authlib.specs.rfc6749 import grants
@@ -15,6 +16,7 @@ from project.app.web.utils import authUtils
 from authlib.specs.rfc6749 import TokenMixin
 
 _authorization_server = None
+_token_cache = Cache(maxsize=1000, ttl=5 * 60)
 
 
 class _OAuth2TokenMixin(TokenMixin):
@@ -117,10 +119,16 @@ class _BearerTokenValidator(BearerTokenValidator):
             return token
         else:
             if isinstance(payload, dict) and 'jti' in payload:
-                # print("payload['jti']=" + str(payload['jti']))
-                db_token = oauth2Service.query_token(payload['jti'], 'access_token')
-                print("db_token=" + str(db_token))
+                jti_key = payload['jti']
+                if _token_cache.has(jti_key):
+                    print("got cached token: " + jti_key)
+                    token = _token_cache.get(jti_key)
+                    return token
 
+                # print("payload['jti']=" + str(payload['jti']))
+                db_token = oauth2Service.query_token(jti_key, 'access_token')
+                print("caching token: " + jti_key)
+                _token_cache.add(jti_key, db_token)
                 return db_token
         return None
 
