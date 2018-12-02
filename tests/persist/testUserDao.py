@@ -1,10 +1,10 @@
 import uuid
 from datetime import datetime
-from project.tests.persist.baseTest import BaseTest
-from project.tests.helpers import commonHelper
-from project.tests.utils import randomUtil
-from project.app.persist import userDao
-from project.app.models.user import User
+from tests.persist.baseTest import BaseTest
+from tests.helpers import commonHelper
+from tests.utils import randomUtil
+from app.persist import userDao
+from app.models.user import User
 
 
 class UserDaoTestCase(BaseTest):

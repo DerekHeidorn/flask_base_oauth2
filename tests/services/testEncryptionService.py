@@ -1,6 +1,6 @@
 
-from project.tests.services.baseTest import BaseTest
-from project.app.services import encryptionService
+from tests.services.baseTest import BaseTest
+from app.services import encryptionService
 
 
 class EncryptionServiceTestCase(BaseTest):

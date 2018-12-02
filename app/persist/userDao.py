@@ -1,7 +1,7 @@
 from sqlalchemy import func, update, and_, or_
 from datetime import datetime
-from project.app.models.user import User, Friendship, FriendshipHistory
-from project.app.persist import baseDao
+from app.models.user import User, Friendship, FriendshipHistory
+from app.persist import baseDao
 
 
 def add_user(new_user, session=None):

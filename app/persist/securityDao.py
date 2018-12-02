@@ -1,8 +1,8 @@
 
 
-from project.app.persist import baseDao
-from project.app.models.user import User
-from project.app.models.security import SecurityGroup
+from app.persist import baseDao
+from app.models.user import User
+from app.models.security import SecurityGroup
 
 SECURITY_GROUP_CUSTOMER_NAME = "CUSTOMER"
 

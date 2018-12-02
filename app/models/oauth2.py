@@ -6,7 +6,7 @@ from authlib.flask.oauth2.sqla import (
     OAuth2AuthorizationCodeMixin,
     OAuth2TokenMixin,
 )
-from project.app.models.baseModel import BaseModel
+from app.models.baseModel import BaseModel
 
 
 class OAuth2Client(BaseModel, OAuth2ClientMixin):

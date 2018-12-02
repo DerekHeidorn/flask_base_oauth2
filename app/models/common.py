@@ -1,6 +1,6 @@
 
 from sqlalchemy import Column, String, Integer
-from project.app.models.baseModel import BaseModel
+from app.models.baseModel import BaseModel
 
 
 class Config(BaseModel):

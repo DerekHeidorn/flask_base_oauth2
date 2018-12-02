@@ -1,7 +1,7 @@
 
-from project.tests.services.baseTest import BaseTest
-from project.tests.helpers import commonHelper
-from project.app.services import emailService
+from tests.services.baseTest import BaseTest
+from tests.helpers import commonHelper
+from app.services import emailService
 
 
 class EmailServiceTestCase(BaseTest):

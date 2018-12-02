@@ -7,11 +7,10 @@ from flask import Blueprint
 
 from authlib.flask.oauth2 import current_token
 
-from project.app.services import userService
-from project.app.web.utils import serializeUtils
-from project.app.web.schemas.userSchema import \
-    PublicUserProfileSchema
-from project.app.web import oauth2
+from app.services import userService
+from app.web.utils import serializeUtils
+from app.web.schemas.userSchema import PublicUserProfileSchema
+from app.web import oauth2
 
 api = Blueprint('admin_user_api', __name__)
 

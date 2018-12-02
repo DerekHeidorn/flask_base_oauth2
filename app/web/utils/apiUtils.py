@@ -1,6 +1,6 @@
 import json
-from flask import abort, Response
-from project.app.web.utils import serializeUtils
+from flask import Response
+from app.web.utils import serializeUtils
 
 
 def handle_schema_validation_error(error_messages):

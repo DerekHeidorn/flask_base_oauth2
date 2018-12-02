@@ -1,7 +1,7 @@
 
 from flask import Blueprint
 from flask import jsonify
-from project.app.services import commonService
+from app.services import commonService
 
 api = Blueprint('common_api', __name__)
 

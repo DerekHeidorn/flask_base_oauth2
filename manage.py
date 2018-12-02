@@ -2,7 +2,7 @@ import os
 import unittest
 import coverage
 import argparse
-from project.app import core
+from app import core
 
 parser = argparse.ArgumentParser()
 parser.add_argument("command", choices=['test', 'coverage', 'runserver', 'emailserver'], help="Command Action")
@@ -39,7 +39,7 @@ def run_test():
        python -m unittest project/tests/web/testCommon.py
        python -m unittest project.tests.web.testUserApi.UserApiTestCase.test_reset_password
     '''
-    tests = unittest.TestLoader().discover('project/tests', pattern='test*.py')
+    tests = unittest.TestLoader().discover('tests', pattern='test*.py')
     result = unittest.TextTestRunner(verbosity=2).run(tests)
     if result.wasSuccessful():
         return 0

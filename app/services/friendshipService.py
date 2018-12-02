@@ -1,5 +1,5 @@
 
-from project.app.persist import baseDao, userDao
+from app.persist import baseDao, userDao
 
 
 def add_pending_friendship(user_uuid, friend_user_uuid):

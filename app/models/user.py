@@ -2,7 +2,7 @@
 from sqlalchemy import Column, String, Boolean, Integer, ForeignKey, DateTime, Table
 from sqlalchemy.orm import relationship
 
-from project.app.models.baseModel import BaseModel
+from app.models.baseModel import BaseModel
 
 userSecurityAssociation = Table('tb_user_scrty',
                                 BaseModel.metadata,

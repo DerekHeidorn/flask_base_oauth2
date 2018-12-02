@@ -1,7 +1,7 @@
 
-from project.tests.persist.baseTest import BaseTest
-from project.tests.helpers import commonHelper
-from project.app.persist import securityDao
+from tests.persist.baseTest import BaseTest
+from tests.helpers import commonHelper
+from app.persist import securityDao
 
 
 class SecurityDaoTestCase(BaseTest):

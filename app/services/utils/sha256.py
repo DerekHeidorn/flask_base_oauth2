@@ -1,5 +1,5 @@
 import hashlib
-from project.app import core
+from app import core
 
 
 def hexdigest(input_string, password=None):

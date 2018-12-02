@@ -1,7 +1,7 @@
 
 from sqlalchemy import Column, String, Integer, ForeignKey, Table
 from sqlalchemy.orm import relationship
-from project.app.models.baseModel import BaseModel
+from app.models.baseModel import BaseModel
 
 
 securityGroupAuthAssociation = Table('tb_scrty_grp_auth',

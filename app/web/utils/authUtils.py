@@ -2,7 +2,7 @@ import traceback
 import jwt
 import uuid
 from datetime import datetime, timedelta
-from project.app.web.utils import serializeUtils
+from app.web.utils import serializeUtils
 
 
 def encode_auth_token(user, authorities, oauth2_secret_key):

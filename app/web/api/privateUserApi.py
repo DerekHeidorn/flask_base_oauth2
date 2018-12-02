@@ -7,14 +7,14 @@ from marshmallow import ValidationError
 
 from authlib.flask.oauth2 import current_token
 
-from project.app import core
-from project.app.services import userService
-from project.app.web.utils import serializeUtils, apiUtils
-from project.app.web.schemas.userSchema import \
+from app import core
+from app.services import userService
+from app.web.utils import serializeUtils, apiUtils
+from app.web.schemas.userSchema import \
     ChangePasswordSchema, ChangeUsernameSchema, \
     PrivateUserAccountSchema, PrivateUserPreferencesSchema, PublicUserProfileSchema, \
     ChangeUserNamesSchema, ChangePrivateSchema
-from project.app.web import oauth2
+from app.web import oauth2
 
 api = Blueprint('private_user_api', __name__)
 

@@ -1,6 +1,6 @@
 
-from project.tests.persist.baseTest import BaseTest
-from project.app.persist import configDao
+from tests.persist.baseTest import BaseTest
+from app.persist import configDao
 
 
 class ConfigDaoTestCase(BaseTest):

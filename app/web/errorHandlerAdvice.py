@@ -1,7 +1,7 @@
 import json
 from werkzeug.exceptions import HTTPException
 from flask import jsonify, abort, Response
-from project.app.web.utils import serializeUtils
+from app.web.utils import serializeUtils
 import traceback
 
 

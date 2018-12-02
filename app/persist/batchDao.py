@@ -1,6 +1,6 @@
 
-from project.app.persist import baseDao
-from project.app.models.batch import BatchJob
+from app.persist import baseDao
+from app.models.batch import BatchJob
 
 
 def get_batch_jobs(session=None):

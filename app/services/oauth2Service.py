@@ -1,5 +1,5 @@
 
-from project.app.persist import oauth2Dao
+from app.persist import oauth2Dao
 
 
 def add_authorization_code(client, user, request):

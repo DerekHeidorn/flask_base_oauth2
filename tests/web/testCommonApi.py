@@ -1,7 +1,7 @@
 
 import unittest
 import json
-from project.tests.web.baseTest import BaseTest 
+from tests.web.baseTest import BaseTest
 
 
 class CommonApiTestCases(BaseTest):

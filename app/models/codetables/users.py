@@ -2,7 +2,7 @@ import json
 
 from sqlalchemy import Column, String
 
-from project.app.models.baseModel import BaseModel
+from app.models.baseModel import BaseModel
 
 
 class CtUserStatus(BaseModel):

@@ -1,7 +1,7 @@
 from datetime import datetime
-from project.tests.persist.baseTest import BaseTest
-from project.app.persist import batchDao
-from project.app.models.batch import BatchJob
+from tests.persist.baseTest import BaseTest
+from app.persist import batchDao
+from app.models.batch import BatchJob
 
 
 class BatchDaoTestCase(BaseTest):

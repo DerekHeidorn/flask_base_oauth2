@@ -1,6 +1,6 @@
 
-from project.app.persist import baseDao
-from project.app.models.common import Config
+from app.persist import baseDao
+from app.models.common import Config
 
 
 def get_config_by_key(key, session=None):

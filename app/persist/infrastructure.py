@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from project.app import core
+from app import core
 
 session_factory = scoped_session(sessionmaker())
 

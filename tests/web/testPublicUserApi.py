@@ -1,10 +1,10 @@
 import json
 import unittest
 from urllib import parse
-from project.tests.web.baseTest import BaseTest 
-from project.tests.utils import randomUtil
-from project.tests.helpers import commonHelper
-from project.app.services import userService, encryptionService
+from tests.web.baseTest import BaseTest
+from tests.utils import randomUtil
+from tests.helpers import commonHelper
+from app.services import userService, encryptionService
 
 
 class PublicUserApiTestCase(BaseTest):

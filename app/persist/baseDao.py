@@ -1,4 +1,4 @@
-from project.app.persist.infrastructure import session_factory
+from app.persist.infrastructure import session_factory
 
 
 def get_session():

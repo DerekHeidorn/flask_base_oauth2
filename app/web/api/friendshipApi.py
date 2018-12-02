@@ -3,11 +3,11 @@ from flask import jsonify
 from flask import abort
 
 from authlib.flask.oauth2 import current_token
-from project.app.services.utils import sha256
-from project.app.services import friendshipService
-from project.app.web import oauth2
-from project.app.web.utils import serializeUtils
-from project.app.web.schemas.userSchema import PublicUserProfileSchema
+from app.services.utils import sha256
+from app.services import friendshipService
+from app.web import oauth2
+from app.web.utils import serializeUtils
+from app.web.schemas.userSchema import PublicUserProfileSchema
 
 api = Blueprint('friendship_api', __name__)
 

@@ -1,5 +1,5 @@
 
-from project.app.persist import baseDao
+from app.persist import baseDao
 
 
 def get_code_table(codetable, session=None):

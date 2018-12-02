@@ -1,8 +1,8 @@
 
 
-from project.app.persist import baseDao
-from project.app.models.oauth2 import OAuth2AuthorizationCode, OAuth2Token, OAuth2Client
-from project.app.models.user import User
+from app.persist import baseDao
+from app.models.oauth2 import OAuth2AuthorizationCode, OAuth2Token, OAuth2Client
+from app.models.user import User
 from werkzeug.security import gen_salt
 
 

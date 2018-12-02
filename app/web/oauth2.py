@@ -7,13 +7,14 @@ from authlib.flask.oauth2 import AuthorizationServer, ResourceProtector
 from authlib.specs.rfc6749 import grants
 from authlib.specs.rfc6750 import BearerTokenValidator
 from authlib.specs.rfc6749.errors import AccessDeniedError
-
-from project.app import core
-from project.app.persist import baseDao, userDao
-from project.app.services import oauth2Service, userService
-from project.app.services.utils import userUtils
-from project.app.web.utils import authUtils
 from authlib.specs.rfc6749 import TokenMixin
+
+from app import core
+from app.persist import baseDao, userDao
+from app.services import oauth2Service, userService
+from app.services.utils import userUtils
+from app.web.utils import authUtils
+
 
 _authorization_server = None
 _token_cache = Cache(maxsize=1000, ttl=5 * 60)

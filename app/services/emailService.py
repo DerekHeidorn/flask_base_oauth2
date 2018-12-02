@@ -5,7 +5,7 @@ from smtplib import SMTPConnectError
 from email.message import EmailMessage
 from email.headerregistry import Address
 
-from project.app.services import commonService
+from app.services import commonService
 
 
 def _get_smtp_info():

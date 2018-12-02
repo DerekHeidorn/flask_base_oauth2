@@ -1,5 +1,5 @@
 from marshmallow import fields, Schema
-from project.app.services.utils import sha256
+from app.services.utils import sha256
 
 
 class PrivateUserAccountSchema(Schema):

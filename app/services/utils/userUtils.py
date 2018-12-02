@@ -4,7 +4,7 @@ import binascii
 from random import randint
 from random import choice
 from random import SystemRandom
-from project.app.services.utils.securityUtils import constants
+from app.services.utils.securityUtils import constants
 
 
 def random_user_private_key(max_size):

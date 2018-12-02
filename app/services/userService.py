@@ -2,10 +2,10 @@ import uuid
 import time
 import hashlib
 from datetime import datetime
-from project.app.models.user import User
-from project.app.persist import baseDao, userDao, securityDao, oauth2Dao
-from project.app.services import emailService, encryptionService, commonService
-from project.app.services.utils import userUtils
+from app.models.user import User
+from app.persist import baseDao, userDao, securityDao, oauth2Dao
+from app.services import emailService, encryptionService, commonService
+from app.services.utils import userUtils
 
 
 def is_user_valid(username, password):

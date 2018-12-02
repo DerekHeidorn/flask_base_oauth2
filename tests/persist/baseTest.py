@@ -1,7 +1,7 @@
 
 import unittest
-from project.app import core
-from project.tests.helpers import commonHelper
+from app import core
+from tests.helpers import commonHelper
 
 
 class BaseTest(unittest.TestCase):

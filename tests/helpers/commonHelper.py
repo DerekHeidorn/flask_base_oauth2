@@ -1,10 +1,10 @@
 import os
 from urllib import parse
-from project.app.services import userService
-from project.app.services.utils import userUtils
-from project.app.web.utils import authUtils
-from project.tests.utils import randomUtil
-from project.app import core
+from app.services import userService
+from app.services.utils import userUtils
+from app.web.utils import authUtils
+from tests.utils import randomUtil
+from app import core
 
 DEFAULT_PUBLIC_USER_PASSWORD = "foobar@123"
 DEFAULT_PUBLIC_USERNAME = "Joe.Customer@foo.com.invali"

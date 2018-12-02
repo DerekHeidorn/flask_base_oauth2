@@ -11,12 +11,12 @@ from marshmallow import ValidationError
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
-from project.app.persist import infrastructure
-from project.app.services import commonService, schedulerService
-from project.app.web import oauth2
-from project.app.web import oauth2Workflow
-from project.app.web import errorHandlerAdvice
-from project.app.web.api import commonApi, privateUserApi, publicUserApi, adminUserApi, codetablesApi, friendshipApi
+from app.persist import infrastructure
+from app.services import commonService, schedulerService
+from app.web import oauth2
+from app.web import oauth2Workflow
+from app.web import errorHandlerAdvice
+from app.web.api import commonApi, privateUserApi, publicUserApi, adminUserApi, codetablesApi, friendshipApi
 
 
 global_config = {}

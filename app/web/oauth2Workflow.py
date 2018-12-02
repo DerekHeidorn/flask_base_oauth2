@@ -1,10 +1,10 @@
 import json
 from flask import Blueprint, request, session
 from flask import render_template, redirect
-from project.app.services import userService, oauth2Service
-from project.app.web.forms import forms
-from project.app.web.utils import debugUtils
-from project.app.web import oauth2
+from app.services import userService, oauth2Service
+from app.web.forms import forms
+from app.web.utils import debugUtils
+from app.web import oauth2
 
 api = Blueprint('home_api', __name__)
 

@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, HiddenField
 from wtforms.validators import DataRequired, Email, ValidationError, Length
 
-from project.app.services import userService
+from app.services import userService
 
 
 class UsernamePasswordForm(FlaskForm):

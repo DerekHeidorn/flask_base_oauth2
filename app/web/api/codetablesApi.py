@@ -4,10 +4,10 @@ from flask import jsonify
 from flask import abort
 from cacheout import Cache
 
-from project.app.models.codetables.users import CtUserStatus, CtUserType
-from project.app.services import codetablesService
-from project.app.web.utils import serializeUtils
-from project.app.web.schemas.generalSchema import CodeTableSchema
+from app.models.codetables.users import CtUserStatus, CtUserType
+from app.services import codetablesService
+from app.web.utils import serializeUtils
+from app.web.schemas.generalSchema import CodeTableSchema
 
 api = Blueprint('codetables_api', __name__)
 

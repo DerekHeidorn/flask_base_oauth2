@@ -1,7 +1,7 @@
 from urllib import parse
 import base64
 from cryptography.fernet import Fernet
-from project.app import core
+from app import core
 
 
 def encrypt(data, encrypt_key=None):
