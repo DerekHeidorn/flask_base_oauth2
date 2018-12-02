@@ -36,8 +36,8 @@ def run_test():
     """Runs the unit tests without test coverage."""
     '''
     other examples: 
-       python -m unittest project/tests/web/testCommon.py
-       python -m unittest project.tests.web.testUserApi.UserApiTestCase.test_reset_password
+       python -m unittest tests/web/testCommon.py
+       python -m unittest tests.web.testUserApi.UserApiTestCase.test_reset_password
     '''
     tests = unittest.TestLoader().discover('tests', pattern='test*.py')
     result = unittest.TextTestRunner(verbosity=2).run(tests)
@@ -52,17 +52,17 @@ def run_coverage():
 
     code_coverage = coverage.coverage(
         branch=True,
-        include='project/*',
+        include='/*',
         omit=[
-            'project/tests/*',
-            'project/app/config.py',
-            'project/app/*/__init__.py'
+            'tests/*',
+            'app/config.py',
+            'app/*/__init__.py'
         ]
     )
     code_coverage.start()
 
     """Runs the unit tests with coverage."""
-    tests = unittest.TestLoader().discover('project/tests/web', pattern='test*.py')
+    tests = unittest.TestLoader().discover('tests/web', pattern='test*.py')
     result = unittest.TextTestRunner(verbosity=2).run(tests)
     if result.wasSuccessful():
         code_coverage.stop()

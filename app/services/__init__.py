@@ -1,6 +1,6 @@
 import time
 # import schedule
-# from project.app.services import schedulerService
+# from app.services import schedulerService
 #
 # print("setting up scheduler")
 # schedule.every(2).minutes.do(schedulerService.run_stats)

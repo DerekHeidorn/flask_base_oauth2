@@ -108,7 +108,7 @@ def create_application():
 
     # app_settings = os.getenv(
     #    'APP_SETTINGS',
-    #    'project.server.config.DevelopmentConfig'
+    #    'server.config.DevelopmentConfig'
     # )
     # app.config.from_object(app_settings)
     
