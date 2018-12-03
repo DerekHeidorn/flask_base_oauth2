@@ -6,6 +6,7 @@ from email.message import EmailMessage
 from email.headerregistry import Address
 
 from app.services import commonService
+from app import core
 
 
 def _get_smtp_info():
@@ -23,9 +24,9 @@ def _send_email_msg(msg):
             with smtplib.SMTP(smtp_info['host'], smtp_info['port']) as s:
                 s.send_message(msg)
         except SMTPConnectError as e:
-            print("SMTPConnectError: " + str(e))
+            core.logger.error("SMTPConnectError: " + str(e))
         except ConnectionRefusedError as cre:
-            print("ConnectionRefusedError: " + str(cre))
+            core.logger.error("ConnectionRefusedError: " + str(cre))
 
 
 def send_reset_password_email(user_formatted_name, user_email, reset_code, reset_url):

@@ -2,8 +2,8 @@ import uuid
 import time
 import hashlib
 from datetime import datetime
-from authlib.specs.rfc6749.errors import AccessDeniedError
 
+from app import core
 from app.models.user import User
 from app.persist import baseDao, userDao, securityDao, oauth2Dao
 from app.services import emailService, encryptionService, commonService
@@ -151,6 +151,8 @@ def add_public_user(client_id, alias, username, password, first_name=None, last_
 
 
 def reset_user_password(username):
+    core.logger.debug("resetting user's password: " + str(username))
+
     # get the base url
     base_url = commonService.get_config_by_key('app.base_url')
 
@@ -182,10 +184,6 @@ def reset_user_password(username):
     # used for informational only, simple hashCode to compare if the encrypted values have been changed the user
     reset_digest = hashlib.md5(encrypted_reset_info.encode()).hexdigest()
 
-    print("base_url=" + str(base_url))
-    print("time_string=" + str(time_string))
-    print("reset_digest=" + str(reset_digest))
-    print("encrypted_reset_info=" + str(encrypted_reset_info))
     reset_url = base_url + '/reset?e=' + encrypted_reset_info + '&t=' + time_string + '&h=' + reset_digest
 
     # email to the user

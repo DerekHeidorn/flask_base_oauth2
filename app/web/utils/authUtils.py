@@ -29,7 +29,6 @@ def encode_auth_token(user, authorities, oauth2_secret_key):
             'jti': str(jti_uuid),
             'authorities': authority_list
         }
-        print(str(payload))
         jwt_encode = jwt.encode(
             payload,
             oauth2_secret_key,
@@ -61,7 +60,6 @@ def decode_auth_token(auth_token, oauth2_secret_key):
         payload = jwt.decode(auth_token,
                              key=oauth2_secret_key,
                              algorithms=['HS512'])
-        print("user:" + str(payload['sub']))
         return payload['sub']
     except jwt.ExpiredSignatureError:
         return 'Signature expired. Please log in again.'
@@ -77,14 +75,6 @@ def decode_auth_token_payload(jwt_token, oauth2_secret_key):
     :return: payload as Dictionary
     """
     try:
-        print(str(jwt_token))
-        # def decode(self,
-        #            jwt,  # type: str
-        #            key='',   # type: str
-        #            verify=True,  # type: bool
-        #            algorithms=None,  # type: List[str]
-        #            options=None,  # type: Dict
-        #            **kwargs):
         payload = jwt.decode(jwt_token,
                              key=oauth2_secret_key,
                              algorithms=['HS512'])

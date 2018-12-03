@@ -30,11 +30,8 @@ def get_my_public_public():
             resp = apiUtils.generate_response_wrapper(data)
             return jsonify(resp)
         else:
-            #
-            # In case we did not find the candidate by id
-            # we send HTTP 404 - Not Found error to the client
-            #
-            abort(404)
+            # Forbidden
+            abort(403)
     else:
         abort(401)
 
@@ -50,11 +47,8 @@ def get_my_preferences():
             resp = apiUtils.generate_response_wrapper(data)
             return jsonify(resp)
         else:
-            #
-            # In case we did not find the candidate by id
-            # we send HTTP 404 - Not Found error to the client
-            #
-            abort(404)
+            # Forbidden
+            abort(403)
     else:
         abort(401)
 
@@ -126,11 +120,8 @@ def get_my_account():
             resp = apiUtils.generate_response_wrapper(data)
             return jsonify(resp)
         else:
-            #
-            # In case we did not find the candidate by id
-            # we send HTTP 404 - Not Found error to the client
-            #
-            abort(404)
+            # Forbidden
+            abort(403)
     else:
         abort(401)
 
@@ -150,11 +141,8 @@ def get_my_account_username():
             resp = apiUtils.generate_response_wrapper(data)
             return jsonify(resp)
         else:
-            #
-            # In case we did not find the candidate by id
-            # we send HTTP 404 - Not Found error to the client
-            #
-            abort(404)
+            # Forbidden
+            abort(403)
     else:
         abort(401)
 
@@ -194,11 +182,8 @@ def update_my_account_username():
             else:
                 abort(400)
         else:
-            #
-            # In case we did not find the candidate by id
-            # we send HTTP 404 - Not Found error to the client
-            #
-            abort(404)
+            # Forbidden
+            abort(403)
     else:
         abort(401)
 
@@ -229,10 +214,6 @@ def update_my_account_password():
                 resp = apiUtils.add_global_success_msg(resp, "Successfully update your password")
                 return jsonify(resp)
 
-                # data = {}
-                # resp = serializeUtils.generate_response_wrapper(data)
-                # return jsonify(resp)
-
             except ValidationError as err:
                 core.logger.debug("err.messages=" + str(err.messages))
                 core.logger.debug("err.valid_data=" + str(err.valid_data))
@@ -240,10 +221,7 @@ def update_my_account_password():
                 abort(resp)
 
         else:
-            #
-            # In case we did not find the candidate by id
-            # we send HTTP 404 - Not Found error to the client
-            #
-            abort(404)
+            # Forbidden
+            abort(403)
     else:
         abort(401)

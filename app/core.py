@@ -102,15 +102,8 @@ def create_application():
          methods=["OPTIONS", "POST", "PUT", "GET", "DELETE"],
          origins=["http://127.0.0.1:4200", "http://localhost:4200", "http://127.0.0.1:9000", "http://127.0.0.1:9001"],
          max_age=1800)
-    # CORS(app, resources=r"/api/*")
-    # CORS(app)
-    oauth2.init(app)
 
-    # app_settings = os.getenv(
-    #    'APP_SETTINGS',
-    #    'server.config.DevelopmentConfig'
-    # )
-    # app.config.from_object(app_settings)
+    oauth2.init(app)
     
     commonService.load_application_cache_from_db()
 

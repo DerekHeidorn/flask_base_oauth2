@@ -50,7 +50,6 @@ def handle_schema_validation_error(error_messages):
 
     field_error_msgs = []
     for k in error_messages:
-        print(k + ", " + str(error_messages[k]))
         field_error_msgs.append({k: error_messages[k]})
     r = Response()
     r.status_code = 400
