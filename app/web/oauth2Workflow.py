@@ -210,7 +210,7 @@ def reset_request_post():
             return render_template('reset.html', form=form, global_messages=global_messages)
 
         global_messages = GlobalMessages()
-        global_messages.add_global_info_msg("Reset password sent to email address")
+        global_messages.add_global_info_msg("Reset password information to your email address")
         return render_template('reset.html', form=form, global_messages=global_messages)
     else:
         global_messages.add_global_error_msg(messages.errors["error.form"])

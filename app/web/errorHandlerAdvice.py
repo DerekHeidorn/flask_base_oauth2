@@ -1,7 +1,7 @@
 import json
 from werkzeug.exceptions import HTTPException
-from flask import jsonify, abort, Response
-from app.web.utils import serializeUtils
+from flask import jsonify, Response
+from app.web.utils import apiUtils
 import traceback
 
 
@@ -31,7 +31,7 @@ def _handle_schema_validation_error(error_messages):
     r = Response()
     r.status_code = 400
     r.content_type = 'application/json'
-    r.data = json.dumps(serializeUtils.generate_response_wrapper(None, field_error_msgs=field_error_msgs))
+    r.data = json.dumps(apiUtils.generate_response_wrapper(None, field_error_msgs=field_error_msgs))
     return r
 
 

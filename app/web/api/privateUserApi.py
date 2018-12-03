@@ -27,7 +27,7 @@ def get_my_public_public():
         current_user = current_token.user
         if current_user:
             data = PublicUserProfileSchema().dump(current_user)
-            resp = serializeUtils.generate_response_wrapper(data)
+            resp = apiUtils.generate_response_wrapper(data)
             return jsonify(resp)
         else:
             #
