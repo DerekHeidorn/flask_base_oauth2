@@ -391,7 +391,9 @@ img.aligncenter {
 	font-weight:normal;
 	padding:6px;
 }
-
+.msg-success-text{
+	color: #000000;
+}
 .msg-info {
 	margin-bottom:4px;
 	background-color: #2F96B4;
@@ -406,7 +408,9 @@ img.aligncenter {
 	font-weight:normal;
 	padding:6px;
 }
-
+.msg-info-text{
+	color: #FFFFFF;
+}
 .msg-warning {
 	margin-bottom:4px;
 	background-color: #F89406;
@@ -421,7 +425,9 @@ img.aligncenter {
 	font-weight:normal;
 	padding:6px;
 }
-
+.msg-warning-text{
+	color: #000000;
+}
 .msg-error {
 	margin-bottom:4px;
 	background-color: #BD362F;
@@ -434,6 +440,9 @@ img.aligncenter {
 	font-weight:normal;
 	color: #FFFFFF;
 	padding:6px;
+}
+.msg-error-text{
+	color: #FFFFFF;
 }
 
 /* https://github.com/FortAwesome/Font-Awesome-Pro/blob/master/advanced-options/raw-svg/regular/info-circle.svg */

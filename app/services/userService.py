@@ -2,10 +2,13 @@ import uuid
 import time
 import hashlib
 from datetime import datetime
+from authlib.specs.rfc6749.errors import AccessDeniedError
+
 from app.models.user import User
 from app.persist import baseDao, userDao, securityDao, oauth2Dao
 from app.services import emailService, encryptionService, commonService
 from app.services.utils import userUtils
+from app.services.exceptions.security import AppAccessDeniedException
 
 
 def is_user_valid(username, password):
@@ -156,6 +159,9 @@ def reset_user_password(username):
 
     # get the current user
     user = userDao.get_user_by_username(username, session)
+    if user is None:
+        raise AppAccessDeniedException('User does not exist')
+
     user_formatted_name = user.get_formatted_name()
 
     # if a reset code doesn't exist, create it.
@@ -199,7 +205,7 @@ def process_reset_user_password(encrypted_reset_info):
         reset_code = encryptionService.decrypt_string(reset_info['code'], user.private_key)
 
         if user.reset_code == reset_code:
-            return reset_code
+            return {"reset_code": reset_code, "username": reset_info['username']}
 
     return None
 

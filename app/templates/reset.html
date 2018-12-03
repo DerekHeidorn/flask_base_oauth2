@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <link href="static/timeless-style.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="/static/timeless-style.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
 
@@ -29,7 +29,7 @@
                 <div id="content">
                     {% include 'global_messages.html' %}
 
-                    <form action="{{ url_for('home_api.login_post') }}" method="post">
+                    <form action="{{ url_for('home_api.reset_request_post') }}" method="post">
                         <input type="hidden" name="reset_code"/>
                         {{ form.csrf_token }}
 

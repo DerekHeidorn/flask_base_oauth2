@@ -9,8 +9,8 @@ from app.services import userService
 class UsernamePasswordForm(FlaskForm):
     client_id = HiddenField()
     grant_type = HiddenField()
-    username = StringField('Email', validators=[DataRequired(), Length(max=100)])
-    password = PasswordField('Password', validators=[DataRequired(), Length(max=256)])
+    username = StringField('Email', validators=[DataRequired(), Email(), Length(min=4, max=100)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=10, max=256)])
 
 
 class UsernamePasswordResetForm(FlaskForm):
@@ -21,14 +21,14 @@ class UsernamePasswordNewForm(FlaskForm):
     client_id = HiddenField()
     grant_type = HiddenField()
     reset_code = HiddenField()
-    username = StringField('Email', validators=[DataRequired(), Email(), Length(max=100)])
-    password = PasswordField('Password', validators=[DataRequired(), Length(max=256)])
-    password_repeat = PasswordField('Repeat Password', validators=[DataRequired()])
+    username = StringField('Email', validators=[DataRequired(), Email(), Length(min=4, max=100)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=10, max=256)])
+    password_repeat = PasswordField('Repeat Password', validators=[DataRequired(), Length(min=10, max=256)])
 
 
 class AccountReactivateForm(FlaskForm):
     reactivation_code = HiddenField()
-    username = StringField('Email', validators=[DataRequired(), Email(), Length(max=100)])
+    username = StringField('Email', validators=[DataRequired(), Email(), Length(min=4, max=100)])
 
 
 class SignupForm(FlaskForm):
@@ -37,7 +37,7 @@ class SignupForm(FlaskForm):
     alias = StringField('Alias', validators=[DataRequired(), Length(min=4, max=30)])
     username = StringField('Email', validators=[DataRequired(), Email(), Length(min=4, max=100)])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=10, max=256)])
-    password_repeat = PasswordField('Repeat Password', validators=[DataRequired()])
+    password_repeat = PasswordField('Repeat Password', validators=[DataRequired(), Length(min=10, max=256)])
 
     """
     Validates the form by calling `validate` on each field, passing any

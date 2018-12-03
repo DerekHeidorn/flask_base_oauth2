@@ -69,8 +69,12 @@ class _PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
         session = baseDao.get_session()
 
         user = userDao.get_user_by_username(username_or_alias, session)
-        if user is None:  # no username found, try Alias
-            user = userDao.get_user_by_alias(username_or_alias, session)
+
+        # Optional login using the alias
+        # if user is None:  # no username found, try Alias
+        #     user = userDao.get_user_by_alias(username_or_alias, session)
+
+        core.logger.debug("authenticate_user: " + username_or_alias + ", user_object: " + str(user))
 
         if user is not None:
 
@@ -89,10 +93,13 @@ class _PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
                     if user.failed_attempt_count > 8:
                         userService.deactivate_account(user.user_id)
 
+                    core.logger.debug("raising AccessDeniedError: 'Password is invalid'")
                     raise AccessDeniedError('Password is invalid')
             else:
+                core.logger.debug("raising AccessDeniedError: 'User is not active'")
                 raise AccessDeniedError('User is not active')
         else:
+            core.logger.debug("raising AccessDeniedError: 'User does not exist'")
             raise AccessDeniedError('User does not exist')
 
 

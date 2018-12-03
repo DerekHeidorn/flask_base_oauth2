@@ -1,4 +1,4 @@
-{% if global_messages and global_messages.has_global_msgs %}
+{% if global_messages and global_messages.has_global_msgs() %}
 <div>
     {% if global_messages.global_success_msgs|length > 0  %}
     <div>
@@ -9,7 +9,7 @@
                         <td class="icon-success"></td>
                         <td>
                             {% for msg in global_messages.global_success_msgs %}
-                                <div>{{msg}}</div>
+                                <div class="msg-success-text">{{msg}}</div>
                             {% endfor %}
                         </td>
                     </tr>
@@ -27,7 +27,7 @@
                         <td class="icon-info"></td>
                         <td>
                             {% for msg in global_messages.global_info_msgs %}
-                                <div>{{msg}}</div>
+                                <div class="msg-info-text">{{msg}}</div>
                             {% endfor %}
                         </td>
                     </tr>
@@ -46,7 +46,7 @@
                             <td class="icon-warning"></td>
                         <td>
                             {% for msg in global_messages.global_warning_msgs %}
-                                <div>{{msg}}</div>
+                                <div class="msg-warning-text">{{msg}}</div>
                             {% endfor %}
                         </td>
                     </tr>
@@ -64,7 +64,7 @@
                             <td class="icon-error"></td>
                         <td>
                             {% for msg in global_messages.global_error_msgs %}
-                                <div>{{msg}}</div>
+                                <div class="msg-error-text">{{msg}}</div>
                             {% endfor %}
                         </td>
                     </tr>
