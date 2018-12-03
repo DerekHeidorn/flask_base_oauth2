@@ -2,7 +2,12 @@ import json
 from flask import Blueprint, request, session
 from flask import render_template, redirect
 from app.services import userService, oauth2Service
-from app.web.forms import forms
+from app.web.forms.user import UsernamePasswordForm, \
+                                SignupForm, \
+                                AccountReactivateForm, \
+                                UsernamePasswordResetForm, \
+                                UsernamePasswordNewForm
+from app.web.forms.common import GlobalMessages
 from app.web.utils import debugUtils
 from app.web import oauth2
 
@@ -31,8 +36,9 @@ def login():
     if user:
         return redirect('/')
     else:
-        form = forms.UsernamePasswordForm()
-        return render_template('login.html', form=form)
+        form = UsernamePasswordForm()
+        global_messages = GlobalMessages()
+        return render_template('login.html', form=form, global_messages=global_messages)
 
 
 @api.route('/login', methods=['POST'])
@@ -43,7 +49,7 @@ def login_post():
     # Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
     # Content-Type: application/x-www-form-urlencoded
     # grant_type=password&username=johndoe&password=A3ddj3w
-    form = forms.UsernamePasswordForm()
+    form = UsernamePasswordForm()
     if form.validate_on_submit():
         debugUtils.debug_request(request)
         try:
@@ -72,9 +78,11 @@ def login_post():
                 return redirect(redirect_url + "?auth_response=1" + parameters, code=302)
         except Exception as e:
             print("Exception: " + str(e))
-            return render_template('login.html', form=form)
+            global_messages = GlobalMessages()
+            return render_template('login.html', form=form, global_messages=global_messages)
 
-    return render_template('login.html', form=form)
+    global_messages = GlobalMessages()
+    return render_template('login.html', form=form, global_messages=global_messages)
 
 
 @api.route('/signup', methods=['GET'])
@@ -84,7 +92,7 @@ def signup():
     if user:
         return redirect('/')
     else:
-        form = forms.SignupForm()
+        form = SignupForm()
         return render_template('signup.html', form=form)
 
 
@@ -95,7 +103,7 @@ def signup_post():
     if user:
         return redirect('/')
     else:
-        form = forms.SignupForm()
+        form = SignupForm()
 
         if form.validate_on_submit(): 
             try:
@@ -125,9 +133,11 @@ def signup_post():
                     return redirect(redirect_url + "?redirect=SuccessLogin" + parameters, code=302)
             except Exception as e:
                 form.username.errors.append(e)
-                return render_template('signup.html', form=form)
+                global_messages = GlobalMessages()
+                return render_template('signup.html', form=form, global_messages=global_messages)
 
-        return render_template('signup.html', form=form)
+        global_messages = GlobalMessages()
+        return render_template('signup.html', form=form, global_messages=global_messages)
 
 
 @api.route('/logout')
@@ -141,17 +151,18 @@ def logout():
 def reactivate():
     encrypted_reactivation_info = request.args.get('e')
 
-    form = forms.AccountReactivateForm()
+    form = AccountReactivateForm()
     user_reactivation_code = userService.process_reactivate_account(encrypted_reactivation_info)
 
     form.reactivation_code = user_reactivation_code
-    return render_template('reactivate.html', form=form)
+    global_messages = GlobalMessages()
+    return render_template('reactivate.html', form=form, global_messages=global_messages)
 
 
 @api.route('/reactivate', methods=['POST'])
 def reactivate_post():
 
-    form = forms.AccountReactivateForm()
+    form = AccountReactivateForm()
 
     username = form.username.data
     user_reactivation_code = form.reactivation_code.data
@@ -163,41 +174,43 @@ def reactivate_post():
 @api.route('/reset/request', methods=['GET'])
 def reset_request():
 
-    form = forms.UsernamePasswordResetForm()
-    return render_template('reset.html', form=form)
+    form = UsernamePasswordResetForm()
+    global_messages = GlobalMessages()
+    return render_template('reset.html', form=form, global_messages=global_messages)
 
 
 @api.route('/reset/request', methods=['POST'])
 def reset_request_post():
 
-    form = forms.UsernamePasswordResetForm()
+    form = UsernamePasswordResetForm()
 
     username = form.username.data
     userService.reset_user_password(username)
-
-    return render_template('reset.html', form=form)
+    global_messages = GlobalMessages()
+    return render_template('reset.html', form=form, global_messages=global_messages)
 
 
 @api.route('/reset', methods=['GET'])
 def reset():
     encrypted_reset_code = request.args.get('e')
 
-    form = forms.UsernamePasswordNewForm()
+    form = UsernamePasswordNewForm()
 
     user_reset_code = userService.process_reset_user_password(encrypted_reset_code)
     form.reset_code.data = user_reset_code
 
-    return render_template('new_password.html', form=form)
+    global_messages = GlobalMessages()
+    return render_template('new_password.html', form=form, global_messages=global_messages)
 
 
 @api.route('/reset', methods=['POST'])
 def reset_post():
 
-    form = forms.UsernamePasswordNewForm()
+    form = UsernamePasswordNewForm()
 
     username = form.username.data
     password = form.password.data
     user_reset_code = form.reset_code.data
     userService.complete_reset_user_password(username, password, user_reset_code)
-
-    return render_template('new_password.html', form=form)
+    global_messages = GlobalMessages()
+    return render_template('new_password.html', form=form, global_messages=global_messages)

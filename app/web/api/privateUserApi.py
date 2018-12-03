@@ -9,7 +9,7 @@ from authlib.flask.oauth2 import current_token
 
 from app import core
 from app.services import userService
-from app.web.utils import serializeUtils, apiUtils
+from app.web.utils import apiUtils
 from app.web.schemas.userSchema import \
     ChangePasswordSchema, ChangeUsernameSchema, \
     PrivateUserAccountSchema, PrivateUserPreferencesSchema, PublicUserProfileSchema, \
@@ -47,7 +47,7 @@ def get_my_preferences():
         current_user = current_token.user
         if current_user:
             data = PrivateUserPreferencesSchema().dump(current_user)
-            resp = serializeUtils.generate_response_wrapper(data)
+            resp = apiUtils.generate_response_wrapper(data)
             return jsonify(resp)
         else:
             #
@@ -77,7 +77,8 @@ def update_my_preferences_names():
                                                  names_to_update['last_name'])
             if user:
                 data = PrivateUserPreferencesSchema().dump(user)
-                resp = serializeUtils.generate_response_wrapper(data)
+                resp = apiUtils.generate_response_wrapper(data)
+                resp = apiUtils.add_global_success_msg(resp, "Successfully update your names")
                 return jsonify(resp)
             else:
                 abort(403)
@@ -104,7 +105,7 @@ def update_my_preferences_private():
                                                       private_fl_to_update['is_private'])
             if user:
                 data = PrivateUserPreferencesSchema().dump(user)
-                resp = serializeUtils.generate_response_wrapper(data)
+                resp = apiUtils.generate_response_wrapper(data)
                 return jsonify(resp)
             else:
                 abort(403)
@@ -122,7 +123,7 @@ def get_my_account():
         current_user = current_token.user
         if current_user:
             data = PrivateUserAccountSchema().dump(current_user)
-            resp = serializeUtils.generate_response_wrapper(data)
+            resp = apiUtils.generate_response_wrapper(data)
             return jsonify(resp)
         else:
             #
@@ -146,7 +147,7 @@ def get_my_account_username():
         current_user = current_token.user
         if current_user:
             data = {'username': current_user.username}
-            resp = serializeUtils.generate_response_wrapper(data)
+            resp = apiUtils.generate_response_wrapper(data)
             return jsonify(resp)
         else:
             #
@@ -187,7 +188,8 @@ def update_my_account_username():
                                                                               )
             if updated_user is not None:
                 data = PrivateUserAccountSchema().dump(updated_user)
-                resp = serializeUtils.generate_response_wrapper(data)
+                resp = apiUtils.generate_response_wrapper(data)
+                resp = apiUtils.add_global_success_msg(resp, "Successfully update your email")
                 return jsonify(resp)
             else:
                 abort(400)
@@ -223,7 +225,8 @@ def update_my_account_password():
                                                  result['old_password'],
                                                  result['new_password']
                                                  )
-                resp = serializeUtils.generate_response_wrapper(None)
+                resp = apiUtils.generate_response_wrapper(None)
+                resp = apiUtils.add_global_success_msg(resp, "Successfully update your password")
                 return jsonify(resp)
 
                 # data = {}

@@ -6,7 +6,7 @@ from cacheout import Cache
 
 from app.models.codetables.users import CtUserStatus, CtUserType
 from app.services import codetablesService
-from app.web.utils import serializeUtils
+from app.web.utils import apiUtils
 from app.web.schemas.generalSchema import CodeTableSchema
 
 api = Blueprint('codetables_api', __name__)
@@ -33,7 +33,7 @@ def codetable_by_name(codetable_name):
             data = CodeTableSchema.dump(codetable_data, many=True)
             if data:
                 _codetable_cache.add(codetable_name, data)
-                resp = serializeUtils.generate_response_wrapper(data)
+                resp = apiUtils.generate_response_wrapper(data)
                 return jsonify(resp)
 
     abort(404)

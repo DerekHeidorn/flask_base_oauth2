@@ -8,7 +8,7 @@ from flask import Blueprint
 from authlib.flask.oauth2 import current_token
 
 from app.services import userService
-from app.web.utils import serializeUtils
+from app.web.utils import apiUtils
 from app.web.schemas.userSchema import PublicUserProfileSchema
 from app.web import oauth2
 
@@ -23,7 +23,7 @@ def get_users():
     for u in users:
         user_list.append(PublicUserProfileSchema().dump(u))
 
-    resp = serializeUtils.generate_response_wrapper(user_list)
+    resp = apiUtils.generate_response_wrapper(user_list)
     return jsonify(resp)
 
 
@@ -35,7 +35,7 @@ def get_admin_account():
         current_user = userService.get_user_by_id(current_token.user_id)
         if current_user:
             data = PublicUserProfileSchema().dump(current_user)
-            resp = serializeUtils.generate_response_wrapper(data)
+            resp = apiUtils.generate_response_wrapper(data)
             return jsonify(resp)
         else:
             #
@@ -59,7 +59,7 @@ def add_public_user():
     new_user = userService.add_public_user(None, alias, username, password, first_name, last_name)
 
     data = PublicUserProfileSchema().dump(new_user)
-    resp = serializeUtils.generate_response_wrapper(data)
+    resp = apiUtils.generate_response_wrapper(data)
     return jsonify(resp), 201
 
 
@@ -69,7 +69,7 @@ def get_user_by_id(user_id):
     current_user = userService.get_user_by_id(user_id)
     if current_user:
         data = PublicUserProfileSchema().dump(current_user)
-        resp = serializeUtils.generate_response_wrapper(data)
+        resp = apiUtils.generate_response_wrapper(data)
         return jsonify(resp)
     else:
         #
@@ -106,5 +106,5 @@ def update_public_user(user_id):
         return make_response('', 404)
     else:
         data = PublicUserProfileSchema().dump(updated_user)
-        resp = serializeUtils.generate_response_wrapper(data)
+        resp = apiUtils.generate_response_wrapper(data)
         return jsonify(resp)

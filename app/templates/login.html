@@ -24,46 +24,53 @@
         </div>
     </div>
     <div id="page">
-            <br/>
-            <form action="{{ url_for('home_api.login_post') }}" method="post">
-              <input type="hidden" name="grant_type" value="password"/>
-              <input type="hidden" name="client_id" value="CLTID-Zeq1LRso5q-iLU9RKCKnu"/>
-              {{ form.csrf_token }}
-              
-              <table>
-                <tr>
-                    <td>{{ form.username.label }}:</td>
-                    <td>{{ form.username }}<br/></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                    {% for error in form.username.errors %}
-                        <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                    </td>
-                </tr>
-                <tr>
-                  <td>{{ form.password.label }}:</td>
-                  <td>{{ form.password }}<br/></td>
-              </tr>
-              <tr>
-                    <td colspan="2">
-                    {% for error in form.password.errors %}
-                        <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                    </td>
-              </tr>
-              <tr>
-                  <td></td>
-                  <td style="text-align:right;"><button type="submit">Login</button></td>
-              </tr>
-            </table>
+        <div id="page-bgtop">
+            <div id="page-bgbtm">
+                <div id="content">
+                    {% include 'global_messages.html' %}
 
-              
+                    <form action="{{ url_for('home_api.login_post') }}" method="post">
 
-              
-            </form>
-            <br/>
+                          <input type="hidden" name="grant_type" value="password"/>
+                          <input type="hidden" name="client_id" value="CLTID-Zeq1LRso5q-iLU9RKCKnu"/>
+                          {{ form.csrf_token }}
+
+                          <table>
+                            <tr>
+                                <td>{{ form.username.label }}:</td>
+                                <td>{{ form.username }}<br/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                {% for error in form.username.errors %}
+                                    <span style="color: red;">{{ error }}</span>
+                                {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                              <td>{{ form.password.label }}:</td>
+                              <td>{{ form.password }}<br/></td>
+                          </tr>
+                          <tr>
+                                <td colspan="2">
+                                {% for error in form.password.errors %}
+                                    <span style="color: red;">{{ error }}</span>
+                                {% endfor %}
+                                </td>
+                          </tr>
+                          <tr>
+                              <td></td>
+                              <td style="text-align:right;"><button type="submit">Login</button></td>
+                          </tr>
+                        </table>
+
+                    </form>
+
+                </div>
+            </div>
+
+          <div style="clear: both;">&nbsp;</div>
+        </div>
     </div>
 </div>
 <div id="footer">

@@ -5,7 +5,7 @@ from flask import Blueprint
 
 from app import core
 from app.services import userService
-from app.web.utils import serializeUtils
+from app.web.utils import apiUtils
 from app.web.schemas.userSchema import \
                                             PublicUserProfileSchema
 from app.web import oauth2
@@ -20,7 +20,7 @@ def get_public_user_details(user_uuid):
 
     user = userService.get_user_by_uuid(user_uuid)
     data = PublicUserProfileSchema().dump(user)
-    resp = serializeUtils.generate_response_wrapper(data)
+    resp = apiUtils.generate_response_wrapper(data)
     return jsonify(resp)
 
 
@@ -32,7 +32,7 @@ def get_public_user_list():
     for u in users:
         user_list.append(PublicUserProfileSchema().dump(u))
 
-    resp = serializeUtils.generate_response_wrapper(user_list)
+    resp = apiUtils.generate_response_wrapper(user_list)
     return jsonify(resp)
 
 
@@ -48,5 +48,5 @@ def get_public_user_details_by_list():
     for u in users:
         data.append(PublicUserProfileSchema().dump(u))
 
-    resp = serializeUtils.generate_response_wrapper(data)
+    resp = apiUtils.generate_response_wrapper(data)
     return jsonify(resp)

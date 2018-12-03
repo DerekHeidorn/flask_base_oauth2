@@ -6,7 +6,7 @@ from authlib.flask.oauth2 import current_token
 from app.services.utils import sha256
 from app.services import friendshipService
 from app.web import oauth2
-from app.web.utils import serializeUtils
+from app.web.utils import apiUtils
 from app.web.schemas.userSchema import PublicUserProfileSchema
 
 api = Blueprint('friendship_api', __name__)
@@ -25,7 +25,7 @@ def get_my_friends():
             for u in friends:
                 user_list.append(PublicUserProfileSchema().dump(u))
 
-            resp = serializeUtils.generate_response_wrapper(user_list)
+            resp = apiUtils.generate_response_wrapper(user_list)
             return jsonify(resp)
         else:
 
@@ -51,9 +51,9 @@ def friend_user(user_uuid, user_digest):
                 for u in friends:
                     friend_list.append(PublicUserProfileSchema().dump(u))
 
-            resp = serializeUtils.generate_response_wrapper(friend_list)
-            resp['global_success_msgs'] = []
-            resp['global_success_msgs'].append("Requesting friendship sent")
+            resp = apiUtils.generate_response_wrapper(friend_list)
+            resp = apiUtils.add_global_success_msg(resp, "Requesting friendship sent")
+
             return jsonify(resp), 201
         else:
             abort(403)
@@ -78,8 +78,9 @@ def unfriend_user(user_uuid, user_digest):
                 for u in friends:
                     friend_list.append(PublicUserProfileSchema().dump(u))
 
-            resp = serializeUtils.generate_response_wrapper(friend_list)
-            return jsonify(resp), 201
+            resp = apiUtils.generate_response_wrapper(friend_list)
+            resp = apiUtils.add_global_success_msg(resp, "Removed friend")
+            return jsonify(resp), 200
         else:
             abort(403)
     else:

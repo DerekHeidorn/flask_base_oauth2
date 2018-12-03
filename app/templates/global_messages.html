@@ -1,0 +1,77 @@
+{% if global_messages and global_messages.has_global_msgs %}
+<div>
+    {% if global_messages.global_success_msgs|length > 0  %}
+    <div>
+        <div class="msg-success">
+            <div class="msg-success-contents">
+                <table>
+                    <tr style="vertical-align:middle;">
+                        <td class="icon-success"></td>
+                        <td>
+                            {% for msg in global_messages.global_success_msgs %}
+                                <div>{{msg}}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if global_messages.global_info_msgs|length > 0  %}
+    <div>
+        <div class="msg-info">
+            <div class="msg-info-contents">
+                <table>
+                    <tr style="vertical-align:middle;">
+                        <td class="icon-info"></td>
+                        <td>
+                            {% for msg in global_messages.global_info_msgs %}
+                                <div>{{msg}}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if global_messages.global_warning_msgs|length > 0  %}
+    <div>
+        <div class="msg-warning">
+            <div class="msg-warning-contents">
+
+                <table>
+                    <tr style="vertical-align:middle;">
+                            <td class="icon-warning"></td>
+                        <td>
+                            {% for msg in global_messages.global_warning_msgs %}
+                                <div>{{msg}}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if global_messages.global_error_msgs|length > 0  %}
+    <div>
+        <div class="msg-error">
+            <div class="msg-error-contents">
+                <table>
+                    <tr style="vertical-align:middle;">
+                            <td class="icon-error"></td>
+                        <td>
+                            {% for msg in global_messages.global_error_msgs %}
+                                <div>{{msg}}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
