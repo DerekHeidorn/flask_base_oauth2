@@ -44,7 +44,7 @@ def friend_user(user_uuid, user_digest):
         digest_to_compare = sha256.hexdigest(user_uuid)
 
         if digest_to_compare == user_digest:
-            friends = friendshipService.remove_accepted_friendship(my_user_uuid, user_uuid)
+            friends = friendshipService.add_pending_friendship(my_user_uuid, user_uuid)
 
             friend_list = []
             if friends is not None:
@@ -52,8 +52,8 @@ def friend_user(user_uuid, user_digest):
                     friend_list.append(PublicUserProfileSchema().dump(u))
 
             resp = serializeUtils.generate_response_wrapper(friend_list)
-            resp['global_info_msgs'] = []
-            resp['global_info_msgs'].append("Info: Friend Added")
+            resp['global_success_msgs'] = []
+            resp['global_success_msgs'].append("Requesting friendship sent")
             return jsonify(resp), 201
         else:
             abort(403)

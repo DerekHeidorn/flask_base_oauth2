@@ -1,12 +1,14 @@
 
 
 def generate_response_wrapper(data,
+                              global_success_msgs=None,
                               global_info_msgs=None,
                               global_warning_msgs=None,
                               global_error_msgs=None,
                               field_error_msgs=None):
     return {
        'data': data,
+       'global_success_msgs': global_success_msgs,
        'global_info_msgs': global_info_msgs,
        'global_warning_msgs': global_warning_msgs,
        'global_error_msgs': global_error_msgs,
