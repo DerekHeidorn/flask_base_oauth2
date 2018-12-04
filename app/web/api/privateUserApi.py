@@ -72,7 +72,7 @@ def update_my_preferences_names():
             if user:
                 data = PrivateUserPreferencesSchema().dump(user)
                 resp = apiUtils.generate_response_wrapper(data)
-                resp = apiUtils.add_global_success_msg(resp, "Successfully update your names")
+                resp = apiUtils.add_global_success_msg(resp, "Successfully updated your names")
                 return jsonify(resp)
             else:
                 abort(403)
@@ -177,7 +177,7 @@ def update_my_account_username():
             if updated_user is not None:
                 data = PrivateUserAccountSchema().dump(updated_user)
                 resp = apiUtils.generate_response_wrapper(data)
-                resp = apiUtils.add_global_success_msg(resp, "Successfully update your email")
+                resp = apiUtils.add_global_success_msg(resp, "Successfully updated your email")
                 return jsonify(resp)
             else:
                 abort(400)
@@ -211,7 +211,7 @@ def update_my_account_password():
                                                  result['new_password']
                                                  )
                 resp = apiUtils.generate_response_wrapper(None)
-                resp = apiUtils.add_global_success_msg(resp, "Successfully update your password")
+                resp = apiUtils.add_global_success_msg(resp, "Successfully updated your password")
                 return jsonify(resp)
 
             except ValidationError as err:
