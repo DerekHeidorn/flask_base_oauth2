@@ -61,7 +61,7 @@ def get_friends_by_user_id(user_id):
             if friendship.status_cd == 'A':
                 accepted_friend_ids.append(friendship.friend_user_id)
             elif friendship.status_cd == 'P':
-                pending_friend_ids.append(friendship.user_id)
+                pending_friend_ids.append(friendship.friend_user_id)
 
     pending_friends = list()
     accepted_friends = list()
