@@ -34,6 +34,7 @@ class PrivateUserPreferencesSchema(Schema):
 class PublicUserProfileSchema(Schema):
     user_uuid = fields.String(required=True)
     alias = fields.String(required=True)
+    is_friend = False
 
     user_uuid_digest = fields.Method('get_digest')
 
