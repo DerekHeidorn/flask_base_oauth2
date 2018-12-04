@@ -48,15 +48,30 @@ def get_friends_by_user_id(user_id):
     session = baseDao.get_session()
 
     friendships = userDao.get_friendships_by_user_id(user_id, session)
-    friend_ids = []
+    pending_friend_ids = []
+    accepted_friend_ids = []
 
     for friendship in friendships:
         if friendship.user_id != user_id:
-            friend_ids.append(friendship.user_id)
+            if friendship.status_cd == 'A':
+                accepted_friend_ids.append(friendship.user_id)
+            elif friendship.status_cd == 'P':
+                pending_friend_ids.append(friendship.user_id)
         if friendship.friend_user_id != user_id:
-            friend_ids.append(friendship.friend_user_id)
+            if friendship.status_cd == 'A':
+                accepted_friend_ids.append(friendship.friend_user_id)
+            elif friendship.status_cd == 'P':
+                pending_friend_ids.append(friendship.user_id)
 
-    if len(friend_ids) > 0:
-        return userDao.get_users_by_ids(friend_ids, session)
-    else:
-        return []
+    pending_friends = list()
+    accepted_friends = list()
+    if len(pending_friend_ids) > 0:
+        pending_users = userDao.get_users_by_ids(pending_friend_ids, session)
+        for u in pending_users:
+            pending_friends.append(u)
+    if len(accepted_friend_ids) > 0:
+        accepted_users = userDao.get_users_by_ids(accepted_friend_ids, session)
+        for u in accepted_users:
+            accepted_friends.append(u)
+
+    return {"pending_friends": pending_friends, "accepted_friends": accepted_friends}

@@ -21,11 +21,17 @@ def get_my_friends():
         if current_user:
             friends = friendshipService.get_friends_by_user_id(current_user.user_id)
 
-            user_list = []
-            for u in friends:
-                user_list.append(PublicUserProfileSchema().dump(u))
+            pending_list = []
+            accepted_list = []
+            for u in friends["pending_friends"]:
+                pending_list.append(PublicUserProfileSchema().dump(u))
 
-            resp = apiUtils.generate_response_wrapper(user_list)
+            for u in friends["accepted_friends"]:
+                accepted_list.append(PublicUserProfileSchema().dump(u))
+
+            data = {"pending_friends": pending_list, "accepted_friends": accepted_list}
+
+            resp = apiUtils.generate_response_wrapper(data)
             return jsonify(resp)
         else:
 
