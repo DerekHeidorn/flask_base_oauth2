@@ -55,6 +55,10 @@ def remove_accepted_friendship(user_uuid, friend_user_uuid):
     return friend_user
 
 
+def get_friendships_by_user_id(user_id):
+    return userDao.get_friendships_by_user_id(user_id)
+
+
 def get_friends_by_user_id(user_id):
     session = baseDao.get_session()
 

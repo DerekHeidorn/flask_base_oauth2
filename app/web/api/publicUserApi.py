@@ -20,10 +20,29 @@ api = Blueprint('public_user_api', __name__)
 def get_public_user_details(user_uuid):
     core.logger.debug('request=' + str(request))
 
-    user = userService.get_user_by_uuid(user_uuid)
-    data = PublicUserProfileSchema().dump(user)
-    resp = apiUtils.generate_response_wrapper(data)
-    return jsonify(resp)
+    if current_token is not None and current_token.user is not None:
+        current_user = current_token.user
+
+        if current_user:
+            user = userService.get_user_by_uuid(user_uuid)
+            if user:
+                d = PublicUserProfileSchema().dump(user)
+                friendships = friendshipService.get_friendships_by_user_id(current_user.user_id)
+                d['is_friend'] = False
+
+                for f in friendships:
+                    if f.user_id == user.user_id or f.friend_user_id == user.user_id:
+                        d['is_friend'] = True
+                        break
+
+                resp = apiUtils.generate_response_wrapper(d)
+                return jsonify(resp)
+            else:
+                abort(404)
+        else:
+            abort(403)
+    else:
+        abort(401)
 
 
 @api.route('/api/v1.0/public/user/list', methods=['GET'])
