@@ -95,9 +95,12 @@ def get_users_by_uuid_list(user_uuid_list):
     session = baseDao.get_session()
     users = []
 
-    for u in user_uuid_list:
-        user = userDao.get_user_by_uuid(u, session)
-        users.append(user)
+    for user_uuid in user_uuid_list:
+        user = userDao.get_user_by_uuid(user_uuid, session)
+        if user is not None:
+            users.append(user)
+        else:
+            core.logger.warn("Unable to find user where user_uuid=" + user_uuid)
 
     return users
 

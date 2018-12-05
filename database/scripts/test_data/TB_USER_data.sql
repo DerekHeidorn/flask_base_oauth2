@@ -708,7 +708,7 @@ INSERT INTO public.TB_USER(
             USRTYP_CD, USER_ATTEMPT_CNT, USER_ATTEMPT_TS, USER_PRIV_KEY,
             USER_ACTV_CODE, USER_RESET_CODE, USRSTA_CD, USER_PRIVATE_FL,
             USER_FNAME, USER_LNAME, USER_ALIAS)
-    VALUES (53, '0785e9e4-c80e-4f70-9c73-51fd1c63a142', 'Captain_Cold@LegionofDoom.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
+    VALUES (53, '71dfe7fc-7279-46d9-a1ff-b6227d69aa73', 'Captain_Cold@LegionofDoom.com.invali', '5adc7c7ceb10eed3fe8bdef909a8417f57a1e7a4fdf9503b39a9bb84b3e5e5fd3908d7599fc0e6db960807f2afce507dc3b20e45f761a870960893922bb70b1f', 'YSh3SpOres2CgkzFKi5s1FuSqSWYc7dS',
             'C', 0, null, 'BHc9UCugXO7F9PczI86uArbeOFncaYPl',
             null, null, 'A', TRUE,
             'Leonard', 'Snart', 'Captain_Cold');

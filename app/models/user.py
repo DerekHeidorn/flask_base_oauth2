@@ -96,7 +96,7 @@ class User(BaseModel):
             return False
 
     def __repr__(self):
-        return "<User(uuid='%s', username='%s')>" % (self.user_uuid, self.username)
+        return "<User(user_uuid='%s', alias='%s')>" % (self.user_uuid, self.alias)
 
 
 class Friendship(BaseModel):

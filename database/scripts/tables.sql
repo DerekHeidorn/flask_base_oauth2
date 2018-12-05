@@ -131,6 +131,11 @@ CREATE INDEX XIE5TB_USER
   USING btree
   (lower(USER_ALIAS::text) COLLATE pg_catalog.default);
 
+CREATE INDEX XIE6TB_USER
+  ON public.TB_USER
+  USING btree
+  (lower(USER_UUID::text) COLLATE pg_catalog.default);
+
 CREATE INDEX XIF8TB_USER
   ON public.TB_USER
   USING btree

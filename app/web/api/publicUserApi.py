@@ -92,9 +92,12 @@ def get_public_user_details_by_list():
     user_uuid_list = json.loads(request.data)
 
     users = userService.get_users_by_uuid_list(user_uuid_list)
+    core.logger.debug('users=' + str(users))
     data = []
-    for u in users:
-        data.append(PublicUserProfileSchema().dump(u))
+    if users is not None:
+        for u in users:
+            core.logger.debug('**u=' + str(u))
+            data.append(PublicUserProfileSchema().dump(u))
 
     resp = apiUtils.generate_response_wrapper(data)
     return jsonify(resp)
