@@ -1,16 +1,17 @@
 
 from tests.persist.baseTest import BaseTest
 from tests.helpers import commonHelper
-from app.persist import securityDao
+from app.persist import securityDao, baseDao
 
 
 class SecurityDaoTestCase(BaseTest):
 
     def test_get_user_security_authorities(self):
         print("running get_user_security_authorities...")
+        session = baseDao.get_session()
         created_user = commonHelper.create_public_user()
 
-        authorities = securityDao.get_user_security_authorities(created_user.user_id)
+        authorities = securityDao.get_user_security_authorities(session, created_user.user_id)
         print("authorities=" + str(authorities))
         found_cust_access = False
         for a in authorities:

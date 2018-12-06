@@ -6,11 +6,11 @@ from app import core
 def add_pending_friendship(user_uuid, friend_user_uuid):
     session = baseDao.get_session()
 
-    user = userDao.get_user_by_uuid(user_uuid, session)
-    friend_user = userDao.get_user_by_uuid(friend_user_uuid, session)
+    user = userDao.get_user_by_uuid(session, user_uuid)
+    friend_user = userDao.get_user_by_uuid(session, friend_user_uuid)
 
     if user is not None and friend_user is not None:
-        userDao.add_pending_friendship(user.user_id, friend_user.user_id, session)
+        userDao.add_pending_friendship(session, user.user_id, friend_user.user_id)
         session.commit()
 
     return friend_user
@@ -20,10 +20,10 @@ def update_friendship_to_accepted(user_uuid, friend_user_uuid):
     session = baseDao.get_session()
 
     user = userDao.get_user_by_uuid(user_uuid, session)
-    friend_user = userDao.get_user_by_uuid(friend_user_uuid, session)
+    friend_user = userDao.get_user_by_uuid(session, friend_user_uuid)
 
     if user is not None and friend_user is not None:
-        userDao.update_friendship_to_accepted(user.user_id, friend_user.user_id, session)
+        userDao.update_friendship_to_accepted(session, user.user_id, friend_user.user_id)
         session.commit()
 
     return friend_user
@@ -32,11 +32,11 @@ def update_friendship_to_accepted(user_uuid, friend_user_uuid):
 def remove_pending_friendship(user_uuid, friend_user_uuid):
     session = baseDao.get_session()
 
-    user = userDao.get_user_by_uuid(user_uuid, session)
-    friend_user = userDao.get_user_by_uuid(friend_user_uuid, session)
+    user = userDao.get_user_by_uuid(session, user_uuid)
+    friend_user = userDao.get_user_by_uuid(session, friend_user_uuid)
 
     if user is not None and friend_user is not None:
-        userDao.remove_pending_friendship(user.user_id, friend_user.user_id, session)
+        userDao.remove_pending_friendship(session, user.user_id, friend_user.user_id)
         session.commit()
 
     return friend_user
@@ -45,24 +45,25 @@ def remove_pending_friendship(user_uuid, friend_user_uuid):
 def remove_accepted_friendship(user_uuid, friend_user_uuid):
     session = baseDao.get_session()
 
-    user = userDao.get_user_by_uuid(user_uuid, session)
-    friend_user = userDao.get_user_by_uuid(friend_user_uuid, session)
+    user = userDao.get_user_by_uuid(session, user_uuid)
+    friend_user = userDao.get_user_by_uuid(session, friend_user_uuid)
 
     if user is not None and friend_user is not None:
-        userDao.remove_accepted_friendship(user.user_id, friend_user.user_id, session)
+        userDao.remove_accepted_friendship(session, user.user_id, friend_user.user_id)
         session.commit()
 
     return friend_user
 
 
 def get_friendships_by_user_id(user_id):
-    return userDao.get_friendships_by_user_id(user_id)
+    session = baseDao.get_session()
+    return userDao.get_friendships_by_user_id(session, user_id)
 
 
 def get_friends_by_user_id(user_id):
     session = baseDao.get_session()
 
-    friendships = userDao.get_friendships_by_user_id(user_id, session)
+    friendships = userDao.get_friendships_by_user_id(session, user_id)
     pending_friend_request_ids = []
     pending_friend_ids = []
     accepted_friend_ids = []
@@ -90,17 +91,17 @@ def get_friends_by_user_id(user_id):
     accepted_friends = list()
 
     if len(pending_friend_request_ids) > 0:
-        pending_user_requests = userDao.get_users_by_ids(pending_friend_request_ids, session)
+        pending_user_requests = userDao.get_users_by_ids(session, pending_friend_request_ids)
         for u in pending_user_requests:
             pending_friend_requests.append(u)
 
     if len(pending_friend_ids) > 0:
-        pending_users = userDao.get_users_by_ids(pending_friend_ids, session)
+        pending_users = userDao.get_users_by_ids(session, pending_friend_ids)
         for u in pending_users:
             pending_friends.append(u)
 
     if len(accepted_friend_ids) > 0:
-        accepted_users = userDao.get_users_by_ids(accepted_friend_ids, session)
+        accepted_users = userDao.get_users_by_ids(session, accepted_friend_ids)
         for u in accepted_users:
             accepted_friends.append(u)
 

@@ -1,13 +1,14 @@
 
 from datetime import datetime
 from app.models.batch import BatchJob
-from app.persist import userDao, batchDao
+from app.persist import userDao, batchDao, baseDao
 
 
 def run_stats():
     start_ts = datetime.now()
 
-    user_count = userDao.get_user_count()
+    session = baseDao.get_session()
+    user_count = userDao.get_user_count(session)
     print("stats: user_count=" + str(user_count))
 
     end_ts = datetime.now()

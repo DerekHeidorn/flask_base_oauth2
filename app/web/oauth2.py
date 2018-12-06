@@ -68,7 +68,7 @@ class _PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
     def authenticate_user(self, username_or_alias, password):
         session = baseDao.get_session()
 
-        user = userDao.get_user_by_username(username_or_alias, session)
+        user = userDao.get_user_by_username(session, username_or_alias)
 
         # Optional login using the alias
         # if user is None:  # no username found, try Alias
@@ -83,12 +83,12 @@ class _PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
                 is_password_valid = userUtils.is_user_valid(user, password)
                 if is_password_valid:
                     user.last_attempts_ts = datetime.now()
-                    userDao.update_user(user, session)
+                    userDao.update_user(session, user)
                     return user
                 else:
                     user.failed_attempt_count += 1
                     user.last_attempts_ts = datetime.now()
-                    userDao.update_user(user, session)
+                    userDao.update_user(session, user)
 
                     if user.failed_attempt_count > 8:
                         userService.deactivate_account(user.user_id)

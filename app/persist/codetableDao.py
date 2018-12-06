@@ -1,11 +1,5 @@
 
-from app.persist import baseDao
-
-
-def get_code_table(codetable, session=None):
-
-    if session is None:
-        session = baseDao.get_session()
+def get_code_table(session, codetable):
 
     all_data = session.query(codetable).order_by(codetable.description).all()
 
