@@ -28,6 +28,7 @@ class UserDaoTestCase(BaseTest):
         new_user.type_cd = '1'
         new_user.is_private = False
         new_user.failed_attempt_count = 0
+        new_user.created_ts = datetime.now()
         new_user.last_attempts_ts = datetime.now()
         new_user.private_key = randomUtil.random_string(32, 32)
         new_user.password_salt = randomUtil.random_string(32, 32)
@@ -41,7 +42,7 @@ class UserDaoTestCase(BaseTest):
         created_user_1 = commonHelper.create_public_user()
         created_user_2 = commonHelper.create_public_user()
 
-        friendship = userDao.add_friendship(created_user_1.user_id, created_user_2.user_id)
+        friendship = userDao.add_pending_friendship(created_user_1.user_id, created_user_2.user_id)
         print("friendship=" + str(friendship))
         self.assertEqual(friendship.user_id, created_user_1.user_id)
         self.assertEqual(friendship.friend_user_id, created_user_2.user_id)
@@ -51,7 +52,7 @@ class UserDaoTestCase(BaseTest):
         created_user_1 = commonHelper.create_public_user()
         created_user_2 = commonHelper.create_public_user()
 
-        friendship = userDao.add_friendship(created_user_1.user_id, created_user_2.user_id)
+        friendship = userDao.add_pending_friendship(created_user_1.user_id, created_user_2.user_id)
         print("friendship=" + str(friendship))
         self.assertEqual(friendship.user_id, created_user_1.user_id)
         self.assertEqual(friendship.friend_user_id, created_user_2.user_id)
