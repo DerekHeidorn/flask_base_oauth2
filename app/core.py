@@ -50,7 +50,8 @@ def create_application():
         "APP_DB_CONNECTION_URI",
         "APP_DB_ENGINE_DEBUG",
         "APP_MODE",
-        "APP_SHARED_SECRET_KEY"
+        "APP_SHARED_SECRET_KEY",
+        "APP_CLIENT_HOME_URL"
     ]
 
     for r in required_os_environment_settings:
@@ -70,6 +71,7 @@ def create_application():
     global_config["APP_SHARED_SECRET_KEY"] = os.environ["APP_SHARED_SECRET_KEY"]
     global_config["APP_JWT_KEY"] = os.environ["APP_JWT_KEY"]
     global_config["APP_FLASK_SECRET_KEY"] = os.environ["APP_FLASK_SECRET_KEY"]
+    global_config["APP_CLIENT_HOME_URL"] = os.environ["APP_CLIENT_HOME_URL"]
     global_config["APP_DB_CONNECTION_URI"] = os.environ["APP_DB_CONNECTION_URI"]
     global_config["APP_DB_ENGINE_DEBUG"] = os.environ["APP_DB_ENGINE_DEBUG"]
 

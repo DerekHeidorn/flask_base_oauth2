@@ -20,7 +20,7 @@ def run_stats():
     batch_job.status_code = 'COMPLETED'
     batch_job.end_ts = end_ts
 
-    batchDao.add_batch_job(batch_job)
+    batchDao.add_batch_job(session, batch_job)
 
 
 

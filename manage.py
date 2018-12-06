@@ -20,9 +20,11 @@ def setup_dev_settings():
     os.environ["APP_SECRET_KEY"] = "KlkdZyb5xrGpDcNkSBrDhe790ohLfuea"
     os.environ["APP_SHARED_SECRET_KEY"] = "MD7VBOYXMQxa2BvtLwu9PtBTuqbKGlJ9TIcB0n9M"
 
-    os.environ["APP_JWT_ISS"] = "https://localhost:9000"
+    os.environ["APP_JWT_ISS"] = "http://localhost:9000"
     os.environ["APP_JWT_KEY"] = "BMcrqdcd7QeEmR8CXyU"
     os.environ["APP_MODE"] = "dev"  # dev, test, or prod
+
+    os.environ["APP_CLIENT_HOME_URL"] = "http://localhost:4200"
 
     # database config
     os.environ["APP_DB_CONNECTION_URI"] = "postgresql://postgres:P$F$xs+n?5+Ug3AU5PTe3q@localhost/postgres"

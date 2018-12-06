@@ -12,7 +12,7 @@
                 {% if user %}
                 Logged in as <strong>{{user.login}}</strong> [<a href="{{ url_for('.logout') }}">Log Out</a>]
                 {% else %}
-                    [<a href="/">Home</a>]
+                    [<a href="{{home_url}}">Home</a>]
                     [<a href="/signup">Sign Up</a>]
                     [<a href="/login">Login</a>]
                 {% endif %}

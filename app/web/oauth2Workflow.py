@@ -30,7 +30,8 @@ def current_user_in_session():
 @api.route('/', methods=['GET'])
 def home():
     user = current_user_in_session()
-    return render_template('home.html', user=user)
+    home_url = core.global_config["APP_CLIENT_HOME_URL"]
+    return render_template('home.html', user=user, home_url=home_url)
 
 
 @api.route('/login', methods=['GET'])
@@ -42,7 +43,8 @@ def login():
     else:
         form = UsernamePasswordForm()
         global_messages = GlobalMessages()
-        return render_template('login.html', form=form, global_messages=global_messages)
+        home_url = core.global_config["APP_CLIENT_HOME_URL"]
+        return render_template('login.html', form=form, global_messages=global_messages, home_url=home_url)
 
 
 @api.route('/login', methods=['POST'])
@@ -55,6 +57,7 @@ def login_post():
     # grant_type=password&username=johndoe&password=A3ddj3w
     form = UsernamePasswordForm()
     global_messages = GlobalMessages()
+    home_url = core.global_config["APP_CLIENT_HOME_URL"]
 
     if form.validate_on_submit():
         debugUtils.debug_request(request)
@@ -78,7 +81,7 @@ def login_post():
                         # form.username.errors.append(error_msg)
                         # raise Exception(error_msg)
                         global_messages.add_global_error_msg(error_msg)
-                        return render_template('login.html', form=form, global_messages=global_messages)
+                        return render_template('login.html', form=form, global_messages=global_messages, home_url=home_url)
 
                     parameters += "&" + k + '=' + str(json_doc.get(k))
 
@@ -87,14 +90,14 @@ def login_post():
             else:
                 core.logger.error("Client ID not found for: " + str(form.client_id.data))
                 global_messages.add_global_error_msg("Client ID not found!")
-                return render_template('login.html', form=form, global_messages=global_messages)
+                return render_template('login.html', form=form, global_messages=global_messages, home_url=home_url)
         except Exception as e:
             core.logger.debug("Exception: " + str(type(e)) + ", " + str(e))
             global_messages.add_global_error_msg(messages.errors["error.system"])
-            return render_template('login.html', form=form, global_messages=global_messages)
+            return render_template('login.html', form=form, global_messages=global_messages, home_url=home_url)
 
     global_messages.add_global_error_msg(messages.errors["error.form"])
-    return render_template('login.html', form=form, global_messages=global_messages)
+    return render_template('login.html', form=form, global_messages=global_messages, home_url=home_url)
 
 
 @api.route('/signup', methods=['GET'])
@@ -105,7 +108,8 @@ def signup():
         return redirect('/')
     else:
         form = SignupForm()
-        return render_template('signup.html', form=form)
+        home_url = core.global_config["APP_CLIENT_HOME_URL"]
+        return render_template('signup.html', form=form, home_url=home_url)
 
 
 @api.route('/signup', methods=['POST'])
@@ -117,6 +121,7 @@ def signup_post():
     else:
         form = SignupForm()
         global_messages = GlobalMessages()
+        home_url = core.global_config["APP_CLIENT_HOME_URL"]
 
         core.logger.debug("signup_post.validate_on_submit(): " + str(form.validate_on_submit()))
 
@@ -139,7 +144,9 @@ def signup_post():
                             if 'error_description' in json_doc:
                                 error_msg = json_doc['error_description']
                             global_messages.add_global_error_msg(error_msg)
-                            return render_template('login.html', form=form, global_messages=global_messages)
+                            return render_template('login.html',
+                                                   form=form, global_messages=global_messages,
+                                                   home_url=home_url)
 
                         parameters += "&" + k + '=' + str(json_doc.get(k))
 
@@ -149,10 +156,10 @@ def signup_post():
             except Exception as e:
                 core.logger.debug("Exception: " + str(type(e)) + ", " + str(e))
                 global_messages.add_global_error_msg(messages.errors["error.system"])
-                return render_template('signup.html', form=form, global_messages=global_messages)
+                return render_template('signup.html', form=form, global_messages=global_messages, home_url=home_url)
 
         global_messages.add_global_error_msg(messages.errors["error.form"])
-        return render_template('signup.html', form=form, global_messages=global_messages)
+        return render_template('signup.html', form=form, global_messages=global_messages, home_url=home_url)
 
 
 @api.route('/logout')
@@ -171,7 +178,8 @@ def reactivate():
 
     form.reactivation_code = user_reactivation_code
     global_messages = GlobalMessages()
-    return render_template('reactivate.html', form=form, global_messages=global_messages)
+    home_url = core.global_config["APP_CLIENT_HOME_URL"]
+    return render_template('reactivate.html', form=form, global_messages=global_messages, home_url=home_url)
 
 
 @api.route('/reactivate', methods=['POST'])
@@ -191,7 +199,9 @@ def reset_request():
 
     form = UsernamePasswordResetForm()
     global_messages = GlobalMessages()
-    return render_template('reset.html', form=form, global_messages=global_messages)
+    home_url = core.global_config["APP_CLIENT_HOME_URL"]
+
+    return render_template('reset.html', form=form, global_messages=global_messages, home_url=home_url)
 
 
 @api.route('/reset/request', methods=['POST'])
@@ -199,6 +209,7 @@ def reset_request_post():
 
     form = UsernamePasswordResetForm()
     global_messages = GlobalMessages()
+    home_url = core.global_config["APP_CLIENT_HOME_URL"]
 
     if form.validate_on_submit():
         username = form.username.data
@@ -207,14 +218,14 @@ def reset_request_post():
         except AppAccessDeniedException as de:
             global_messages = GlobalMessages()
             global_messages.add_global_error_msg(str(de))
-            return render_template('reset.html', form=form, global_messages=global_messages)
+            return render_template('reset.html', form=form, global_messages=global_messages, home_url=home_url)
 
         global_messages = GlobalMessages()
         global_messages.add_global_info_msg("Reset password information to your email address")
-        return render_template('reset.html', form=form, global_messages=global_messages)
+        return render_template('reset.html', form=form, global_messages=global_messages, home_url=home_url)
     else:
         global_messages.add_global_error_msg(messages.errors["error.form"])
-        return render_template('reset.html', form=form, global_messages=global_messages)
+        return render_template('reset.html', form=form, global_messages=global_messages, home_url=home_url)
 
 
 @api.route('/reset', methods=['GET'])
@@ -223,6 +234,7 @@ def reset():
 
     form = UsernamePasswordNewForm()
     global_messages = GlobalMessages()
+    home_url = core.global_config["APP_CLIENT_HOME_URL"]
 
     try:
         user_reset_info = userService.process_reset_user_password(encrypted_reset_code)
@@ -231,7 +243,7 @@ def reset():
     except Exception as e:
         core.logger.debug("Exception: " + str(type(e)) + ", " + str(e))
         global_messages.add_global_error_msg(messages.errors["error.system"])
-    return render_template('new_password.html', form=form, global_messages=global_messages)
+    return render_template('new_password.html', form=form, global_messages=global_messages, home_url=home_url)
 
 
 @api.route('/reset', methods=['POST'])
@@ -239,6 +251,7 @@ def reset_post():
 
     form = UsernamePasswordNewForm()
     global_messages = GlobalMessages()
+    home_url = core.global_config["APP_CLIENT_HOME_URL"]
 
     if form.validate_on_submit():
         try:
@@ -249,7 +262,7 @@ def reset_post():
         except Exception as e:
             core.logger.debug("Exception: " + str(type(e)) + ", " + str(e))
             global_messages.add_global_error_msg(messages.errors["error.system"])
-        return render_template('new_password.html', form=form, global_messages=global_messages)
+        return render_template('new_password.html', form=form, global_messages=global_messages, home_url=home_url)
     else:
         global_messages.add_global_error_msg(messages.errors["error.form"])
-        return render_template('new_password.html', form=form, global_messages=global_messages)
+        return render_template('new_password.html', form=form, global_messages=global_messages, home_url=home_url)
